@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
-def anasayfa(request):
-    return render(request, 'malihes/anasayfa.html', {})
+def girisyap(request):
+    return render(request, 'malihes/giris.html', {})
