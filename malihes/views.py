@@ -19,3 +19,6 @@ def giris(request):
 
 def anasayfa(request):
     return render(request, 'malihes/anasayfa.html')
+
+def kasakayit(request):
+    return render(request, 'malihes/kasakayit.html')

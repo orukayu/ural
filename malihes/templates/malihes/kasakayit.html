@@ -1,0 +1,194 @@
+{% extends 'malihes/base.html' %}
+
+{% block style %}
+<style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+  <body class="bg-body-tertiary">
+    <div class="container">
+      <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+          <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
+          <span class="fs-4">URAL LOJİSTİK</span>
+        </a>
+
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a href="{% url 'anasayfaurl' %}" class="nav-link">Anasayfa</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Seferler</a></li>
+          <li class="nav-item"><a href="{% url 'kasakayiturl' %}" class="nav-link">Kasa</a></li>
+        </ul>
+      </header>
+    </div>
+
+    <div class="container">
+      <main>
+        <div class="py-5 text-center">
+          <h2>Kasa Kayıt Formu</h2>
+        </div>
+
+        <div class="row g-5" style="justify-content: space-around;">
+          <div class="col-md-7 col-lg-8">
+            <form class="needs-validation" novalidate="">
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <label for="tarih" class="form-label">Tarih</label>
+                  <input type="text" class="form-control" id="tarih" placeholder="17/03/2025" value="" required="">
+                  <div class="invalid-feedback">
+                    Lütfen, tarih giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="plaka" class="form-label">Plaka</label>
+                  <input type="text" class="form-control" id="plaka" placeholder="55 ABC 1919" value="">
+                  <div class="invalid-feedback">
+                    Lütfen, plaka giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="fisno" class="form-label">Fiş No</label>
+                  <input type="text" class="form-control" id="fisno" placeholder="" value="">
+                  <div class="invalid-feedback">
+                    Lütfen, fiş numarası giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="sofor" class="form-label">Şoför</label>
+                  <input type="text" class="form-control" id="sofor" placeholder="" value="">
+                  <div class="invalid-feedback">
+                    Lütfen, şoför ismi giriniz.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label for="aciklama1" class="form-label">Açıklama 1 </label>
+                  <input type="text" class="form-control" id="aciklama1" placeholder="">
+                </div>
+
+                <div class="col-12">
+                  <label for="aciklama2" class="form-label">Açıklama 2 <span class="text-body-secondary">(Optional)</span></label>
+                  <input type="text" class="form-control" id="aciklama2" placeholder="">
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="giris" class="form-label">Giriş</label>
+                  <input type="text" class="form-control" id="giris" placeholder="" value="">
+                  <div class="invalid-feedback">
+                    Kasaya giren meblayı giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <label for="cikis" class="form-label">Çıkış</label>
+                  <input type="text" class="form-control" id="cikis" placeholder="" value="">
+                  <div class="invalid-feedback">
+                    Kasadan çıkan meblayı giriniz.
+                  </div>
+                </div>
+
+              </div>
+
+              <hr class="my-4">
+
+              <button class="w-100 btn btn-primary btn-lg" type="submit">Kayıt Ekle</button>
+            </form>
+          </div>
+        </div>
+      </main>
+      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+        <p class="mb-1">© 2025 Ural Lojistik</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+    <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.js"></script>
+  </body>
+{% endblock %}
