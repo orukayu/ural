@@ -41,6 +41,10 @@ def kasaliste(request):
     kasaliste = Kasa.objects.all()
     tg = Kasa.objects.filter(Giris__gt=0).aggregate(Sum('Giris'))["Giris__sum"]
     tc = Kasa.objects.filter(Cikis__gt=0).aggregate(Sum('Cikis'))["Cikis__sum"]
-    kalan = tg - tc
+
+    if tg is None:
+        kalan = 0
+    else:
+        kalan = tg - tc
 
     return render(request, 'malihes/kasaliste.html', {'kasaliste': kasaliste, 'tg': tg, 'tc': tc, 'kalan': kalan})
