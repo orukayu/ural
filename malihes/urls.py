@@ -6,5 +6,6 @@ urlpatterns = [
     path('', views.base, name='baseurl'),
     path('giris/', views.giris, name='girisurl'),
     path('anasayfa/', views.anasayfa, name='anasayfaurl'),
-    path('kasa-kayit/', views.kasakayit, name='kasakayiturl'),
+    path('kasa/', views.kasa, name='kasaurl'),
+    path('kasa-listesi/', views.kasaliste, name='kasalisteurl'),
 ]

@@ -2,48 +2,48 @@
 
 {% block style %}
 <style>
-      .bd-placeholder-img {
+    .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
         -webkit-user-select: none;
         -moz-user-select: none;
         user-select: none;
-      }
+    }
 
-      @media (min-width: 768px) {
+    @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
         }
-      }
+    }
 
-      .b-example-divider {
+    .b-example-divider {
         width: 100%;
         height: 3rem;
         background-color: rgba(0, 0, 0, .1);
         border: solid rgba(0, 0, 0, .15);
         border-width: 1px 0;
         box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
+    }
 
-      .b-example-vr {
+    .b-example-vr {
         flex-shrink: 0;
         width: 1.5rem;
         height: 100vh;
-      }
+    }
 
-      .bi {
+    .bi {
         vertical-align: -.125em;
         fill: currentColor;
-      }
+    }
 
-      .nav-scroller {
+    .nav-scroller {
         position: relative;
         z-index: 2;
         height: 2.75rem;
         overflow-y: hidden;
-      }
+    }
 
-      .nav-scroller .nav {
+    .nav-scroller .nav {
         display: flex;
         flex-wrap: nowrap;
         padding-bottom: 1rem;
@@ -52,9 +52,9 @@
         text-align: center;
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
-      }
+    }
 
-      .btn-bd-primary {
+    .btn-bd-primary {
         --bd-violet-bg: #712cf9;
         --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
 
@@ -69,42 +69,26 @@
         --bs-btn-active-color: var(--bs-btn-hover-color);
         --bs-btn-active-bg: #5a23c8;
         --bs-btn-active-border-color: #5a23c8;
-      }
+    }
 
-      .bd-mode-toggle {
+    .bd-mode-toggle {
         z-index: 1500;
-      }
+    }
 
-      .bd-mode-toggle .dropdown-menu .active .bi {
+    .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
-      }
-    </style>
+    }
+</style>
 
-    <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.css" rel="stylesheet">
 
 {% endblock %}
 
-{% block content %}
-  <body class="bg-body-tertiary">
-    <div class="container">
-      <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-          <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
-          <span class="fs-4">URAL LOJİSTİK</span>
-        </a>
-
-        <ul class="nav nav-pills">
-          <li class="nav-item"><a href="{% url 'anasayfaurl' %}" class="nav-link">Anasayfa</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Seferler</a></li>
-          <li class="nav-item"><a href="{% url 'kasakayiturl' %}" class="nav-link">Kasa</a></li>
-        </ul>
-      </header>
-    </div>
-
+{% block main %}
     <div class="container">
       <main>
-        <div class="py-5 text-center">
+        <div class="py-3 text-center">
           <h2>Sefer Giriş Formu</h2>
           <p class="lead">Aşağıda ki formu kullanarak sefer kaydı oluşturunuz. Eksik bilgileri daha sonra sefer listesinden tamamlayabilirsiniz.</p>
         </div>
@@ -324,5 +308,4 @@
     </div>
     <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.js"></script>
-  </body>
 {% endblock %}

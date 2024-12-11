@@ -3,7 +3,6 @@
 <html lang="tr" data-bs-theme="light">
   <head>
     <script src="/docs/5.3/assets/js/color-modes.js"></script>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -21,5 +20,26 @@
     {% endblock %}
   </head>
   {% block content %}
+  <body class="bg-body-tertiary">
+    <div class="container">
+      <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+          <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
+          <span class="fs-4">URAL LOJİSTİK</span>
+        </a>
+
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a href="{% url 'anasayfaurl' %}" class="nav-link">Anasayfa</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Seferler</a></li>
+          <li class="nav-item"><a href="{% url 'kasaurl' %}" class="nav-link">Kasa</a></li>
+          <li class="nav-item"><a href="{% url 'kasalisteurl' %}" class="nav-link">Kasa Listesi</a></li>
+        </ul>
+      </header>
+    </div>
+
+    {% block main %}
+    {% endblock %}
+
+  </body>
   {% endblock %}
 </html>

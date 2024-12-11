@@ -85,36 +85,21 @@
 
 {% endblock %}
 
-{% block content %}
-  <body class="bg-body-tertiary">
-    <div class="container">
-      <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-          <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
-          <span class="fs-4">URAL LOJİSTİK</span>
-        </a>
-
-        <ul class="nav nav-pills">
-          <li class="nav-item"><a href="{% url 'anasayfaurl' %}" class="nav-link">Anasayfa</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">Seferler</a></li>
-          <li class="nav-item"><a href="{% url 'kasakayiturl' %}" class="nav-link">Kasa</a></li>
-        </ul>
-      </header>
-    </div>
-
+{% block main %}
     <div class="container">
       <main>
-        <div class="py-5 text-center">
+        <div class="py-3 text-center">
           <h2>Kasa Kayıt Formu</h2>
         </div>
 
-        <div class="row g-5" style="justify-content: space-around;">
+        <div class="row" style="justify-content: space-around;">
           <div class="col-md-7 col-lg-8">
-            <form class="needs-validation" novalidate="">
+            <form method="POST">
+              {% csrf_token %}
               <div class="row g-3">
                 <div class="col-sm-6">
                   <label for="tarih" class="form-label">Tarih</label>
-                  <input type="text" class="form-control" id="tarih" placeholder="17/03/2025" value="" required="">
+                  {{ form.Tarih }}
                   <div class="invalid-feedback">
                     Lütfen, tarih giriniz.
                   </div>
@@ -122,7 +107,7 @@
 
                 <div class="col-sm-6">
                   <label for="plaka" class="form-label">Plaka</label>
-                  <input type="text" class="form-control" id="plaka" placeholder="55 ABC 1919" value="">
+                  {{ form.Plaka }}
                   <div class="invalid-feedback">
                     Lütfen, plaka giriniz.
                   </div>
@@ -130,7 +115,7 @@
 
                 <div class="col-sm-6">
                   <label for="fisno" class="form-label">Fiş No</label>
-                  <input type="text" class="form-control" id="fisno" placeholder="" value="">
+                  {{ form.Fisno }}
                   <div class="invalid-feedback">
                     Lütfen, fiş numarası giriniz.
                   </div>
@@ -138,7 +123,7 @@
 
                 <div class="col-sm-6">
                   <label for="sofor" class="form-label">Şoför</label>
-                  <input type="text" class="form-control" id="sofor" placeholder="" value="">
+                  {{ form.Sofor }}
                   <div class="invalid-feedback">
                     Lütfen, şoför ismi giriniz.
                   </div>
@@ -146,17 +131,17 @@
 
                 <div class="col-12">
                   <label for="aciklama1" class="form-label">Açıklama 1 </label>
-                  <input type="text" class="form-control" id="aciklama1" placeholder="">
+                  {{ form.Aciklama1 }}
                 </div>
 
                 <div class="col-12">
                   <label for="aciklama2" class="form-label">Açıklama 2 <span class="text-body-secondary">(Optional)</span></label>
-                  <input type="text" class="form-control" id="aciklama2" placeholder="">
+                  {{ form.Aciklama2 }}
                 </div>
 
                 <div class="col-sm-6">
                   <label for="giris" class="form-label">Giriş</label>
-                  <input type="text" class="form-control" id="giris" placeholder="" value="">
+                  {{ form.Giris }}
                   <div class="invalid-feedback">
                     Kasaya giren meblayı giriniz.
                   </div>
@@ -164,12 +149,11 @@
 
                 <div class="col-sm-6">
                   <label for="cikis" class="form-label">Çıkış</label>
-                  <input type="text" class="form-control" id="cikis" placeholder="" value="">
+                  {{ form.Cikis }}
                   <div class="invalid-feedback">
                     Kasadan çıkan meblayı giriniz.
                   </div>
                 </div>
-
               </div>
 
               <hr class="my-4">
