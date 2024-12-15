@@ -5,8 +5,10 @@ from django.contrib import messages
 from django.db.models import Sum
 
 from .forms import KasaForm
+from .forms import SeferForm
 
 from .models import Kasa
+from .models import Sefer
 
 def base(request):
     return redirect('girisurl')
@@ -24,7 +26,19 @@ def giris(request):
     return render(request, 'malihes/giris.html')
 
 def sefer(request):
-    return render(request, 'malihes/sefer.html')
+    if request.method == 'POST':
+        form = SeferForm(request.POST)
+        if form.is_valid():
+            form.save()  # Verileri doğrudan modelle ilişkilendir ve kaydet
+            return redirect('seferurl')  # Başka bir sayfaya yönlendirme yapabilirsiniz
+    else:
+        form = SeferForm()
+    
+    return render(request, 'malihes/sefer.html', {'form': form})
+
+def seferliste(request):
+    seferliste = Sefer.objects.all()
+    return render(request, 'malihes/seferliste.html', {'seferliste': seferliste})
 
 def kasa(request):
     if request.method == 'POST':
