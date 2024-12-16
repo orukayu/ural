@@ -24,7 +24,7 @@ class Kasa(models.Model):
     Cikis = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
-        ordering = ['Tarih',]  # Tablonun hangi başlığa göre sıralanacağını belirliyor
+        ordering = ['-Tarih',]  # Tablonun hangi başlığa göre sıralanacağını belirliyor
 
     def __str__(self):
         return str(self.Tarih)

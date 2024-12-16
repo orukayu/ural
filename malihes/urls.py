@@ -9,4 +9,5 @@ urlpatterns = [
     path('sefer-listesi/', views.seferliste, name='seferlisteurl'),
     path('kasa-kayit/', views.kasa, name='kasaurl'),
     path('kasa-listesi/', views.kasaliste, name='kasalisteurl'),
+    path('kasa-exceli-yukle/', views.kasaexceli, name='kasaexceliurl'),
 ]

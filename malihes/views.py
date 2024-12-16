@@ -69,3 +69,25 @@ def kasaliste(request):
     kalan = tg - tc
 
     return render(request, 'malihes/kasaliste.html', {'kasaliste': kasaliste, 'tg': tg, 'tc': tc, 'kalan': kalan})
+
+def kasaexceli(request):
+    if request.method == "POST":
+        if 'excel_file' in request.FILES:
+            excel_file = request.FILES['excel_file']
+            df = pd.read_excel(excel_file)
+            for index, row in df.iterrows():
+                tur = 'A' if row['Adet'] > 0 else 'T'
+                stok = Stok(
+                    Afaturano = row['Fatura No'],
+                    Stokkodu = row['Stok Kodu'],
+                    Adet = row['Adet'],
+                    Alisfiyati = row['Fiyat'],
+                    Toplam = row['Toplam'],
+                    Tur = tur,
+                    Firmaadi = request.user
+                )
+                stok.save1()
+            
+            return redirect('kasalisteurl')
+
+    return render(request, 'malihes/kasaexceli.html', {})
