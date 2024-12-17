@@ -99,15 +99,23 @@
               {% csrf_token %}
               <div class="row g-3">
                 <h4 class="mb-1">Araç Bilgileri</h4>
-                <div class="col-sm-6">
-                  <label for="firstName" class="form-label">Plaka</label>
-                  {{ form.Plaka }}
+                <div class="col-md-4">
+                  <label for="firstName" class="form-label">Plaka Çekici</label>
+                  {{ form.Plakacekici }}
                   <div class="invalid-feedback">
                     Valid first name is required.
                   </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-md-4">
+                  <label for="firstName" class="form-label">Plaka Dorse</label>
+                  {{ form.Plakadorse }}
+                  <div class="invalid-feedback">
+                    Valid first name is required.
+                  </div>
+                </div>
+
+                <div class="col-md-4">
                   <label for="lastName" class="form-label">Şoför</label>
                   {{ form.Sofor }}
                   <div class="invalid-feedback">
@@ -165,7 +173,7 @@
                 </div>
 
                 <h4 class="mb-1 mt-4">Müşteri Bilgileri</h4>
-                <div class="col-sm-6">
+                <div class="col-md-4">
                   <label for="firstName" class="form-label">Müşteri</label>
                   {{ form.Musteri }}
                   <div class="invalid-feedback">
@@ -173,9 +181,17 @@
                   </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-md-4">
                   <label for="lastName" class="form-label">Yük</label>
                   {{ form.Yuk }}
+                  <div class="invalid-feedback">
+                    Valid last name is required.
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="lastName" class="form-label">Mesafe (KM)</label>
+                  {{ form.Yol }}
                   <div class="invalid-feedback">
                     Valid last name is required.
                   </div>
@@ -215,7 +231,7 @@
                 </div>
 
                 <div class="col-md-3">
-                  <label for="lastName" class="form-label">Litre</label>
+                  <label for="lastName" class="form-label">Yakıt (Litre)</label>
                   {{ form.Litre }}
                   <div class="invalid-feedback">
                     Valid last name is required.

@@ -31,7 +31,8 @@ class Kasa(models.Model):
 
 
 class Sefer(models.Model):
-    Plaka = models.CharField(max_length=25)
+    Plakacekici = models.CharField(max_length=25)
+    Plakadorse = models.CharField(max_length=25, null=True)
     Sofor = models.TextField()
     Cikisyeri = models.TextField()
     Cikistarihi = models.DateField()
@@ -42,6 +43,7 @@ class Sefer(models.Model):
     Not = models.TextField()
     Musteri = models.TextField()
     Yuk = models.TextField()
+    Yol = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     Tasimabedeli = models.DecimalField(max_digits=10, decimal_places=2)
     Dovizkuru = models.DecimalField(max_digits=10, decimal_places=4)
     Toplamfiyat = models.DecimalField(max_digits=10, decimal_places=2)
@@ -53,7 +55,7 @@ class Sefer(models.Model):
     Kalan = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
-        ordering = ['Plaka',]  # Tablonun hangi başlığa göre sıralanacağını belirliyor
+        ordering = ['Plakacekici',]  # Tablonun hangi başlığa göre sıralanacağını belirliyor
 
     def __str__(self):
-        return self.Plaka
+        return self.Plakacekici

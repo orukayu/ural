@@ -7,7 +7,7 @@ class KasaAdmin(admin.ModelAdmin):
     list_display = ('id', 'Tarih', 'Plaka', 'Fisno', 'Sofor', 'Aciklama1', 'Aciklama2', 'Giris', 'Cikis')
 
 class SeferAdmin(admin.ModelAdmin):
-    list_display = ('id', 'Cikistarihi', 'Cikisyeri', 'Varistarihi', 'Varisyeri', 'Plaka', 'Sofor', 'Musteri', 'Yuk', 'Toplamfiyat', 'Istasyon', 'Litre', 'Litrefiyati', 'Toplamyakit', 'Digergiderler', 'Kalan')
+    list_display = ('id', 'Cikistarihi', 'Cikisyeri', 'Varistarihi', 'Varisyeri', 'Plakacekici', 'Plakadorse', 'Sofor', 'Musteri', 'Yuk', 'Toplamfiyat', 'Istasyon', 'Litre', 'Litrefiyati', 'Toplamyakit', 'Digergiderler', 'Kalan')
 
 admin.site.register(Soforler)
 admin.site.register(Kasa,KasaAdmin)
