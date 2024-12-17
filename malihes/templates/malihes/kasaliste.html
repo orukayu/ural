@@ -131,12 +131,12 @@
 				        {% for kasaliste in kasaliste %}
 				          <tr>
 				            <th scope="row">{{ kasaliste.id }}</th>
-				            <td>{{ kasaliste.Tarih }}</td>
-				            <td>{{ kasaliste.Plaka }}</td>
-				            <td>{{ kasaliste.Fisno }}</td>
-				            <td>{{ kasaliste.Sofor }}</td>
-				            <td>{{ kasaliste.Aciklama1 }}</td>
-				            <td>{{ kasaliste.Aciklama2 }}</td>
+				            <td>{{ kasaliste.Tarih|default:"" }}</td>
+				            <td>{{ kasaliste.Plaka|default:"" }}</td>
+				            <td>{{ kasaliste.Fisno|default:"" }}</td>
+				            <td>{{ kasaliste.Sofor|default:"" }}</td>
+				            <td>{{ kasaliste.Aciklama1|default:"" }}</td>
+				            <td>{{ kasaliste.Aciklama2|default:"" }}</td>
 				            <td class="text-end">{{ kasaliste.Giris }}</td>
 				            <td class="text-end">{{ kasaliste.Cikis }}</td>
 				          </tr>

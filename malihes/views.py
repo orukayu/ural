@@ -4,6 +4,8 @@ from django.contrib import messages
 
 from django.db.models import Sum
 
+import pandas as pd
+
 from .forms import KasaForm
 from .forms import SeferForm
 
@@ -75,18 +77,22 @@ def kasaexceli(request):
         if 'excel_file' in request.FILES:
             excel_file = request.FILES['excel_file']
             df = pd.read_excel(excel_file)
+
+            # NaN değerleri None ile değiştirme
+            df = df.where(pd.notnull(df), None)
+            
             for index, row in df.iterrows():
-                tur = 'A' if row['Adet'] > 0 else 'T'
-                stok = Stok(
-                    Afaturano = row['Fatura No'],
-                    Stokkodu = row['Stok Kodu'],
-                    Adet = row['Adet'],
-                    Alisfiyati = row['Fiyat'],
-                    Toplam = row['Toplam'],
-                    Tur = tur,
-                    Firmaadi = request.user
+                kasa = Kasa(
+                    Tarih = row['Tarih'],
+                    Plaka = row['Plaka'],
+                    Fisno = row['Fiş No'],
+                    Sofor = row['Şoför'],
+                    Aciklama1 = row['Açıklama 1'],
+                    Aciklama2 = row['Açıklama 2'],
+                    Giris=row['Giren'] if row['Giren'] is not None else 0.00,  # Varsayılan değer
+                    Cikis=row['Çıkan'] if row['Çıkan'] is not None else 0.00,  # Varsayılan değer
                 )
-                stok.save1()
+                kasa.save()
             
             return redirect('kasalisteurl')
 
