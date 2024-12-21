@@ -4,7 +4,11 @@ from django.contrib import messages
 
 from django.db.models import Sum
 
+from django.contrib.auth.models import User
+
 import pandas as pd
+from io import BytesIO
+from django.http import HttpResponse
 
 from .forms import KasaForm
 from .forms import SeferForm
@@ -27,7 +31,13 @@ def giris(request):
             messages.error(request, 'Kullanıcı adı veya şifre yanlış.')
     return render(request, 'malihes/giris.html')
 
+def anasayfa(request):
+    kullanici_adi = request.user.username
+    return render(request, 'malihes/anasayfa.html', {'kullanici_adi': kullanici_adi})
+
 def sefer(request):
+    kullanici_adi = request.user.username
+
     if request.method == 'POST':
         form = SeferForm(request.POST)
         if form.is_valid():
@@ -36,13 +46,15 @@ def sefer(request):
     else:
         form = SeferForm()
     
-    return render(request, 'malihes/sefer.html', {'form': form})
+    return render(request, 'malihes/sefer.html', {'form': form, 'kullanici_adi': kullanici_adi})
 
 def seferliste(request):
+    kullanici_adi = request.user.username
     seferliste = Sefer.objects.all()
-    return render(request, 'malihes/seferliste.html', {'seferliste': seferliste})
+    return render(request, 'malihes/seferliste.html', {'seferliste': seferliste, 'kullanici_adi': kullanici_adi})
 
 def kasa(request):
+    kullanici_adi = request.user.username
     if request.method == 'POST':
         form = KasaForm(request.POST)
         if form.is_valid():
@@ -51,9 +63,10 @@ def kasa(request):
     else:
         form = KasaForm()
     
-    return render(request, 'malihes/kasa.html', {'form': form})
+    return render(request, 'malihes/kasa.html', {'form': form, 'kullanici_adi': kullanici_adi})
 
 def kasaliste(request):
+    kullanici_adi = request.user.username
     kasaliste = Kasa.objects.all()
     tgt = Kasa.objects.filter(Giris__gt=0).aggregate(Sum('Giris'))["Giris__sum"]
     if tgt is None:
@@ -70,9 +83,10 @@ def kasaliste(request):
 
     kalan = tg - tc
 
-    return render(request, 'malihes/kasaliste.html', {'kasaliste': kasaliste, 'tg': tg, 'tc': tc, 'kalan': kalan})
+    return render(request, 'malihes/kasaliste.html', {'kasaliste': kasaliste, 'tg': tg, 'tc': tc, 'kalan': kalan, 'kullanici_adi': kullanici_adi})
 
 def kasaexceli(request):
+    kullanici_adi = request.user.username
     if request.method == "POST":
         if 'excel_file' in request.FILES:
             excel_file = request.FILES['excel_file']
@@ -96,4 +110,33 @@ def kasaexceli(request):
             
             return redirect('kasalisteurl')
 
-    return render(request, 'malihes/kasaexceli.html', {})
+    return render(request, 'malihes/kasaexceli.html', {'kullanici_adi': kullanici_adi})
+
+def kasaexceliindir(request):
+
+    # Kasa modelinden tüm verileri al
+    kasalar = Kasa.objects.all()
+
+    # Kasa verilerini bir DataFrame'e dönüştür
+    data = {
+        'Tarih': [kasa.Tarih.strftime('%d.%m.%Y') for kasa in kasalar],
+        'Plaka': [kasa.Plaka for kasa in kasalar],
+        'Fiş No': [kasa.Fisno for kasa in kasalar],
+        'Şoför': [kasa.Sofor for kasa in kasalar],
+        'Açıklama 1': [kasa.Aciklama1 for kasa in kasalar],
+        'Açıklama 2': [kasa.Aciklama2 for kasa in kasalar],
+        'Giren': [float(kasa.Giris) for kasa in kasalar],
+        'Çıkan': [float(kasa.Cikis) for kasa in kasalar],
+    }
+    df = pd.DataFrame(data)
+
+    # DataFrame'i Excel dosyasına dönüştür
+    excel_buffer = BytesIO()
+    df.to_excel(excel_buffer, index=False)
+    excel_buffer.seek(0)  # Buffer'ın başına git
+
+    # HTTP yanıtı olarak Excel dosyasını döndür
+    response = HttpResponse(excel_buffer, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="ural_kasa_exceli.xlsx"'
+
+    return response

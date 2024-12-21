@@ -7,7 +7,7 @@ class KasaForm(forms.ModelForm):
         model = Kasa
         fields = ['Tarih', 'Plaka', 'Fisno', 'Sofor', 'Aciklama1', 'Aciklama2', 'Giris', 'Cikis']
         widgets = {
-            'Tarih': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17/03/2025', 'id': 'tarih'}),
+            'Tarih': forms.TextInput(attrs={'class': 'form-control', 'id': 'tarih'}),
             'Plaka': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 ABC 1919', 'id': 'plaka'}),
             'Fisno': forms.TextInput(attrs={'class': 'form-control', 'id': 'fisno'}),
             'Sofor': forms.TextInput(attrs={'class': 'form-control', 'id': 'sofor'}),
@@ -16,6 +16,12 @@ class KasaForm(forms.ModelForm):
             'Giris': forms.NumberInput(attrs={'class': 'form-control', 'id': 'giris'}),
             'Cikis': forms.NumberInput(attrs={'class': 'form-control', 'id': 'cikis'}),
         }
+    # Tarih için birden fazla format belirtiyoruz
+    Tarih = forms.DateField(
+        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '19.03.2023'}),
+        required=True
+    )        
 
     def __init__(self, *args, **kwargs):
         super(KasaForm, self).__init__(*args, **kwargs)

@@ -85,10 +85,9 @@
 
 {% endblock %}
 
-{% block main %}
-    <div class="container">
-      <main>
-        <div class="py-3 text-center">
+{% block sayfa %}
+
+        <div class="py-3 text-center mt-4">
           <h2>Kasa Kayıt Formu</h2>
         </div>
 
@@ -97,23 +96,8 @@
             <form method="POST">
               {% csrf_token %}
               <div class="row g-3">
-                <div class="col-sm-6">
-                  <label for="tarih" class="form-label">Tarih</label>
-                  {{ form.Tarih }}
-                  <div class="invalid-feedback">
-                    Lütfen, tarih giriniz.
-                  </div>
-                </div>
 
-                <div class="col-sm-6">
-                  <label for="plaka" class="form-label">Plaka</label>
-                  {{ form.Plaka }}
-                  <div class="invalid-feedback">
-                    Lütfen, plaka giriniz.
-                  </div>
-                </div>
-
-                <div class="col-sm-6">
+                <div class="col-md-4">
                   <label for="fisno" class="form-label">Fiş No</label>
                   {{ form.Fisno }}
                   <div class="invalid-feedback">
@@ -121,7 +105,20 @@
                   </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-md-4 toplam">
+                  <label for="fisno" class="form-label"></label>
+
+                </div>
+
+                <div class="col-md-4">
+                  <label for="tarih" class="form-label">Tarih</label>
+                  {{ form.Tarih }}
+                  <div class="invalid-feedback">
+                    Lütfen, tarih giriniz.
+                  </div>
+                </div>
+
+                <div class="col-12">
                   <label for="sofor" class="form-label">Şoför</label>
                   {{ form.Sofor }}
                   <div class="invalid-feedback">
@@ -130,16 +127,24 @@
                 </div>
 
                 <div class="col-12">
+                  <label for="plaka" class="form-label">Plaka</label>
+                  {{ form.Plaka }}
+                  <div class="invalid-feedback">
+                    Lütfen, plaka giriniz.
+                  </div>
+                </div>             
+              
+                <div class="col-sm-4">
                   <label for="aciklama1" class="form-label">Açıklama 1 </label>
                   {{ form.Aciklama1 }}
                 </div>
 
-                <div class="col-12">
+                <div class="col-sm-4">
                   <label for="aciklama2" class="form-label">Açıklama 2 <span class="text-body-secondary">(Optional)</span></label>
                   {{ form.Aciklama2 }}
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                   <label for="giris" class="form-label">Giriş</label>
                   {{ form.Giris }}
                   <div class="invalid-feedback">
@@ -147,32 +152,83 @@
                   </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                   <label for="cikis" class="form-label">Çıkış</label>
                   {{ form.Cikis }}
                   <div class="invalid-feedback">
                     Kasadan çıkan meblayı giriniz.
                   </div>
                 </div>
+
+                <div class="col-sm-4 mt-0">
+                  <label for="aciklama1" class="form-label"></label>
+                  {{ form.Aciklama1 }}
+                </div>
+
+                <div class="col-sm-4 mt-0">
+                  <label for="aciklama2" class="form-label"></label>
+                  {{ form.Aciklama2 }}
+                </div>
+
+                <div class="col-sm-2 mt-0">
+                  <label for="giris" class="form-label"></label>
+                  {{ form.Giris }}
+                  <div class="invalid-feedback">
+                    Kasaya giren meblayı giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-2 mt-0">
+                  <label for="cikis" class="form-label"></label>
+                  {{ form.Cikis }}
+                  <div class="invalid-feedback">
+                    Kasadan çıkan meblayı giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-4 mt-0">
+                  <label for="aciklama1" class="form-label"></label>
+                  {{ form.Aciklama1 }}
+                </div>
+
+                <div class="col-sm-4 mt-0">
+                  <label for="aciklama2" class="form-label"></label>
+                  {{ form.Aciklama2 }}
+                </div>
+
+                <div class="col-sm-2 mt-0">
+                  <label for="giris" class="form-label"></label>
+                  {{ form.Giris }}
+                  <div class="invalid-feedback">
+                    Kasaya giren meblayı giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-2 mt-0">
+                  <label for="cikis" class="form-label"></label>
+                  {{ form.Cikis }}
+                  <div class="invalid-feedback">
+                    Kasadan çıkan meblayı giriniz.
+                  </div>
+                </div>
+
               </div>
 
               <hr class="my-4">
 
-              <button class="w-100 btn btn-primary btn-lg" type="submit">Kayıt Ekle</button>
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
+                <div class="py-3 text-center">
+                  <button type="button" class="btn btn-success btn-lg" onclick="window.location.href = '{% url 'kasaexceliurl' %}';">Excel Yukle</button>
+                </div>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                  <button class="w-100 btn btn-primary btn-lg" type="submit">Kayıt Ekle</button>
+                </div>
+              </div>
+              
             </form>
           </div>
         </div>
-      </main>
-      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-        <p class="mb-1">© 2025 Ural Lojistik</p>
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="#">Privacy</a></li>
-          <li class="list-inline-item"><a href="#">Terms</a></li>
-          <li class="list-inline-item"><a href="#">Support</a></li>
-        </ul>
-      </footer>
-    </div>
-    <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.js"></script>
-  </body>
+        <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.js"></script>
+
 {% endblock %}
