@@ -10,7 +10,7 @@ import pandas as pd
 from io import BytesIO
 from django.http import HttpResponse
 
-from .forms import KasaForm
+from .forms import KasaForm, TahsilatForm
 from .forms import SeferForm
 
 from .models import Kasa
@@ -140,3 +140,45 @@ def kasaexceliindir(request):
     response['Content-Disposition'] = f'attachment; filename="ural_kasa_exceli.xlsx"'
 
     return response
+
+def tahsilat_ekle(request):
+    kullanici_adi = request.user.username
+    if request.method == 'POST':
+        kasa_form = KasaForm(request.POST)  # Kasa bilgileri için formu alıyoruz
+        tahsilat_forms = [TahsilatForm(request.POST, prefix=str(i)) for i in range(5)]  # Tahsilat formunu 5 satır olarak alıyoruz
+
+        if kasa_form.is_valid():
+            # Kasa formundan bilgileri al
+            tarih = kasa_form.cleaned_data['Tarih']
+            plaka = kasa_form.cleaned_data['Plaka']
+            fisno = kasa_form.cleaned_data['Fisno']
+            sofor = kasa_form.cleaned_data['Sofor']
+
+            # Her bir tahsilat formunu kontrol ediyoruz
+            for tahsilat_form in tahsilat_forms:
+                if tahsilat_form.is_valid():  # Her formun geçerli olup olmadığını kontrol et
+                    aciklama1 = tahsilat_form.cleaned_data.get('Aciklama1')
+                    aciklama2 = tahsilat_form.cleaned_data.get('Aciklama2')
+                    giris = tahsilat_form.cleaned_data.get('Giris')
+                    cikis = tahsilat_form.cleaned_data.get('Cikis')
+
+                    # Eğer tahsilat satırı doluysa veritabanına kaydet
+                    if aciklama1 or aciklama2 or giris or cikis:
+                        Kasa.objects.create(  # Burada model kaydı yapıyoruz
+                            Tarih=tarih,
+                            Plaka=plaka,
+                            Fisno=fisno,
+                            Sofor=sofor,
+                            Aciklama1=aciklama1,
+                            Aciklama2=aciklama2,
+                            Giris=giris or 0.00,  # Eğer giriş boşsa varsayılan 0.00 olarak kaydediyoruz
+                            Cikis=cikis or 0.00   # Eğer çıkış boşsa varsayılan 0.00 olarak kaydediyoruz
+                        )
+            return redirect('kasalisteurl')  # İşlem tamamlanınca listeleme sayfasına yönlendiriyoruz
+
+    else:
+        # GET isteğinde formları boş bir şekilde oluştur
+        kasa_form = KasaForm()
+        tahsilat_forms = [TahsilatForm(prefix=str(i)) for i in range(5)]
+
+    return render(request, 'malihes/kasa.html', {'kasa_form': kasa_form, 'tahsilat_forms': tahsilat_forms, 'kullanici_adi': kullanici_adi})

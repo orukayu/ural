@@ -78,6 +78,9 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+      input#id_Tarih {
+        text-align: end;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -99,20 +102,20 @@
 
                 <div class="col-md-4">
                   <label for="fisno" class="form-label">Fiş No</label>
-                  {{ form.Fisno }}
+                  {{ kasa_form.Fisno }}
                   <div class="invalid-feedback">
                     Lütfen, fiş numarası giriniz.
                   </div>
                 </div>
 
-                <div class="col-md-4 toplam">
-                  <label for="fisno" class="form-label"></label>
-
+                <div id="toplam" class="col-md-4 toplam d-flex align-items-center text-center justify-content-center">
+                  <label for="toplam" class="form-label"></label>
+                  <strong>Toplam: 0.00₺</strong>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 text-end">
                   <label for="tarih" class="form-label">Tarih</label>
-                  {{ form.Tarih }}
+                  {{ kasa_form.Tarih }}
                   <div class="invalid-feedback">
                     Lütfen, tarih giriniz.
                   </div>
@@ -120,7 +123,7 @@
 
                 <div class="col-12">
                   <label for="sofor" class="form-label">Şoför</label>
-                  {{ form.Sofor }}
+                  {{ kasa_form.Sofor }}
                   <div class="invalid-feedback">
                     Lütfen, şoför ismi giriniz.
                   </div>
@@ -128,49 +131,40 @@
 
                 <div class="col-12">
                   <label for="plaka" class="form-label">Plaka</label>
-                  {{ form.Plaka }}
+                  {{ kasa_form.Plaka }}
                   <div class="invalid-feedback">
                     Lütfen, plaka giriniz.
                   </div>
-                </div>             
-              
-                <div class="col-sm-4">
-                  <label for="aciklama1" class="form-label">Açıklama 1 </label>
-                  {{ form.Aciklama1 }}
                 </div>
 
-                <div class="col-sm-4">
-                  <label for="aciklama2" class="form-label">Açıklama 2 <span class="text-body-secondary">(Optional)</span></label>
-                  {{ form.Aciklama2 }}
+                <div class="col-sm-5">
+                  <label for="aciklama1" class="form-label">Açıklama 1</label>
+                </div>
+
+                <div class="col-sm-3">
+                  <label for="aciklama2" class="form-label">Açıklama 2</label>
                 </div>
 
                 <div class="col-sm-2">
                   <label for="giris" class="form-label">Giriş</label>
-                  {{ form.Giris }}
-                  <div class="invalid-feedback">
-                    Kasaya giren meblayı giriniz.
-                  </div>
                 </div>
 
                 <div class="col-sm-2">
                   <label for="cikis" class="form-label">Çıkış</label>
-                  {{ form.Cikis }}
-                  <div class="invalid-feedback">
-                    Kasadan çıkan meblayı giriniz.
-                  </div>
                 </div>
 
-                <div class="col-sm-4 mt-0">
+                {% for form in tahsilat_forms %}
+                <div class="col-sm-5 mt-n1">
                   <label for="aciklama1" class="form-label"></label>
                   {{ form.Aciklama1 }}
                 </div>
 
-                <div class="col-sm-4 mt-0">
+                <div class="col-sm-3 mt-n1">
                   <label for="aciklama2" class="form-label"></label>
                   {{ form.Aciklama2 }}
                 </div>
 
-                <div class="col-sm-2 mt-0">
+                <div class="col-sm-2 mt-n1">
                   <label for="giris" class="form-label"></label>
                   {{ form.Giris }}
                   <div class="invalid-feedback">
@@ -178,39 +172,14 @@
                   </div>
                 </div>
 
-                <div class="col-sm-2 mt-0">
+                <div class="col-sm-2 mt-n1">
                   <label for="cikis" class="form-label"></label>
                   {{ form.Cikis }}
                   <div class="invalid-feedback">
                     Kasadan çıkan meblayı giriniz.
                   </div>
                 </div>
-
-                <div class="col-sm-4 mt-0">
-                  <label for="aciklama1" class="form-label"></label>
-                  {{ form.Aciklama1 }}
-                </div>
-
-                <div class="col-sm-4 mt-0">
-                  <label for="aciklama2" class="form-label"></label>
-                  {{ form.Aciklama2 }}
-                </div>
-
-                <div class="col-sm-2 mt-0">
-                  <label for="giris" class="form-label"></label>
-                  {{ form.Giris }}
-                  <div class="invalid-feedback">
-                    Kasaya giren meblayı giriniz.
-                  </div>
-                </div>
-
-                <div class="col-sm-2 mt-0">
-                  <label for="cikis" class="form-label"></label>
-                  {{ form.Cikis }}
-                  <div class="invalid-feedback">
-                    Kasadan çıkan meblayı giriniz.
-                  </div>
-                </div>
+                {% endfor %}
 
               </div>
 
@@ -230,5 +199,44 @@
         </div>
         <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.js"></script>
+
+        <script>
+          // Giriş ve Çıkış alanlarındaki değişiklikleri dinler
+          document.addEventListener('DOMContentLoaded', function () {
+            const girisInputs = document.querySelectorAll('input[name$="Giris"]');
+            const cikisInputs = document.querySelectorAll('input[name$="Cikis"]');
+            const toplamDiv = document.getElementById('toplam');
+
+            function calculateTotal() {
+              let totalGiris = 0;
+              let totalCikis = 0;
+
+              // Giriş toplamını hesapla
+              girisInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0; // Eğer boşsa 0 al
+                totalGiris += value;
+              });
+
+              // Çıkış toplamını hesapla
+              cikisInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0; // Eğer boşsa 0 al
+                totalCikis += value;
+              });
+
+              // Toplamı hesapla ve göster
+              const toplam = totalGiris - totalCikis;
+              toplamDiv.innerHTML = `<strong>Toplam: ${toplam.toFixed(2)}₺</strong>`;
+            }
+
+            // Giriş ve Çıkış alanlarına olay dinleyicisi ekle
+            [...girisInputs, ...cikisInputs].forEach(input => {
+              input.addEventListener('input', calculateTotal);
+            });
+
+            // Sayfa yüklendiğinde toplamı hesapla
+            calculateTotal();
+          });
+        </script>
+
 
 {% endblock %}

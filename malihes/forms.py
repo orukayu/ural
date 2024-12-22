@@ -2,31 +2,27 @@ from django import forms
 from .models import Kasa
 from .models import Sefer
 
-class KasaForm(forms.ModelForm):
-    class Meta:
-        model = Kasa
-        fields = ['Tarih', 'Plaka', 'Fisno', 'Sofor', 'Aciklama1', 'Aciklama2', 'Giris', 'Cikis']
-        widgets = {
-            'Tarih': forms.TextInput(attrs={'class': 'form-control', 'id': 'tarih'}),
-            'Plaka': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 ABC 1919', 'id': 'plaka'}),
-            'Fisno': forms.TextInput(attrs={'class': 'form-control', 'id': 'fisno'}),
-            'Sofor': forms.TextInput(attrs={'class': 'form-control', 'id': 'sofor'}),
-            'Aciklama1': forms.TextInput(attrs={'class': 'form-control', 'id': 'aciklama1'}),
-            'Aciklama2': forms.TextInput(attrs={'class': 'form-control', 'id': 'aciklama2'}),
-            'Giris': forms.NumberInput(attrs={'class': 'form-control', 'id': 'giris'}),
-            'Cikis': forms.NumberInput(attrs={'class': 'form-control', 'id': 'cikis'}),
-        }
-    # Tarih için birden fazla format belirtiyoruz
+class KasaForm(forms.Form):
+    Tarih = forms.CharField(max_length=25, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '23.04.2025'}))
+    Plaka = forms.CharField(max_length=25, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919 - 34 DRS 567'}))
+    Fisno = forms.CharField(max_length=25, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '0019'}))
+    Sofor = forms.CharField(max_length=25, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ali YILMAZ'}))
+
     Tarih = forms.DateField(
         input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '19.03.2023'}),
         required=True
-    )        
+    )
 
-    def __init__(self, *args, **kwargs):
-        super(KasaForm, self).__init__(*args, **kwargs)
-        self.fields['Giris'].initial = 0.00  # Varsayılan değer
-        self.fields['Cikis'].initial = 0.00  # Varsayılan değer
+
+class TahsilatForm(forms.Form):
+    Aciklama1 = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    Aciklama2 = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    Giris = forms.DecimalField(max_digits=10, decimal_places=2, required=False, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    Cikis = forms.DecimalField(max_digits=10, decimal_places=2, required=False, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+
+
+
 
 class SeferForm(forms.ModelForm):
     class Meta:
