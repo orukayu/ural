@@ -97,15 +97,15 @@
 {% block sayfa %}
 
       <div class="container text-center">
-		    <div class="row align-items-center mt-4">
+		    <div class="d-flex justify-content-evenly align-items-center mt-4">
 		      <div class="col">
-		        Toplam Giriş:<strong>{{ tg|floatformat:"2g" }}</strong>
+		        Toplam Giriş: <strong>{{ tg|floatformat:"2g" }}</strong>
 		      </div>
 		      <div class="col">
-		        Toplam Çıkış:<strong>{{ tc|floatformat:"2g" }}</strong>
+		        Toplam Çıkış: <strong>{{ tc|floatformat:"2g" }}</strong>
 		      </div>
 		      <div class="col">
-		        Kalan:<strong>{{ kalan|floatformat:"2g" }}</strong>
+		        Kalan: <strong>{{ kalan|floatformat:"2g" }}</strong>
 		      </div>
 		    </div>
         
@@ -114,7 +114,14 @@
             <h2>Kasa Listesi</h2>
           </div>
           <div class="btn-toolbar mb-2 mb-md-0">
-            <button type="button" class="btn btn-sm btn-success" onclick="window.location.href = '{% url 'kasaexceliindirurl' %}';">Excel İndir</button>
+            <form method="get" class="d-flex">
+              {{ form.start_date }}
+              {{ form.end_date }}
+              <button type="submit" class="btn btn-primary ms-2">Filtrele</button>
+            </form>
+          </div>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-success" onclick="window.location.href = '{% url 'kasaexceliindirurl' %}';">Excel İndir</button>
           </div>
         </div>
 
@@ -138,7 +145,7 @@
 				        <tbody class="table-group-divider">
 				        {% for kasaliste in kasaliste %}
 				          <tr>
-				            <td class="text-center"><a href="#"><svg class="bi text-primary"><use xlink:href="#kalem"></use></svg></a></td>
+				            <td class="text-center"><a href="{% url 'kasadetayurl' pk=kasaliste.id %}"><svg class="bi text-primary"><use xlink:href="#kalem"></use></svg></a></td>
 				            <td>{{ kasaliste.Tarih|default:""|date:"d.m.Y" }}</td>
 				            <td>{{ kasaliste.Plaka|default:"" }}</td>
 				            <td>{{ kasaliste.Fisno|default:"" }}</td>

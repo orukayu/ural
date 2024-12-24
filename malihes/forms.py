@@ -80,3 +80,13 @@ class SeferForm(forms.ModelForm):
         super(SeferForm, self).__init__(*args, **kwargs)
         self.fields['Cikiskm'].initial = 0  # Varsayılan değer
         self.fields['Variskm'].initial = 0  # Varsayılan değer
+
+class TarihFiltreForm(forms.Form):
+    start_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}), 
+        label="Başlangıç Tarihi"
+    )
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}), 
+        label="Bitiş Tarihi"
+    )

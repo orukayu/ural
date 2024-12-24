@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 from django.db.models import Sum
 
@@ -12,6 +13,7 @@ from django.http import HttpResponse
 
 from .forms import KasaForm, TahsilatForm
 from .forms import SeferForm
+from .forms import TarihFiltreForm
 
 from .models import Kasa
 from .models import Sefer
@@ -65,25 +67,33 @@ def kasa(request):
     
     return render(request, 'malihes/kasa.html', {'form': form, 'kullanici_adi': kullanici_adi})
 
+
 def kasaliste(request):
     kullanici_adi = request.user.username
+    form = TarihFiltreForm(request.GET or None)
     kasaliste = Kasa.objects.all()
-    tgt = Kasa.objects.filter(Giris__gt=0).aggregate(Sum('Giris'))["Giris__sum"]
-    if tgt is None:
-        tg = 0
-    else:
-        tg = tgt
 
-    tct = Kasa.objects.filter(Cikis__gt=0).aggregate(Sum('Cikis'))["Cikis__sum"]
-    if tct is None:
-        tc = 0
-    else:
-        tc = tct
+    # Filtreleme
+    if form.is_valid():
+        start_date = form.cleaned_data.get('start_date')
+        end_date = form.cleaned_data.get('end_date')
+        if start_date and end_date:
+            kasaliste = kasaliste.filter(Tarih__range=[start_date, end_date])
 
+    toplam_giris = kasaliste.aggregate(giris_sum=Sum('Giris'))['giris_sum'] or 0
+    toplam_cikis = kasaliste.aggregate(cikis_sum=Sum('Cikis'))['cikis_sum'] or 0
+    kalan = toplam_giris - toplam_cikis
 
-    kalan = tg - tc
+    context = {
+        'kullanici_adi': kullanici_adi,
+        'kasaliste': kasaliste,
+        'form': form,
+        'tg': toplam_giris,
+        'tc': toplam_cikis,
+        'kalan': kalan,
+    }
+    return render(request, 'malihes/kasaliste.html', context)
 
-    return render(request, 'malihes/kasaliste.html', {'kasaliste': kasaliste, 'tg': tg, 'tc': tc, 'kalan': kalan, 'kullanici_adi': kullanici_adi})
 
 def kasaexceli(request):
     kullanici_adi = request.user.username
@@ -111,6 +121,7 @@ def kasaexceli(request):
             return redirect('kasalisteurl')
 
     return render(request, 'malihes/kasaexceli.html', {'kullanici_adi': kullanici_adi})
+
 
 def kasaexceliindir(request):
 
@@ -140,6 +151,7 @@ def kasaexceliindir(request):
     response['Content-Disposition'] = f'attachment; filename="ural_kasa_exceli.xlsx"'
 
     return response
+
 
 def tahsilat_ekle(request):
     kullanici_adi = request.user.username
@@ -182,3 +194,26 @@ def tahsilat_ekle(request):
         tahsilat_forms = [TahsilatForm(prefix=str(i)) for i in range(5)]
 
     return render(request, 'malihes/kasa.html', {'kasa_form': kasa_form, 'tahsilat_forms': tahsilat_forms, 'kullanici_adi': kullanici_adi})
+
+
+def kasadetay_eski(request, pk):
+    kullanici_adi = request.user.username
+    kontrolkasa = get_object_or_404(Kasa, pk=pk)
+    form = KasaForm(instance=kontrolkasa)
+    return render(request, 'malihes/kasadetay.html', {'form': form, 'kullanici_adi': kullanici_adi})
+
+def kasadetay(request, pk):
+    kullanici_adi = request.user.username
+    kontrolkasa = get_object_or_404(Kasa, pk=pk)
+    if request.method == 'POST':
+        form = KasaForm(request.POST, instance=kontrolkasa)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Kasa kaydı başarıyla güncellendi.')
+            return redirect('kasa_listesi')  # Liste sayfasına yönlendirme
+        else:
+            messages.error(request, 'Formda hatalar var. Lütfen kontrol edin.')
+    else:
+        form = KasaForm(instance=kontrolkasa)
+
+    return render(request, 'malihes/kasadetay.html', {'form': form, 'kullanici_adi': kullanici_adi})

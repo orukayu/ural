@@ -1,0 +1,15 @@
+{% extends 'malihes/base.html' %}
+
+{% block sayfa %}
+<div class="container mt-4">
+    <h2>Kasa Kaydını Düzenle</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-primary">Kaydı Güncelle</button>
+            <a href="{% url 'kasa_listesi' %}" class="btn btn-secondary">İptal</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
