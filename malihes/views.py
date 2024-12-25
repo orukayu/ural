@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 import pandas as pd
 from io import BytesIO
 from django.http import HttpResponse
+from datetime import datetime
 
 from .forms import KasaForm, TahsilatForm
 from .forms import SeferForm
@@ -54,18 +55,6 @@ def seferliste(request):
     kullanici_adi = request.user.username
     seferliste = Sefer.objects.all()
     return render(request, 'malihes/seferliste.html', {'seferliste': seferliste, 'kullanici_adi': kullanici_adi})
-
-def kasa(request):
-    kullanici_adi = request.user.username
-    if request.method == 'POST':
-        form = KasaForm(request.POST)
-        if form.is_valid():
-            form.save()  # Verileri doğrudan modelle ilişkilendir ve kaydet
-            return redirect('kasaurl')  # Başka bir sayfaya yönlendirme yapabilirsiniz
-    else:
-        form = KasaForm()
-    
-    return render(request, 'malihes/kasa.html', {'form': form, 'kullanici_adi': kullanici_adi})
 
 
 def kasaliste(request):
@@ -124,7 +113,6 @@ def kasaexceli(request):
 
 
 def kasaexceliindir(request):
-
     # Kasa modelinden tüm verileri al
     kasalar = Kasa.objects.all()
 
@@ -183,8 +171,8 @@ def tahsilat_ekle(request):
                             Sofor=sofor,
                             Aciklama1=aciklama1,
                             Aciklama2=aciklama2,
-                            Giris=giris or 0.00,  # Eğer giriş boşsa varsayılan 0.00 olarak kaydediyoruz
-                            Cikis=cikis or 0.00   # Eğer çıkış boşsa varsayılan 0.00 olarak kaydediyoruz
+                            Giris=giris,  # Eğer giriş boşsa varsayılan 0.00 olarak kaydediyoruz
+                            Cikis=cikis   # Eğer çıkış boşsa varsayılan 0.00 olarak kaydediyoruz
                         )
             return redirect('kasalisteurl')  # İşlem tamamlanınca listeleme sayfasına yönlendiriyoruz
 
@@ -196,24 +184,39 @@ def tahsilat_ekle(request):
     return render(request, 'malihes/kasa.html', {'kasa_form': kasa_form, 'tahsilat_forms': tahsilat_forms, 'kullanici_adi': kullanici_adi})
 
 
-def kasadetay_eski(request, pk):
-    kullanici_adi = request.user.username
-    kontrolkasa = get_object_or_404(Kasa, pk=pk)
-    form = KasaForm(instance=kontrolkasa)
-    return render(request, 'malihes/kasadetay.html', {'form': form, 'kullanici_adi': kullanici_adi})
-
 def kasadetay(request, pk):
     kullanici_adi = request.user.username
-    kontrolkasa = get_object_or_404(Kasa, pk=pk)
-    if request.method == 'POST':
-        form = KasaForm(request.POST, instance=kontrolkasa)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Kasa kaydı başarıyla güncellendi.')
-            return redirect('kasa_listesi')  # Liste sayfasına yönlendirme
-        else:
-            messages.error(request, 'Formda hatalar var. Lütfen kontrol edin.')
-    else:
-        form = KasaForm(instance=kontrolkasa)
+    kasa_instance = get_object_or_404(Kasa, pk=pk)
 
-    return render(request, 'malihes/kasadetay.html', {'form': form, 'kullanici_adi': kullanici_adi})
+    if request.method == 'POST':
+        kasa_form = KasaForm(request.POST, instance=kasa_instance)
+        tahsilat_form = TahsilatForm(request.POST, instance=kasa_instance)
+
+        if kasa_form.is_valid() and tahsilat_form.is_valid():
+            # Formdan gelen verileri kaydet
+            kasa_form.save()
+            tahsilat_form.save()
+            messages.success(request, "Kayıt başarıyla güncellendi.")
+            return redirect('kasalisteurl')  # Liste sayfasına yönlendirin
+        else:
+            messages.error(request, "Formda hatalar var. Lütfen kontrol edin.")
+
+    else:
+        # Tarihi biçimlendirmek için strftime kullanıyoruz
+        formatted_date = kasa_instance.Tarih.strftime('%d.%m.%Y') if kasa_instance.Tarih else ''
+        # GET isteğinde formları mevcut kayıtla doldur
+        kasa_form = KasaForm(initial={
+            'Tarih': formatted_date,
+            'Plaka': kasa_instance.Plaka,
+            'Fisno': kasa_instance.Fisno,
+            'Sofor': kasa_instance.Sofor
+        })
+        tahsilat_form = TahsilatForm(instance=kasa_instance)
+
+    return render(request, 'malihes/kasadetay.html', {'kasa_form': kasa_form, 'tahsilat_form': tahsilat_form, 'kullanici_adi': kullanici_adi, 'pk': pk})
+
+def kasasil(request, pk):
+    kasa_instance = get_object_or_404(Kasa, pk=pk)
+    kasa_instance.delete()
+    messages.success(request, "Kayıt başarıyla silindi.")
+    return redirect('kasalisteurl')

@@ -1,15 +1,240 @@
 {% extends 'malihes/base.html' %}
 
+{% block style %}
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+      input#id_Tarih {
+        text-align: end;
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.css" rel="stylesheet">
+
+{% endblock %}
+
 {% block sayfa %}
-<div class="container mt-4">
-    <h2>Kasa Kaydını Düzenle</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="d-flex justify-content-between mt-3">
-            <button type="submit" class="btn btn-primary">Kaydı Güncelle</button>
-            <a href="{% url 'kasa_listesi' %}" class="btn btn-secondary">İptal</a>
+
+        <div class="py-3 text-center mt-4">
+          <h2>Kasa Detay Formu</h2>
         </div>
-    </form>
-</div>
+
+        <div class="row" style="justify-content: space-around;">
+          <div class="col-md-7 col-lg-8">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="row g-3">
+
+                <div class="col-md-4">
+                  <label for="fisno" class="form-label">Fiş No</label>
+                  {{ kasa_form.Fisno }}
+                  <div class="invalid-feedback">
+                    Lütfen, fiş numarası giriniz.
+                  </div>
+                </div>
+
+                <div id="toplam" class="col-md-4 toplam d-flex align-items-center text-center justify-content-center">
+                  <label for="toplam" class="form-label"></label>
+                  <strong>Toplam: 0.00₺</strong>
+                </div>
+
+                <div class="col-md-4 text-end">
+                  <label for="tarih" class="form-label">Tarih</label>
+                  {{ kasa_form.Tarih }}
+                  <div class="invalid-feedback">
+                    Lütfen, tarih giriniz.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label for="sofor" class="form-label">Şoför</label>
+                  {{ kasa_form.Sofor }}
+                  <div class="invalid-feedback">
+                    Lütfen, şoför ismi giriniz.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label for="plaka" class="form-label">Plaka</label>
+                  {{ kasa_form.Plaka }}
+                  <div class="invalid-feedback">
+                    Lütfen, plaka giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-5">
+                  <label for="aciklama1" class="form-label">Açıklama 1</label>
+                </div>
+
+                <div class="col-sm-3">
+                  <label for="aciklama2" class="form-label">Açıklama 2</label>
+                </div>
+
+                <div class="col-sm-2">
+                  <label for="giris" class="form-label">Giriş</label>
+                </div>
+
+                <div class="col-sm-2">
+                  <label for="cikis" class="form-label">Çıkış</label>
+                </div>
+
+                <div class="col-sm-5 mt-n1">
+                  <label for="aciklama1" class="form-label"></label>
+                  {{ tahsilat_form.Aciklama1 }}
+                </div>
+
+                <div class="col-sm-3 mt-n1">
+                  <label for="aciklama2" class="form-label"></label>
+                  {{ tahsilat_form.Aciklama2 }}
+                </div>
+
+                <div class="col-sm-2 mt-n1">
+                  <label for="giris" class="form-label"></label>
+                  {{ tahsilat_form.Giris }}
+                  <div class="invalid-feedback">
+                    Kasaya giren meblayı giriniz.
+                  </div>
+                </div>
+
+                <div class="col-sm-2 mt-n1">
+                  <label for="cikis" class="form-label"></label>
+                  {{ tahsilat_form.Cikis }}
+                  <div class="invalid-feedback">
+                    Kasadan çıkan meblayı giriniz.
+                  </div>
+                </div>
+
+              </div>
+
+              <hr class="my-4">
+
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
+                <div class="btn-toolbar mb-2 mb-md-0">
+                  <button type="button" class="btn btn-danger btn-lg" onclick="window.location.href = '{% url 'kasasilurl' pk=pk %}';">Kayıt Sil</button>
+                </div>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                  <button class="w-100 btn btn-primary btn-lg" type="submit">Kayıt Güncelle</button>
+                </div>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+        <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.js"></script>
+
+        <script>
+          // Giriş ve Çıkış alanlarındaki değişiklikleri dinler
+          document.addEventListener('DOMContentLoaded', function () {
+            const girisInputs = document.querySelectorAll('input[name$="Giris"]');
+            const cikisInputs = document.querySelectorAll('input[name$="Cikis"]');
+            const toplamDiv = document.getElementById('toplam');
+
+            function calculateTotal() {
+              let totalGiris = 0;
+              let totalCikis = 0;
+
+              // Giriş toplamını hesapla
+              girisInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0; // Eğer boşsa 0 al
+                totalGiris += value;
+              });
+
+              // Çıkış toplamını hesapla
+              cikisInputs.forEach(input => {
+                const value = parseFloat(input.value) || 0; // Eğer boşsa 0 al
+                totalCikis += value;
+              });
+
+              // Toplamı hesapla ve göster
+              const toplam = totalGiris - totalCikis;
+              toplamDiv.innerHTML = `<strong>Toplam: ${toplam.toFixed(2)}₺</strong>`;
+            }
+
+            // Giriş ve Çıkış alanlarına olay dinleyicisi ekle
+            [...girisInputs, ...cikisInputs].forEach(input => {
+              input.addEventListener('input', calculateTotal);
+            });
+
+            // Sayfa yüklendiğinde toplamı hesapla
+            calculateTotal();
+          });
+        </script>
+
+
 {% endblock %}
