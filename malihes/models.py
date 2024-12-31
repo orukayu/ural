@@ -59,3 +59,30 @@ class Sefer(models.Model):
 
     def __str__(self):
         return self.Plakacekici
+
+
+class Araclar(models.Model):
+    Plaka = models.CharField(max_length=25)
+    Firma = models.CharField(max_length=25, null=True, blank=True)
+    Tür = models.CharField(max_length=25, null=True, blank=True)
+    Marka = models.CharField(max_length=25, null=True, blank=True)
+    Model = models.CharField(max_length=25, null=True, blank=True)
+    Sigbastarihi = models.DateField(blank=False)
+    Sigbittarihi = models.DateField(blank=False)
+    Sigtutari = models.DecimalField(max_digits=10, decimal_places=2)
+    Kasbastarihi = models.DateField(blank=False)
+    Kasbittarihi = models.DateField(blank=False)
+    Kastutari = models.DecimalField(max_digits=10, decimal_places=2)
+    Toplamtutar = models.DecimalField(max_digits=10, decimal_places=2)
+    Ayliktutar = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save1(self, *args, **kwargs):
+        self.Toplamtutar = self.Sigtutari + self.Kastutari
+        self.Ayliktutar = self.Toplamtutar / 12
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-Plaka',]  # Tablonun hangi başlığa göre sıralanacağını belirliyor
+
+    def __str__(self):
+        return self.Plaka

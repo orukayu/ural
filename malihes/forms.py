@@ -1,6 +1,7 @@
 from django import forms
 from .models import Kasa
 from .models import Sefer
+from .models import Araclar
 
 
 class KasaForm(forms.ModelForm):
@@ -104,3 +105,63 @@ class TarihFiltreForm(forms.Form):
         widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}), 
         label="Bitiş Tarihi"
     )
+
+class AraclarForm(forms.ModelForm):
+    class Meta:
+        model = Araclar
+        fields = [
+            'Plaka',
+            'Firma',
+            'Tür',
+            'Marka',
+            'Model',
+            'Sigbastarihi',
+            'Sigbittarihi',
+            'Sigtutari',
+            'Kasbastarihi',
+            'Kasbittarihi',
+            'Kastutari',
+            'Toplamtutar',
+            'Ayliktutar'
+        ]
+        widgets = {
+            'Plaka': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 ABC 1919', 'id': 'plaka'}),
+            'Marka': forms.TextInput(attrs={'class': 'form-control', 'id': 'marka'}),
+            'Model': forms.TextInput(attrs={'class': 'form-control', 'id': 'model'}),
+            'Sigbastarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'sigbastarihi'}),
+            'Sigbittarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2026', 'id': 'sigbittarihi'}),
+            'Sigtutari': forms.NumberInput(attrs={'class': 'form-control', 'id': 'sigtutari'}),
+            'Kasbastarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'kasbastarihi'}),
+            'Kasbittarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2026', 'id': 'kasbittarihi'}),
+            'Kastutari': forms.NumberInput(attrs={'class': 'form-control', 'id': 'kastutari'}),
+            'Toplamtutar': forms.NumberInput(attrs={'class': 'form-control', 'id': 'toplamtutar'}),
+            'Ayliktutar': forms.NumberInput(attrs={'class': 'form-control', 'id': 'ayliktutar'}),
+        }
+
+    # Firma için seçenekler
+    FIRMALAR = [
+        ('asya', 'Asya Fresh'),
+        ('ural', 'Ural Lojistik'),
+    ]
+
+    Firma = forms.ChoiceField(
+        choices=FIRMALAR,
+        widget=forms.Select(attrs={'class': 'form-select', 'id': 'firma'}),
+        initial='ural'
+    )
+
+    TURLER = [
+        ('cekici', 'Çekici'),
+        ('dorse', 'Dorse'),
+    ]
+
+    Tür = forms.ChoiceField(
+        choices=TURLER,
+        widget=forms.Select(attrs={'class': 'form-select', 'id': 'tur'}),
+        initial='cekici'
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(AraclarForm, self).__init__(*args, **kwargs)
+        self.fields['Sigtutari'].initial = 0.00  # Varsayılan değer
+        self.fields['Kastutari'].initial = 0.00  # Varsayılan değer

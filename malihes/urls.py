@@ -14,4 +14,6 @@ urlpatterns = [
     path('kasa-sil/<int:pk>/', views.kasasil, name='kasasilurl'),
     path('kasa-exceli-yukle/', views.kasaexceli, name='kasaexceliurl'),
     path('kasa-exceli-indir/', views.kasaexceliindir, name='kasaexceliindirurl'),
+    path('arac-kayit/', views.aracekle, name='aracurl'),
+    path('arac-listesi/', views.aracliste, name='araclisteurl'),
 ]

@@ -15,9 +15,11 @@ from datetime import datetime
 from .forms import KasaForm, TahsilatForm
 from .forms import SeferForm
 from .forms import TarihFiltreForm
+from .forms import AraclarForm
 
 from .models import Kasa
 from .models import Sefer
+from .models import Araclar
 
 def base(request):
     return redirect('girisurl')
@@ -220,3 +222,13 @@ def kasasil(request, pk):
     kasa_instance.delete()
     messages.success(request, "Kayıt başarıyla silindi.")
     return redirect('kasalisteurl')
+
+def aracekle(request):
+    kullanici_adi = request.user.username
+    form = AraclarForm()
+    return render(request, 'malihes/aracekle.html', {'kullanici_adi': kullanici_adi, 'form': form})
+
+def aracliste(request):
+    kullanici_adi = request.user.username
+    aracliste = Araclar.objects.all()
+    return render(request, 'malihes/aracliste.html', {'aracliste': aracliste, 'kullanici_adi': kullanici_adi})
