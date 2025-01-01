@@ -251,7 +251,7 @@ def aracdetay(request, pk):
         if arac_form.is_valid():
             # Formdan gelen verileri kaydet
             post = arac_form.save()
-            post.save1()
+            post.save()
             messages.success(request, "Kayıt başarıyla güncellendi.")
             return redirect('araclisteurl')  # Liste sayfasına yönlendirin
         else:

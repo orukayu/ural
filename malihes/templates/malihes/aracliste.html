@@ -130,10 +130,10 @@
                 {% for aracliste in aracliste %}
                   <tr>
                     <td class="plaka"><a href="{% url 'aracdetayurl' pk=aracliste.id %}">{{ aracliste.Plaka }}</a></td>
-                    <td>{{ aracliste.Firma }}</td>
-                    <td>{{ aracliste.Tür }}</td>
-                    <td>{{ aracliste.Marka }}</td>
-                    <td>{{ aracliste.Model }}</td>
+                    <td>{{ aracliste.Firma|default:"" }}</td>
+                    <td>{{ aracliste.Tür|default:"" }}</td>
+                    <td>{{ aracliste.Marka|default:"" }}</td>
+                    <td>{{ aracliste.Model|default:"" }}</td>
                     <td>{{ aracliste.Sigbastarihi|default:""|date:"d.m.Y" }}</td>
                     <td>{{ aracliste.Sigbittarihi|default:""|date:"d.m.Y" }}</td>
                     <td>{{ aracliste.Sigtutari|floatformat:"2g" }}</td>
