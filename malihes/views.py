@@ -241,3 +241,49 @@ def aracliste(request):
     kullanici_adi = request.user.username
     aracliste = Araclar.objects.all()
     return render(request, 'malihes/aracliste.html', {'aracliste': aracliste, 'kullanici_adi': kullanici_adi})
+
+def aracdetay(request, pk):
+    kullanici_adi = request.user.username
+    arac_instance = get_object_or_404(Araclar, pk=pk)
+
+    if request.method == 'POST':
+        arac_form = AraclarForm(request.POST, instance=arac_instance)
+        if arac_form.is_valid():
+            # Formdan gelen verileri kaydet
+            post = arac_form.save()
+            post.save1()
+            messages.success(request, "Kayıt başarıyla güncellendi.")
+            return redirect('araclisteurl')  # Liste sayfasına yönlendirin
+        else:
+            messages.error(request, "Formda hatalar var. Lütfen kontrol edin.")
+
+    else:
+        # Tarihi biçimlendirmek için strftime kullanıyoruz
+        formatted_date1 = arac_instance.Sigbastarihi.strftime('%d.%m.%Y') if arac_instance.Sigbastarihi else ''
+        formatted_date2 = arac_instance.Sigbittarihi.strftime('%d.%m.%Y') if arac_instance.Sigbittarihi else ''
+        formatted_date3 = arac_instance.Kasbastarihi.strftime('%d.%m.%Y') if arac_instance.Kasbastarihi else ''
+        formatted_date4 = arac_instance.Kasbittarihi.strftime('%d.%m.%Y') if arac_instance.Kasbittarihi else ''
+        # GET isteğinde formları mevcut kayıtla doldur
+        arac_form = AraclarForm(initial={
+            'Plaka': arac_instance.Plaka,
+            'Firma': arac_instance.Firma,
+            'Tür': arac_instance.Tür,
+            'Marka': arac_instance.Marka,
+            'Model': arac_instance.Model,
+            'Sigbastarihi': formatted_date1,
+            'Sigbittarihi': formatted_date2,
+            'Sigtutari': arac_instance.Sigtutari,
+            'Kasbastarihi': formatted_date3,
+            'Kasbittarihi': formatted_date4,
+            'Kastutari': arac_instance.Kastutari,
+            'Toplamtutar': arac_instance.Toplamtutar,
+            'Ayliktutar': arac_instance.Ayliktutar
+        })
+
+    return render(request, 'malihes/aracdetay.html', {'arac_form': arac_form, 'kullanici_adi': kullanici_adi, 'pk': pk})
+
+def aracsil(request, pk):
+    arac_instance = get_object_or_404(Araclar, pk=pk)
+    arac_instance.delete()
+    messages.success(request, "Kayıt başarıyla silindi.")
+    return redirect('araclisteurl')

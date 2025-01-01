@@ -152,8 +152,8 @@
 				            <td>{{ kasaliste.Sofor|default:"" }}</td>
 				            <td>{{ kasaliste.Aciklama1|default:"" }}</td>
 				            <td>{{ kasaliste.Aciklama2|default:"" }}</td>
-				            <td class="text-end">{{ kasaliste.Giris }}</td>
-				            <td class="text-end">{{ kasaliste.Cikis }}</td>
+				            <td class="text-end">{{ kasaliste.Giris|floatformat:"2g" }}</td>
+				            <td class="text-end">{{ kasaliste.Cikis|floatformat:"2g" }}</td>
 				          </tr>
 				        {% endfor %}
 				        </tbody>

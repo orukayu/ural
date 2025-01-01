@@ -78,6 +78,20 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+
+      .sigorta {
+        color: green !important;
+      }
+      .kasko {
+        color: red !important;
+      }
+      .plaka {
+        min-width: 90px !important;
+      }
+
+      .plaka {
+          align-content: center;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -89,6 +103,7 @@
       <div class="container text-center">
         <div class="py-3 text-center mt-4">
           <h2>Araç Listesi</h2>
+          <p class="lead">Plakaya tıklayarak aracın detay sayfasına gidip bilgilerini güncelleyebilir yada araç kaydını silebilirsiniz.</p>
         </div>
 
         <div class="row" style="justify-content: space-around;">
@@ -102,20 +117,19 @@
                     <th scope="col">Tür</th>
                     <th scope="col">Marka</th>
                     <th scope="col">Model</th>
-                    <th scope="col">Sig. Baş. Tarihi</th>
-                    <th scope="col">Sig. Bit. Tarihi</th>
-                    <th scope="col">Sig. Tutarı</th>
-                    <th scope="col">Kas. Baş. Tarihi</th>
-                    <th scope="col">Kas. Bit. Tarihi</th>
-                    <th scope="col">Kas. Tutarı</th>
+                    <th scope="col" class="sigorta">Sig. Baş. Tarihi</th>
+                    <th scope="col" class="sigorta">Sig. Bit. Tarihi</th>
+                    <th scope="col" class="sigorta">Sigorta Tutarı</th>
+                    <th scope="col" class="kasko">Kas. Baş. Tarihi</th>
+                    <th scope="col" class="kasko">Kas. Bit. Tarihi</th>
+                    <th scope="col" class="kasko">Kasko Tutarı</th>
                     <th scope="col">Toplam Tutar</th>
-                    <th scope="col">Aylık Tutar</th>
                   </tr>
                 </thead>
                 <tbody class="table-group-divider">
                 {% for aracliste in aracliste %}
                   <tr>
-                    <td>{{ aracliste.Plaka }}</td>
+                    <td class="plaka"><a href="{% url 'aracdetayurl' pk=aracliste.id %}">{{ aracliste.Plaka }}</a></td>
                     <td>{{ aracliste.Firma }}</td>
                     <td>{{ aracliste.Tür }}</td>
                     <td>{{ aracliste.Marka }}</td>
@@ -127,7 +141,6 @@
                     <td>{{ aracliste.Kasbittarihi|default:""|date:"d.m.Y" }}</td>
                     <td>{{ aracliste.Kastutari|floatformat:"2g" }}</td>
                     <td>{{ aracliste.Toplamtutar|floatformat:"2g" }}</td>
-                    <td>{{ aracliste.Ayliktutar|floatformat:"2g" }}</td>
                   </tr>
                 {% endfor %}
                 </tbody>
