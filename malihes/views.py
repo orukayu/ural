@@ -225,7 +225,16 @@ def kasasil(request, pk):
 
 def aracekle(request):
     kullanici_adi = request.user.username
-    form = AraclarForm()
+    
+    if request.method == 'POST':
+        form = AraclarForm(request.POST)
+        if form.is_valid():
+            post = form.save()
+            post.save1()  # Verileri doğrudan modelle ilişkilendir ve kaydet
+            return redirect('araclisteurl')  # Başka bir sayfaya yönlendirme yapabilirsiniz
+    else:
+        form = AraclarForm()
+
     return render(request, 'malihes/aracekle.html', {'kullanici_adi': kullanici_adi, 'form': form})
 
 def aracliste(request):

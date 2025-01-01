@@ -120,14 +120,14 @@
                     <td>{{ aracliste.Tür }}</td>
                     <td>{{ aracliste.Marka }}</td>
                     <td>{{ aracliste.Model }}</td>
-                    <td>{{ aracliste.Sigbastarihi }}</td>
-                    <td>{{ aracliste.Sigbittarihi }}</td>
-                    <td>{{ aracliste.Sigtutari }}</td>
-                    <td>{{ aracliste.Kasbastarihi }}</td>
-                    <td>{{ aracliste.Kasbittarihi }}</td>
-                    <td>{{ aracliste.Kastutari }}</td>
-                    <td>{{ aracliste.Toplamtutar }}</td>
-                    <td>{{ aracliste.Ayliktutar }}</td>
+                    <td>{{ aracliste.Sigbastarihi|default:""|date:"d.m.Y" }}</td>
+                    <td>{{ aracliste.Sigbittarihi|default:""|date:"d.m.Y" }}</td>
+                    <td>{{ aracliste.Sigtutari|floatformat:"2g" }}</td>
+                    <td>{{ aracliste.Kasbastarihi|default:""|date:"d.m.Y" }}</td>
+                    <td>{{ aracliste.Kasbittarihi|default:""|date:"d.m.Y" }}</td>
+                    <td>{{ aracliste.Kastutari|floatformat:"2g" }}</td>
+                    <td>{{ aracliste.Toplamtutar|floatformat:"2g" }}</td>
+                    <td>{{ aracliste.Ayliktutar|floatformat:"2g" }}</td>
                   </tr>
                 {% endfor %}
                 </tbody>

@@ -128,11 +128,7 @@ class AraclarForm(forms.ModelForm):
             'Plaka': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 ABC 1919', 'id': 'plaka'}),
             'Marka': forms.TextInput(attrs={'class': 'form-control', 'id': 'marka'}),
             'Model': forms.TextInput(attrs={'class': 'form-control', 'id': 'model'}),
-            'Sigbastarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'sigbastarihi'}),
-            'Sigbittarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2026', 'id': 'sigbittarihi'}),
             'Sigtutari': forms.NumberInput(attrs={'class': 'form-control', 'id': 'sigtutari'}),
-            'Kasbastarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'kasbastarihi'}),
-            'Kasbittarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2026', 'id': 'kasbittarihi'}),
             'Kastutari': forms.NumberInput(attrs={'class': 'form-control', 'id': 'kastutari'}),
             'Toplamtutar': forms.NumberInput(attrs={'class': 'form-control', 'id': 'toplamtutar'}),
             'Ayliktutar': forms.NumberInput(attrs={'class': 'form-control', 'id': 'ayliktutar'}),
@@ -140,25 +136,49 @@ class AraclarForm(forms.ModelForm):
 
     # Firma için seçenekler
     FIRMALAR = [
-        ('asya', 'Asya Fresh'),
-        ('ural', 'Ural Lojistik'),
+        ('Asya Fresh', 'Asya Fresh'),
+        ('Ural Lojistik', 'Ural Lojistik'),
     ]
 
     Firma = forms.ChoiceField(
         choices=FIRMALAR,
         widget=forms.Select(attrs={'class': 'form-select', 'id': 'firma'}),
-        initial='ural'
+        initial='Ural Lojistik'
     )
 
     TURLER = [
-        ('cekici', 'Çekici'),
-        ('dorse', 'Dorse'),
+        ('Çekici', 'Çekici'),
+        ('Dorse', 'Dorse'),
     ]
 
     Tür = forms.ChoiceField(
         choices=TURLER,
         widget=forms.Select(attrs={'class': 'form-select', 'id': 'tur'}),
-        initial='cekici'
+        initial='Çekici'
+    )
+
+    Sigbastarihi = forms.DateField(
+        required=False,
+        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'sigbastarihi'})
+    )
+
+    Sigbittarihi = forms.DateField(
+        required=False,
+        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'sigbittarihi'})
+    )
+
+    Kasbastarihi = forms.DateField(
+        required=False,
+        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'kasbastarihi'})
+    )
+
+    Kasbittarihi = forms.DateField(
+        required=False,
+        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'kasbittarihi'})
     )
 
     def __init__(self, *args, **kwargs):
