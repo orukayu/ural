@@ -185,3 +185,5 @@ class AraclarForm(forms.ModelForm):
         super(AraclarForm, self).__init__(*args, **kwargs)
         self.fields['Sigtutari'].initial = 0.00  # Varsayılan değer
         self.fields['Kastutari'].initial = 0.00  # Varsayılan değer
+        self.fields['Toplamtutar'].initial = 0.00  # Varsayılan değer
+        self.fields['Ayliktutar'].initial = 0.00  # Varsayılan değer

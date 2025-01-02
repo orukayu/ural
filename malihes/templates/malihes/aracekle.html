@@ -78,6 +78,10 @@
     .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
     }
+    
+    input#toplamtutar, input#ayliktutar, input#sigtutari, input#kastutari {
+      text-align: end;
+    }
 </style>
 
 <!-- Custom styles for this template -->
@@ -95,101 +99,66 @@
             <form method="POST">
               {% csrf_token %}
               <div class="row g-3">
+                {{ form.Plaka.errors }}
                 <div class="col-sm-6">
                   <label for="firstName" class="form-label">Plaka</label>
                   {{ form.Plaka }}
-                  <div class="invalid-feedback">
-                    Valid first name is required.
-                  </div>
                 </div>
 
                 <div class="col-sm-6">
                   <label for="firstName" class="form-label">Firma</label>
                   {{ form.Firma }}
-                  <div class="invalid-feedback">
-                    Valid first name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Marka</label>
                   {{ form.Marka }}
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Model</label>
                   {{ form.Model }}
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Tür</label>
                   {{ form.Tür }}
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Sigorta Baş. Tarihi</label>
                   {{ form.Sigbastarihi }}
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Sigorta Bit. Tarihi</label>
                   {{ form.Sigbittarihi }}
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Sigorta Tutarı</label>
                   {{ form.Sigtutari }}
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Kasko Baş. Tarihi</label>
                   {{ form.Kasbastarihi }}
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="firstName" class="form-label">Kasko Bit. Tarihi</label>
                   {{ form.Kasbittarihi }}
-                  <div class="invalid-feedback">
-                    Valid first name is required.
-                  </div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Kasko Tutarı</label>
                   {{ form.Kastutari }}
-                  <div class="invalid-feedback">
-                    Valid last name is required.
-                  </div>
                 </div>
 
                 <div class="d-flex justify-content-end">
                   <div class="col-md-4">
                     <label for="lastName" class="form-label">Toplam Tutar</label>
                     {{ form.Toplamtutar }}
-                    <div class="invalid-feedback">
-                      Valid last name is required.
-                    </div>
                   </div>
                 </div>
 
@@ -197,9 +166,6 @@
                   <div class="col-md-4">
                     <label for="lastName" class="form-label">Aylık Tutar</label>
                     {{ form.Ayliktutar }}
-                    <div class="invalid-feedback">
-                      Valid last name is required.
-                    </div>
                   </div>
                 </div>
               </div>

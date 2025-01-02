@@ -78,7 +78,7 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
-      input#id_Tarih {
+      input#id_Tarih, input#giris, input#cikis {
         text-align: end;
       }
     </style>
@@ -103,9 +103,6 @@
                 <div class="col-md-4">
                   <label for="fisno" class="form-label">Fiş No</label>
                   {{ kasa_form.Fisno }}
-                  <div class="invalid-feedback">
-                    Lütfen, fiş numarası giriniz.
-                  </div>
                 </div>
 
                 <div id="toplam" class="col-md-4 toplam d-flex align-items-center text-center justify-content-center">
@@ -116,25 +113,16 @@
                 <div class="col-md-4 text-end">
                   <label for="tarih" class="form-label">Tarih</label>
                   {{ kasa_form.Tarih }}
-                  <div class="invalid-feedback">
-                    Lütfen, tarih giriniz.
-                  </div>
                 </div>
 
                 <div class="col-12">
                   <label for="sofor" class="form-label">Şoför</label>
                   {{ kasa_form.Sofor }}
-                  <div class="invalid-feedback">
-                    Lütfen, şoför ismi giriniz.
-                  </div>
                 </div>
 
                 <div class="col-12">
                   <label for="plaka" class="form-label">Plaka</label>
                   {{ kasa_form.Plaka }}
-                  <div class="invalid-feedback">
-                    Lütfen, plaka giriniz.
-                  </div>
                 </div>
 
                 <div class="col-sm-5">
@@ -167,17 +155,11 @@
                 <div class="col-sm-2 mt-n1">
                   <label for="giris" class="form-label"></label>
                   {{ form.Giris }}
-                  <div class="invalid-feedback">
-                    Kasaya giren meblayı giriniz.
-                  </div>
                 </div>
 
                 <div class="col-sm-2 mt-n1">
                   <label for="cikis" class="form-label"></label>
                   {{ form.Cikis }}
-                  <div class="invalid-feedback">
-                    Kasadan çıkan meblayı giriniz.
-                  </div>
                 </div>
                 {% endfor %}
 

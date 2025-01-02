@@ -229,9 +229,14 @@ def aracekle(request):
     if request.method == 'POST':
         form = AraclarForm(request.POST)
         if form.is_valid():
-            post = form.save()
-            post.save1()  # Verileri doğrudan modelle ilişkilendir ve kaydet
-            return redirect('araclisteurl')  # Başka bir sayfaya yönlendirme yapabilirsiniz
+            plaka = form.cleaned_data['Plaka']
+            kontrol = Araclar.objects.filter(Plaka=plaka).count()
+            if kontrol < 1:
+                post = form.save(commit=False)
+                post.save1()  # Verileri doğrudan modelle ilişkilendir ve kaydet
+                return redirect('araclisteurl')  # Başka bir sayfaya yönlendirme yapabilirsiniz
+            else:
+                form.add_error('Plaka', 'Bu plaka kayıtlıdır!')
     else:
         form = AraclarForm()
 
