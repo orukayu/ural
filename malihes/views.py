@@ -38,7 +38,19 @@ def giris(request):
 
 def anasayfa(request):
     kullanici_adi = request.user.username
-    return render(request, 'malihes/anasayfa.html', {'kullanici_adi': kullanici_adi})
+    ucs = Araclar.objects.filter(Firma='Ural Lojistik', Tür='Çekici').count()
+    uds = Araclar.objects.filter(Firma='Ural Lojistik', Tür='Dorse').count()
+    acs = Araclar.objects.filter(Firma='Asya Fresh', Tür='Çekici').count()
+    ads = Araclar.objects.filter(Firma='Asya Fresh', Tür='Dorse').count()
+
+    context = {
+        'kullanici_adi': kullanici_adi,
+        'ucs': ucs,
+        'uds': uds,
+        'acs': acs,
+        'ads': ads
+    }
+    return render(request, 'malihes/anasayfa.html', context)
 
 def sefer(request):
     kullanici_adi = request.user.username
@@ -50,13 +62,22 @@ def sefer(request):
             return redirect('seferurl')  # Başka bir sayfaya yönlendirme yapabilirsiniz
     else:
         form = SeferForm()
-    
-    return render(request, 'malihes/sefer.html', {'form': form, 'kullanici_adi': kullanici_adi})
+
+    context = {
+        'kullanici_adi': kullanici_adi,
+        'form': form
+    }
+    return render(request, 'malihes/sefer.html', context)
 
 def seferliste(request):
     kullanici_adi = request.user.username
     seferliste = Sefer.objects.all()
-    return render(request, 'malihes/seferliste.html', {'seferliste': seferliste, 'kullanici_adi': kullanici_adi})
+
+    context = {
+        'seferliste': seferliste,
+        'kullanici_adi': kullanici_adi
+    }
+    return render(request, 'malihes/seferliste.html', context)
 
 
 def kasaliste(request):

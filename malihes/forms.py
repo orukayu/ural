@@ -67,10 +67,10 @@ class SeferForm(forms.ModelForm):
             'Kalan'
         ]
         widgets = {
-            'Cikisyeri': forms.TextInput(attrs={'class': 'form-control', 'id': 'cikisyeri'}),
+            'Cikisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Samsun-Mersin', 'id': 'cikisyeri'}),
             'Cikistarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17/03/2025', 'id': 'cikistarihi'}),
             'Cikiskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'cikiskm'}),
-            'Varisyeri': forms.TextInput(attrs={'class': 'form-control', 'id': 'varisyeri'}),
+            'Varisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mersin-Samsun', 'id': 'varisyeri'}),
             'Varistarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '21/03/2025', 'id': 'varistarihi'}),
             'Variskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'variskm'}),
             'Plakacekici': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 ABC 1919', 'id': 'plaka'}),
@@ -91,10 +91,22 @@ class SeferForm(forms.ModelForm):
             'Kalan': forms.NumberInput(attrs={'class': 'form-control', 'id': 'kalan'}),
         }
 
+    # Tarih için birden fazla format belirtiyoruz
+    Cikistarihi = forms.DateField(
+        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'cikistarihi'}),
+    )
+
+    Varistarihi = forms.DateField(
+        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '19.03.2025', 'id': 'cikistarihi'}),
+    )
+
     def __init__(self, *args, **kwargs):
         super(SeferForm, self).__init__(*args, **kwargs)
         self.fields['Cikiskm'].initial = 0  # Varsayılan değer
         self.fields['Variskm'].initial = 0  # Varsayılan değer
+
 
 class TarihFiltreForm(forms.Form):
     start_date = forms.DateField(
