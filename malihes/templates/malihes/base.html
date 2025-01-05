@@ -13,11 +13,88 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/examples/dashboard/dashboard.css" rel="stylesheet">
 
     <meta name="theme-color" content="#712cf9">
 
-    <style type="text/css">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
       .nav-link:hover {
         font-weight: bold;
       }
@@ -29,19 +106,37 @@
         margin-top: -1.2rem !important;
       }
       .table>thead {
-          vertical-align: middle !important;
+        vertical-align: middle !important;
       }
       td {
-          align-content: center !important;
+        align-content: center !important;
       }
       .plaka a {
-          text-decoration: none !important;
+        text-decoration: none !important;
       }
       ul.errorlist {
-          color: red;
-          font-size: 14px;
-          list-style-type: none;
-          padding: 0px;
+        color: red;
+        font-size: 14px;
+        list-style-type: none;
+        padding: 0px;
+      }
+
+      header.navbar {
+        background-color: aquamarine;
+      }
+      div#solmenu, #sidebarMenu {
+        background-color: rgb(33 37 41) !important;
+        max-width: 250px;
+      }
+      main {
+        min-height: 100vh !important;
+      }
+      hr {
+        margin: 1rem 0;
+        color: white !important;
+        border: 0;
+        border-top: var(--bs-border-width) solid;
+        opacity: .25;
       }
     </style>
 
@@ -78,90 +173,116 @@
       <symbol id="sefer" viewBox="0 0 16 16">
         <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
       </symbol>
+      <symbol id="list" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+      </symbol>
       <symbol id="araclar" viewBox="0 0 16 16">
         <path d="M6 1H1v14h5zm9 0h-5v5h5zm0 9v5h-5v-5zM0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1zm1 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1z"/>
       </symbol>
     </svg>
-    <main class="d-flex flex-nowrap">
-      <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; min-height: 100vh;">
-        <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-          <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
-          <span class="fs-4">URAL LOJİSTİK</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="{% url 'anasayfaurl' %}" class="nav-link text-white" aria-current="page">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-              Anasayfa
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'seferurl' %}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#pusula"></use></svg>
-              Sefer Ekle
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'seferlisteurl' %}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#yonler"></use></svg>
-              Sefer Listesi
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'kasaurl' %}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#kasa"></use></svg>
-              Kasa Kayıt
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'kasalisteurl' %}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#kasalar"></use></svg>
-              Kasa Listesi
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'aracurl' %}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#sefer"></use></svg>
-              Araç Ekle
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'araclisteurl' %}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#araclar"></use></svg>
-              Araç Listesi
-            </a>
-          </li>
-        </ul>
-        <hr>
-        <div class="dropdown">
-          <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <svg class="bi pe-none me-2" width="32" height="32"><use xlink:href="#person"></use></svg>
-            <strong>{{ kullanici_adi }}</strong>
+    <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
+      <div class="navbar-nav flex-row d-md-none">
+        <div>
+          <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-md-0 me-md-auto text-white text-decoration-none">
+            <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
+            <span class="fs-4">URAL LOJİSTİK</span>
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-          </ul>
+        </div>
+        <div>
+          <li class="nav-item text-nowrap">
+            <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+              <svg class="bi"><use xlink:href="#list"></use></svg>
+            </button>
+          </li>
         </div>
       </div>
-      <div class="sayfa container">
-        {% block sayfa %}
-        {% endblock %}
+    </header>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="sidebar border-right col-md-3 col-lg-2 p-0 bg-body-tertiary" id="solmenu">
+          <div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+            <div class="offcanvas-body d-md-flex flex-column p-3 pt-lg-3 overflow-y-auto">
+              <ul class="nav flex-column">
+                <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                  <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
+                  <span class="fs-4">URAL LOJİSTİK</span>
+                </a>
+                <hr>
+                <li>
+                  <a href="{% url 'anasayfaurl' %}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                    Anasayfa
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'seferurl' %}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#pusula"></use></svg>
+                    Sefer Ekle
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'seferlisteurl' %}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#yonler"></use></svg>
+                    Sefer Listesi
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'kasaurl' %}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#kasa"></use></svg>
+                    Kasa Kayıt
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'kasalisteurl' %}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#kasalar"></use></svg>
+                    Kasa Listesi
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'aracurl' %}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#sefer"></use></svg>
+                    Araç Ekle
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'araclisteurl' %}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#araclar"></use></svg>
+                    Araç Listesi
+                  </a>
+                </li>
+              </ul>
+              <hr>
+              <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <svg class="bi pe-none me-2" width="32" height="32"><use xlink:href="#person"></use></svg>
+                  <strong>{{ kullanici_adi }}</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                  <li><a class="dropdown-item" href="#">New project...</a></li>
+                  <li><a class="dropdown-item" href="#">Settings</a></li>
+                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          {% block sayfa %}
+          {% endblock %}
 
-        <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-          <p class="mb-1">© 2025 Ural Lojistik</p>
-          <ul class="list-inline">
-            <li class="list-inline-item"><a href="#">Privacy</a></li>
-            <li class="list-inline-item"><a href="#">Terms</a></li>
-            <li class="list-inline-item"><a href="#">Support</a></li>
-          </ul>
-        </footer>
+          <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+            <p class="mb-1">© 2025 Ural Lojistik</p>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a href="#">Privacy</a></li>
+              <li class="list-inline-item"><a href="#">Terms</a></li>
+              <li class="list-inline-item"><a href="#">Support</a></li>
+            </ul>
+          </footer>
+        </main>
       </div>
-    </main>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
   {% endblock %}
