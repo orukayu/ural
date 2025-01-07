@@ -81,6 +81,9 @@
       input#id_Tarih, input#giris, input#cikis {
         text-align: end;
       }
+      .tahsilat-form {
+        margin-bottom: 15px;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -96,76 +99,59 @@
 
         <div class="row g-5">
           <div class="col">
-            <form method="POST">
+            <form method="POST" action="">
               {% csrf_token %}
               <div class="row g-3 justify-content-center">
-
                 <div class="col-md-4">
                   <label for="fisno" class="form-label">Fiş No</label>
                   {{ kasa_form.Fisno }}
                 </div>
-
                 <div id="toplam" class="col-md-4 col-11 toplam d-flex align-items-center text-center justify-content-center">
-                  <label for="toplam" class="form-label"></label>
                   <strong>Toplam: 0.00₺</strong>
                 </div>
-
                 <div class="col-md-4 text-end">
                   <label for="tarih" class="form-label">Tarih</label>
                   {{ kasa_form.Tarih }}
                 </div>
-
                 <div class="col-12">
                   <label for="sofor" class="form-label">Şoför</label>
                   {{ kasa_form.Sofor }}
                 </div>
-
                 <div class="col-12">
                   <label for="plaka" class="form-label">Plaka</label>
                   {{ kasa_form.Plaka }}
                 </div>
-
                 <div class="col-sm-5">
-                  <label for="aciklama1" class="form-label">Açıklama 1</label>
+                  <label for="plaka" class="form-label">Açıklama 1</label>
                 </div>
-
                 <div class="col-sm-3">
-                  <label for="aciklama2" class="form-label">Açıklama 2</label>
+                  <label for="plaka" class="form-label">Açıklama 2</label>
                 </div>
-
                 <div class="col-sm-2">
-                  <label for="giris" class="form-label">Giriş</label>
+                  <label for="plaka" class="form-label">Giriş</label>
                 </div>
-
                 <div class="col-sm-2">
-                  <label for="cikis" class="form-label">Çıkış</label>
+                  <label for="plaka" class="form-label">Çıkış</label>
                 </div>
-
-                {% for form in tahsilat_forms %}
-                <div class="col-sm-5 mt-n1">
-                  <label for="aciklama1" class="form-label"></label>
-                  {{ form.Aciklama1 }}
+                <div id="tahsilat-forms">
+                  {% for form in tahsilat_forms %}
+                  <div class="row g-3 tahsilat-form">
+                    <div class="col-sm-5">
+                      <input type="text" name="{{ forloop.counter0 }}-Aciklama1" id="id_{{ forloop.counter0 }}-Aciklama1" class="form-control dynamic-input">
+                    </div>
+                    <div class="col-sm-3">
+                      <input type="text" name="{{ forloop.counter0 }}-Aciklama2" id="id_{{ forloop.counter0 }}-Aciklama2" class="form-control dynamic-input">
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="number" name="{{ forloop.counter0 }}-Giris" id="id_{{ forloop.counter0 }}-Giris" class="form-control giris" value="0.00">
+                    </div>
+                    <div class="col-sm-2">
+                      <input type="number" name="{{ forloop.counter0 }}-Cikis" id="id_{{ forloop.counter0 }}-Cikis" class="form-control cikis" value="0.00">
+                    </div>
+                  </div>
+                  {% endfor %}
                 </div>
-
-                <div class="col-sm-3 mt-n1">
-                  <label for="aciklama2" class="form-label"></label>
-                  {{ form.Aciklama2 }}
-                </div>
-
-                <div class="col-sm-2 mt-n1">
-                  <label for="giris" class="form-label"></label>
-                  {{ form.Giris }}
-                </div>
-
-                <div class="col-sm-2 mt-n1">
-                  <label for="cikis" class="form-label"></label>
-                  {{ form.Cikis }}
-                </div>
-                {% endfor %}
-
-              </div>
-
-              <hr class="my-4">
+                <input type="hidden" name="form_count" id="form-count" value="{{ tahsilat_forms|length }}">
 
               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
                 <div class="py-3 text-center">
@@ -175,8 +161,78 @@
                   <button class="w-100 btn btn-primary btn-lg" type="submit">Kayıt Ekle</button>
                 </div>
               </div>
-              
             </form>
+            <script>
+              document.addEventListener('DOMContentLoaded', function () {
+                const formContainer = document.getElementById('tahsilat-forms');
+                const formCount = document.getElementById('form-count');
+
+                function addNewForm() {
+                  const newFormIndex = parseInt(formCount.value);
+
+                  const newFormHtml = `
+                    <div class="row g-3 tahsilat-form">
+                      <div class="col-sm-5">
+                        <input type="text" name="${newFormIndex}-Aciklama1" id="id_${newFormIndex}-Aciklama1" class="form-control dynamic-input">
+                      </div>
+                      <div class="col-sm-3">
+                        <input type="text" name="${newFormIndex}-Aciklama2" id="id_${newFormIndex}-Aciklama2" class="form-control dynamic-input">
+                      </div>
+                      <div class="col-sm-2">
+                        <input type="number" name="${newFormIndex}-Giris" id="id_${newFormIndex}-Giris" class="form-control giris" value="0.00">
+                      </div>
+                      <div class="col-sm-2">
+                        <input type="number" name="${newFormIndex}-Cikis" id="id_${newFormIndex}-Cikis" class="form-control cikis" value="0.00">
+                      </div>
+                    </div>
+                  `;
+
+                  formContainer.insertAdjacentHTML('beforeend', newFormHtml);
+                  formCount.value = newFormIndex + 1;
+                }
+
+                // İlk satıra veri girildiğinde otomatik olarak yeni bir satır ekle
+                formContainer.addEventListener('input', function (e) {
+                  const inputs = [...formContainer.lastElementChild.querySelectorAll('input')];
+                  const isLastRow = inputs.includes(e.target);
+
+                  if (isLastRow && e.target.value.trim() !== '') {
+                    addNewForm();
+                  }
+                });
+              });
+            </script>
+            <div class="table-responsive small">
+              <div class="py-3 text-center mt-4">
+                <h4>Son Kayıt</h4>
+              </div>
+              <table class="table table-striped table-sm">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Tarih</th>
+                    <th scope="col">Plaka</th>
+                    <th scope="col">Fiş No</th>
+                    <th scope="col">Şoför</th>
+                    <th scope="col">Açıklama 1</th>
+                    <th scope="col">Açıklama 2</th>
+                    <th scope="col">Giriş</th>
+                    <th scope="col">Çıkış</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr>
+                    <td>{{ sonkayit.Tarih|default:""|date:"d.m.Y" }}</td>
+                    <td>{{ sonkayit.Plaka|default:"" }}</td>
+                    <td>{{ sonkayit.Fisno|default:"" }}</td>
+                    <td>{{ sonkayit.Sofor|default:"" }}</td>
+                    <td>{{ sonkayit.Aciklama1|default:"" }}</td>
+                    <td>{{ sonkayit.Aciklama2|default:"" }}</td>
+                    <td class="text-end">{{ sonkayit.Giris|floatformat:"2g" }}</td>
+                    <td class="text-end">{{ sonkayit.Cikis|floatformat:"2g" }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -185,34 +241,67 @@
         <script>
           // Giriş ve Çıkış alanlarındaki değişiklikleri dinler
           document.addEventListener('DOMContentLoaded', function () {
-            const girisInputs = document.querySelectorAll('input[name$="Giris"]');
-            const cikisInputs = document.querySelectorAll('input[name$="Cikis"]');
+            const formContainer = document.getElementById('tahsilat-forms');
             const toplamDiv = document.getElementById('toplam');
 
+            // Giriş ve çıkış toplamını hesaplayan işlev
             function calculateTotal() {
               let totalGiris = 0;
               let totalCikis = 0;
 
-              // Giriş toplamını hesapla
-              girisInputs.forEach(input => {
-                const value = parseFloat(input.value) || 0; // Eğer boşsa 0 al
+              // Tüm giriş alanlarını topla
+              document.querySelectorAll('.giris').forEach(input => {
+                const value = parseFloat(input.value) || 0; // Boşsa 0 olarak kabul et
                 totalGiris += value;
               });
 
-              // Çıkış toplamını hesapla
-              cikisInputs.forEach(input => {
-                const value = parseFloat(input.value) || 0; // Eğer boşsa 0 al
+              // Tüm çıkış alanlarını topla
+              document.querySelectorAll('.cikis').forEach(input => {
+                const value = parseFloat(input.value) || 0; // Boşsa 0 olarak kabul et
                 totalCikis += value;
               });
 
-              // Toplamı hesapla ve göster
+              // Toplam farkı hesapla ve göster
               const toplam = totalGiris - totalCikis;
               toplamDiv.innerHTML = `<strong>Toplam: ${toplam.toFixed(2)}₺</strong>`;
             }
 
-            // Giriş ve Çıkış alanlarına olay dinleyicisi ekle
-            [...girisInputs, ...cikisInputs].forEach(input => {
-              input.addEventListener('input', calculateTotal);
+            // Giriş ve çıkış alanlarına dinleyici ekle
+            formContainer.addEventListener('input', function (e) {
+              if (e.target.classList.contains('giris') || e.target.classList.contains('cikis')) {
+                calculateTotal();
+              }
+            });
+
+            // Yeni bir form eklendiğinde hesaplamayı koru
+            document.getElementById('add-form-btn').addEventListener('click', function () {
+              const formCount = document.getElementById('form-count');
+              const newFormIndex = parseInt(formCount.value);
+
+              // Yeni formun HTML'si
+              const newFormHtml = `
+                <div class="row g-3 tahsilat-form">
+                  <div class="col-sm-5">
+                    <input type="text" name="${newFormIndex}-Aciklama1" id="id_${newFormIndex}-Aciklama1" class="form-control">
+                  </div>
+                  <div class="col-sm-3">
+                    <input type="text" name="${newFormIndex}-Aciklama2" id="id_${newFormIndex}-Aciklama2" class="form-control">
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="number" name="${newFormIndex}-Giris" id="id_${newFormIndex}-Giris" class="form-control giris" value="0.00">
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="number" name="${newFormIndex}-Cikis" id="id_${newFormIndex}-Cikis" class="form-control cikis" value="0.00">
+                  </div>
+                </div>
+              `;
+
+              // Yeni formu ekle
+              formContainer.insertAdjacentHTML('beforeend', newFormHtml);
+              formCount.value = newFormIndex + 1;
+
+              // Yeni alanlara dinleyici ekle
+              calculateTotal(); // Yeni formdan sonra toplamı yeniden hesapla
             });
 
             // Sayfa yüklendiğinde toplamı hesapla

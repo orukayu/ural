@@ -168,7 +168,8 @@ def tahsilat_ekle(request):
     kullanici_adi = request.user.username
     if request.method == 'POST':
         kasa_form = KasaForm(request.POST)  # Kasa bilgileri için formu alıyoruz
-        tahsilat_forms = [TahsilatForm(request.POST, prefix=str(i)) for i in range(5)]  # Tahsilat formunu 5 satır olarak alıyoruz
+        tahsilat_form_count = int(request.POST.get('form_count', 0))  # Dinamik form sayısını al
+        tahsilat_forms = [TahsilatForm(request.POST, prefix=str(i)) for i in range(tahsilat_form_count)]
 
         if kasa_form.is_valid():
             # Kasa formundan bilgileri al
@@ -182,8 +183,8 @@ def tahsilat_ekle(request):
                 if tahsilat_form.is_valid():  # Her formun geçerli olup olmadığını kontrol et
                     aciklama1 = tahsilat_form.cleaned_data.get('Aciklama1')
                     aciklama2 = tahsilat_form.cleaned_data.get('Aciklama2')
-                    giris = tahsilat_form.cleaned_data.get('Giris')
-                    cikis = tahsilat_form.cleaned_data.get('Cikis')
+                    giris = tahsilat_form.cleaned_data.get('Giris') or 0.00
+                    cikis = tahsilat_form.cleaned_data.get('Cikis') or 0.00
 
                     # Eğer tahsilat satırı doluysa veritabanına kaydet
                     if aciklama1 or aciklama2 or giris or cikis:
@@ -195,16 +196,17 @@ def tahsilat_ekle(request):
                             Aciklama1=aciklama1,
                             Aciklama2=aciklama2,
                             Giris=giris,  # Eğer giriş boşsa varsayılan 0.00 olarak kaydediyoruz
-                            Cikis=cikis   # Eğer çıkış boşsa varsayılan 0.00 olarak kaydediyoruz
+                            Cikis=cikis,   # Eğer çıkış boşsa varsayılan 0.00 olarak kaydediyoruz
                         )
-            return redirect('kasalisteurl')  # İşlem tamamlanınca listeleme sayfasına yönlendiriyoruz
+            return redirect('kasaurl')  # İşlem tamamlanınca listeleme sayfasına yönlendiriyoruz
 
     else:
         # GET isteğinde formları boş bir şekilde oluştur
         kasa_form = KasaForm()
-        tahsilat_forms = [TahsilatForm(prefix=str(i)) for i in range(5)]
+        tahsilat_forms = [TahsilatForm(prefix=str(i)) for i in range(1)]
+        sonkayit = Kasa.objects.all()[:1].get()
 
-    return render(request, 'malihes/kasa.html', {'kasa_form': kasa_form, 'tahsilat_forms': tahsilat_forms, 'kullanici_adi': kullanici_adi})
+    return render(request, 'malihes/kasa.html', {'kasa_form': kasa_form, 'tahsilat_forms': tahsilat_forms, 'kullanici_adi': kullanici_adi, 'sonkayit': sonkayit})
 
 
 def kasadetay(request, pk):

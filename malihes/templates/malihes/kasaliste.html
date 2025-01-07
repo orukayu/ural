@@ -1,7 +1,7 @@
 {% extends 'malihes/base.html' %}
 
 {% block style %}
-<style>
+    <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -87,6 +87,12 @@
         --bs-text-opacity: 1;
         color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
       }
+      main {
+        max-width: none !important;
+      }
+      td {
+        font-size: small;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -96,16 +102,19 @@
 
 {% block sayfa %}
 
-      <div class="container text-center">
-		    <div class="d-flex justify-content-evenly align-items-center mt-4">
-		      <div class="col">
-		        Toplam Giriş: <strong>{{ tg|floatformat:"2g" }}</strong>
+      <div class="text-center">
+		    <div class="row mt-4">
+		      <div class="col-lg-4">
+            <h6 class="fw-normal">Toplam Giriş</h6>
+            <p><strong>{{ tg|floatformat:"2g" }}</strong></p>
 		      </div>
-		      <div class="col">
-		        Toplam Çıkış: <strong>{{ tc|floatformat:"2g" }}</strong>
+		      <div class="col-lg-4">
+            <h6 class="fw-normal">Toplam Çıkış</h6>
+            <p><strong>{{ tc|floatformat:"2g" }}</strong></p>
 		      </div>
-		      <div class="col">
-		        Kalan: <strong>{{ kalan|floatformat:"2g" }}</strong>
+		      <div class="col-lg-4">
+            <h6 class="fw-normal">Kalan</h6>
+            <p><strong>{{ kalan|floatformat:"2g" }}</strong></p>
 		      </div>
 		    </div>
         
