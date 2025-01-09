@@ -139,7 +139,7 @@
         border-top: var(--bs-border-width) solid;
         opacity: .25;
       }
-      input::-webkit-input-placeholder {
+      input#plaka::-webkit-input-placeholder, input#sigbastarihi::-webkit-input-placeholder, input#sigbittarihi::-webkit-input-placeholder, input#kasbastarihi::-webkit-input-placeholder, input#kasbittarihi::-webkit-input-placeholder, input#fisno::-webkit-input-placeholder, input#sofor::-webkit-input-placeholder, input#id_Tarih::-webkit-input-placeholder, input#cikistarihi::-webkit-input-placeholder, input#cikisyeri::-webkit-input-placeholder, input#varisyeri::-webkit-input-placeholder {
         color: #a3a3a3 !important;
       }
     </style>
@@ -184,22 +184,16 @@
         <path d="M6 1H1v14h5zm9 0h-5v5h5zm0 9v5h-5v-5zM0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1zm1 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1z"/>
       </symbol>
     </svg>
-    <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-      <div class="navbar-nav flex-row d-md-none">
-        <div>
-          <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-md-0 me-md-auto text-white text-decoration-none">
-            <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
-            <span class="fs-4">URAL LOJİSTİK</span>
-          </a>
-        </div>
-        <div>
-          <li class="nav-item text-nowrap">
-            <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-              <svg class="bi"><use xlink:href="#list"></use></svg>
-            </button>
-          </li>
-        </div>
-      </div>
+    <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow d-md-none" data-bs-theme="dark">
+      <a href="{% url 'anasayfaurl' %}" class="d-flex align-items-center mb-md-0 me-md-auto text-white text-decoration-none">
+        <img class="d-block mx-auto mb-0" src="/static/media/favicon.png" alt="" width="45" height="45">
+        <span class="fs-4">URAL LOJİSTİK</span>
+      </a>
+      <li class="d-flex nav-item text-nowrap">
+        <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <svg class="bi"><use xlink:href="#list"></use></svg>
+        </button>
+      </li>
     </header>
     <div class="container-fluid">
       <div class="row">
