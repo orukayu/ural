@@ -140,7 +140,7 @@ class AraclarForm(forms.ModelForm):
             'Plaka': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 ABC 1919', 'id': 'plaka'}),
             'Marka': forms.TextInput(attrs={'class': 'form-control', 'id': 'marka'}),
             'Model': forms.TextInput(attrs={'class': 'form-control', 'id': 'model'}),
-            'Sigtutari': forms.NumberInput(attrs={'class': 'form-control', 'id': 'sigtutari'}),
+            'Sigtutari': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '0,00', 'id': 'sigtutari'}),
             'Kastutari': forms.NumberInput(attrs={'class': 'form-control', 'id': 'kastutari'}),
             'Toplamtutar': forms.NumberInput(attrs={'class': 'form-control', 'id': 'toplamtutar'}),
             'Ayliktutar': forms.NumberInput(attrs={'class': 'form-control', 'id': 'ayliktutar'}),

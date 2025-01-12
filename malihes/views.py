@@ -135,35 +135,6 @@ def kasaexceli(request):
     return render(request, 'malihes/kasaexceli.html', {'kullanici_adi': kullanici_adi})
 
 
-def kasaexceliindir(request):
-    # Kasa modelinden tüm verileri al
-    kasalar = Kasa.objects.all()
-
-    # Kasa verilerini bir DataFrame'e dönüştür
-    data = {
-        'Tarih': [kasa.Tarih.strftime('%d.%m.%Y') for kasa in kasalar],
-        'Plaka': [kasa.Plaka for kasa in kasalar],
-        'Fiş No': [kasa.Fisno for kasa in kasalar],
-        'Şoför': [kasa.Sofor for kasa in kasalar],
-        'Açıklama 1': [kasa.Aciklama1 for kasa in kasalar],
-        'Açıklama 2': [kasa.Aciklama2 for kasa in kasalar],
-        'Giren': [float(kasa.Giris) for kasa in kasalar],
-        'Çıkan': [float(kasa.Cikis) for kasa in kasalar],
-    }
-    df = pd.DataFrame(data)
-
-    # DataFrame'i Excel dosyasına dönüştür
-    excel_buffer = BytesIO()
-    df.to_excel(excel_buffer, index=False)
-    excel_buffer.seek(0)  # Buffer'ın başına git
-
-    # HTTP yanıtı olarak Excel dosyasını döndür
-    response = HttpResponse(excel_buffer, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename="ural_kasa_exceli.xlsx"'
-
-    return response
-
-
 def tahsilat_ekle(request):
     kullanici_adi = request.user.username
     if request.method == 'POST':
@@ -315,3 +286,110 @@ def aracsil(request, pk):
     arac_instance.delete()
     messages.success(request, "Kayıt başarıyla silindi.")
     return redirect('araclisteurl')
+
+
+def aracexceli(request):
+    kullanici_adi = request.user.username
+    if request.method == "POST":
+        if 'excel_file' in request.FILES:
+            excel_file = request.FILES['excel_file']
+            df = pd.read_excel(excel_file)
+
+            # NaN değerleri None ile değiştirme
+            df = df.where(pd.notnull(df), None)
+            
+            for index, row in df.iterrows():
+                kasa = Kasa(
+                    Tarih = row['Tarih'],
+                    Plaka = row['Plaka'],
+                    Fisno = row['Fiş No'],
+                    Sofor = row['Şoför'],
+                    Aciklama1 = row['Açıklama 1'],
+                    Aciklama2 = row['Açıklama 2'],
+                    Giris=row['Giren'] if row['Giren'] is not None else 0.00,  # Varsayılan değer
+                    Cikis=row['Çıkan'] if row['Çıkan'] is not None else 0.00,  # Varsayılan değer
+                )
+                kasa.save()
+            
+            return redirect('kasalisteurl')
+
+    return render(request, 'malihes/aracexceli.html', {'kullanici_adi': kullanici_adi})
+
+def aracexceliindir(request):
+    # Araclar modelinden tüm verileri al
+    araclar = Araclar.objects.all()
+
+    # Araclar verilerini bir DataFrame'e dönüştür
+    data = {
+        'Plaka': [arac.Plaka for arac in araclar],
+        'Firma': [arac.Firma for arac in araclar],
+        'Tür': [arac.Tür for arac in araclar],
+        'Marka': [arac.Marka for arac in araclar],
+        'Model': [arac.Model for arac in araclar],
+        'Sig. Baş. Tarihi': [arac.Sigbastarihi if arac.Sigbastarihi else '' for arac in araclar],
+        'Sig. Bit. Tarihi': [arac.Sigbittarihi if arac.Sigbittarihi else '' for arac in araclar],
+        'Sigorta Tutarı': [float(arac.Sigtutari) for arac in araclar],
+        'Kas. Baş. Tarihi': [arac.Kasbastarihi if arac.Kasbastarihi else '' for arac in araclar],
+        'Kas. Bit. Tarihi': [arac.Kasbittarihi if arac.Kasbittarihi else '' for arac in araclar],
+        'Kasko Tutarı': [float(arac.Kastutari) for arac in araclar],
+        'Toplam Tutar': [float(arac.Toplamtutar) for arac in araclar],
+    }
+    df = pd.DataFrame(data)
+
+    # DataFrame'i Excel dosyasına dönüştür
+    excel_buffer = BytesIO()
+    with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Araçlar')
+        workbook = writer.book
+        worksheet = writer.sheets['Araçlar']
+        
+        # Sütun genişliklerini ayarlama
+        for i, col in enumerate(df.columns):
+            max_len = max(df[col].astype(str).map(len).max(), len(col)) + 2
+            worksheet.set_column(i, i, max_len)
+
+    excel_buffer.seek(0)
+
+    response = HttpResponse(excel_buffer, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="ural_arac_exceli.xlsx"'
+
+    return response
+
+def kasaexceliindir(request):
+    # Kasa modelinden tüm verileri al
+    kasalar = Kasa.objects.all()
+
+    # Kasa verilerini bir DataFrame'e dönüştür
+    data = {
+        'Tarih': [kasa.Tarih for kasa in kasalar],
+        'Plaka': [kasa.Plaka for kasa in kasalar],
+        'Fiş No': [kasa.Fisno for kasa in kasalar],
+        'Şoför': [kasa.Sofor for kasa in kasalar],
+        'Açıklama 1': [kasa.Aciklama1 for kasa in kasalar],
+        'Açıklama 2': [kasa.Aciklama2 for kasa in kasalar],
+        'Giren': [float(kasa.Giris) for kasa in kasalar],
+        'Çıkan': [float(kasa.Cikis) for kasa in kasalar],
+    }
+    df = pd.DataFrame(data)
+
+    # DataFrame'i Excel dosyasına dönüştür
+    excel_buffer = BytesIO()
+
+    with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Kasa')
+        workbook = writer.book
+        worksheet = writer.sheets['Kasa']
+        
+        # Sütun genişliklerini ayarlama
+        for i, col in enumerate(df.columns):
+            max_len = max(df[col].astype(str).map(len).max(), len(col)) + 2
+            worksheet.set_column(i, i, max_len)
+    
+
+    excel_buffer.seek(0)  # Buffer'ın başına git
+
+    # HTTP yanıtı olarak Excel dosyasını döndür
+    response = HttpResponse(excel_buffer, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="ural_kasa_exceli.xlsx"'
+
+    return response

@@ -19,5 +19,7 @@ urlpatterns = [
     path('arac-kayit/', views.aracekle, name='aracurl'),
     path('arac-listesi/', views.aracliste, name='araclisteurl'),
     path('arac-detay/<int:pk>/', views.aracdetay, name='aracdetayurl'),
-    path('arac-sil/<int:pk>/', views.aracsil, name='aracsilurl')
+    path('arac-sil/<int:pk>/', views.aracsil, name='aracsilurl'),
+    path('arac-exceli-yukle/', views.aracexceli, name='aracexceliurl'),
+    path('arac-exceli-indir/', views.aracexceliindir, name='aracexceliindirurl')
 ]
