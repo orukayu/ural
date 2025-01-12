@@ -239,7 +239,11 @@ def aracekle(request):
 def aracliste(request):
     kullanici_adi = request.user.username
     aracliste = Araclar.objects.all()
-    return render(request, 'malihes/aracliste.html', {'aracliste': aracliste, 'kullanici_adi': kullanici_adi})
+    toplam_sigorta = aracliste.aggregate(Sigtutari_sum=Sum('Sigtutari'))['Sigtutari_sum'] or 0
+    toplam_kasko = aracliste.aggregate(Kastutari_sum=Sum('Kastutari'))['Kastutari_sum'] or 0
+    toplam = aracliste.aggregate(Toplamtutar_sum=Sum('Toplamtutar'))['Toplamtutar_sum'] or 0
+    
+    return render(request, 'malihes/aracliste.html', {'aracliste': aracliste, 'kullanici_adi': kullanici_adi, 'ts': toplam_sigorta, 'tk': toplam_kasko, 'toplam': toplam})
 
 def aracdetay(request, pk):
     kullanici_adi = request.user.username
@@ -293,25 +297,45 @@ def aracexceli(request):
     if request.method == "POST":
         if 'excel_file' in request.FILES:
             excel_file = request.FILES['excel_file']
-            df = pd.read_excel(excel_file)
+            
+            # Excel dosyasını okurken tarihleri otomatik tanı
+            df = pd.read_excel(excel_file, dtype={'Sig. Baş. Tarihi': str, 'Sig. Bit. Tarihi': str, 
+                                                  'Kas. Baş. Tarihi': str, 'Kas. Bit. Tarihi': str})
 
-            # NaN değerleri None ile değiştirme
+            # NaN değerlerini None ile değiştir
             df = df.where(pd.notnull(df), None)
-            
+
             for index, row in df.iterrows():
-                kasa = Kasa(
-                    Tarih = row['Tarih'],
-                    Plaka = row['Plaka'],
-                    Fisno = row['Fiş No'],
-                    Sofor = row['Şoför'],
-                    Aciklama1 = row['Açıklama 1'],
-                    Aciklama2 = row['Açıklama 2'],
-                    Giris=row['Giren'] if row['Giren'] is not None else 0.00,  # Varsayılan değer
-                    Cikis=row['Çıkan'] if row['Çıkan'] is not None else 0.00,  # Varsayılan değer
+                # Tarih alanlarını kontrol edip None ya da datetime.date olarak ayarla
+                def parse_date(value):
+                    if value is None or value == '':
+                        return None  # Boş ise None kaydediyoruz
+                    try:
+                        return pd.to_datetime(value, dayfirst=True).date()
+                    except:
+                        return None  # Hatalı tarih varsa yine None
+
+                # Sigorta ve Kasko tutarları boşsa 0 olarak ayarlanıyor
+                sigtutari = row['Sigorta Tutarı'] if row['Sigorta Tutarı'] else 0
+                kastutari = row['Kasko Tutarı'] if row['Kasko Tutarı'] else 0
+
+                # Araclar modeline verileri kaydetme
+                arac = Araclar(
+                    Plaka=row['Plaka'],
+                    Firma=row['Firma'],
+                    Tür=row['Tür'],
+                    Marka=row['Marka'],
+                    Model=row['Model'],
+                    Sigbastarihi=parse_date(row['Sig. Baş. Tarihi']),
+                    Sigbittarihi=parse_date(row['Sig. Bit. Tarihi']),
+                    Sigtutari=sigtutari,
+                    Kasbastarihi=parse_date(row['Kas. Baş. Tarihi']),
+                    Kasbittarihi=parse_date(row['Kas. Bit. Tarihi']),
+                    Kastutari=kastutari,
                 )
-                kasa.save()
-            
-            return redirect('kasalisteurl')
+                arac.save1()  # Hesaplamaların yapılması için save1 kullanıyoruz
+
+            return redirect('araclisteurl')
 
     return render(request, 'malihes/aracexceli.html', {'kullanici_adi': kullanici_adi})
 

@@ -107,8 +107,19 @@
 
 {% block sayfa %}
       <div class="text-center">
-        <div class="py-3 text-center mt-4">
-          <p class="lead">Plakaya tıklayarak araca ait detay bilgilerini güncelleyebilir yada araç kaydını silebilirsiniz.</p>
+        <div class="row mt-4">
+          <div class="col-lg-4">
+            <h6 class="fw-normal">Toplam Sigorta</h6>
+            <p><strong>{{ ts|floatformat:"2g" }}</strong></p>
+          </div>
+          <div class="col-lg-4">
+            <h6 class="fw-normal">Toplam Kasko</h6>
+            <p><strong>{{ tk|floatformat:"2g" }}</strong></p>
+          </div>
+          <div class="col-lg-4">
+            <h6 class="fw-normal">Toplam</h6>
+            <p><strong>{{ toplam|floatformat:"2g" }}</strong></p>
+          </div>
         </div>
 
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
