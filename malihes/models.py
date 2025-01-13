@@ -82,7 +82,7 @@ class Araclar(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ['Plaka',]  # Tablonun hangi başlığa göre sıralanacağını belirliyor
+        ordering = ['Firma', '-Tür', 'Plaka']  # Tablonun hangi başlığa göre sıralanacağını belirliyor
 
     def __str__(self):
         return self.Plaka
