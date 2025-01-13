@@ -17,9 +17,9 @@ class Kasa(models.Model):
     Tarih = models.DateField(blank=False)
     Plaka = models.CharField(max_length=25, null=True, blank=True)
     Fisno = models.CharField(max_length=25, null=True, blank=True)
-    Sofor = models.CharField(max_length=25, null=True, blank=True)
-    Aciklama1 = models.CharField(max_length=25, null=True, blank=True)
-    Aciklama2 = models.CharField(max_length=25, null=True, blank=True)
+    Sofor = models.CharField(max_length=35, null=True, blank=True)
+    Aciklama1 = models.CharField(max_length=50, null=True, blank=True)
+    Aciklama2 = models.CharField(max_length=50, null=True, blank=True)
     Giris = models.DecimalField(max_digits=10, decimal_places=2)
     Cikis = models.DecimalField(max_digits=10, decimal_places=2)
 
