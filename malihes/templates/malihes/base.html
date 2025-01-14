@@ -140,6 +140,9 @@
       input#plaka::-webkit-input-placeholder, input#sigbastarihi::-webkit-input-placeholder, input#sigbittarihi::-webkit-input-placeholder, input#kasbastarihi::-webkit-input-placeholder, input#kasbittarihi::-webkit-input-placeholder, input#fisno::-webkit-input-placeholder, input#sofor::-webkit-input-placeholder, input#id_Tarih::-webkit-input-placeholder, input#cikistarihi::-webkit-input-placeholder, input#cikisyeri::-webkit-input-placeholder, input#varisyeri::-webkit-input-placeholder {
         color: #a3a3a3 !important;
       }
+      .dropdown {
+        padding-left: 1rem;
+      }
     </style>
 
     {% block style %}
@@ -254,11 +257,12 @@
                   <strong>{{ kullanici_adi }}</strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                  <li><a class="dropdown-item" href="#">New project...</a></li>
-                  <li><a class="dropdown-item" href="#">Settings</a></li>
-                  <li><a class="dropdown-item" href="#">Profile</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Sign out</a></li>
+                  {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'logout' %}">
+                      {% csrf_token %}
+                      <button type="submit" class="dropdown-item">Çıkış Yap</button>
+                    </form>
+                  {% endif %}
                 </ul>
               </div>
             </div>

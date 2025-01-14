@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
@@ -36,6 +37,7 @@ def giris(request):
             messages.error(request, 'Kullanıcı adı veya şifre yanlış.')
     return render(request, 'malihes/giris.html')
 
+@login_required(login_url='/giris/')
 def anasayfa(request):
     kullanici_adi = request.user.username
     ucs = Araclar.objects.filter(Firma='Ural Lojistik', Tür='Çekici').count()
@@ -52,6 +54,7 @@ def anasayfa(request):
     }
     return render(request, 'malihes/anasayfa.html', context)
 
+@login_required(login_url='/giris/')
 def sefer(request):
     kullanici_adi = request.user.username
 
@@ -69,6 +72,7 @@ def sefer(request):
     }
     return render(request, 'malihes/sefer.html', context)
 
+@login_required(login_url='/giris/')
 def seferliste(request):
     kullanici_adi = request.user.username
     seferliste = Sefer.objects.all()
@@ -79,7 +83,7 @@ def seferliste(request):
     }
     return render(request, 'malihes/seferliste.html', context)
 
-
+@login_required(login_url='/giris/')
 def kasaliste(request):
     kullanici_adi = request.user.username
     form = TarihFiltreForm(request.GET or None)
@@ -106,7 +110,7 @@ def kasaliste(request):
     }
     return render(request, 'malihes/kasaliste.html', context)
 
-
+@login_required(login_url='/giris/')
 def kasaexceli(request):
     kullanici_adi = request.user.username
     if request.method == "POST":
@@ -134,7 +138,7 @@ def kasaexceli(request):
 
     return render(request, 'malihes/kasaexceli.html', {'kullanici_adi': kullanici_adi})
 
-
+@login_required(login_url='/giris/')
 def tahsilat_ekle(request):
     kullanici_adi = request.user.username
     if request.method == 'POST':
@@ -179,7 +183,7 @@ def tahsilat_ekle(request):
 
     return render(request, 'malihes/kasa.html', {'kasa_form': kasa_form, 'tahsilat_forms': tahsilat_forms, 'kullanici_adi': kullanici_adi, 'sonkayit': sonkayit})
 
-
+@login_required(login_url='/giris/')
 def kasadetay(request, pk):
     kullanici_adi = request.user.username
     kasa_instance = get_object_or_404(Kasa, pk=pk)
@@ -211,12 +215,14 @@ def kasadetay(request, pk):
 
     return render(request, 'malihes/kasadetay.html', {'kasa_form': kasa_form, 'tahsilat_form': tahsilat_form, 'kullanici_adi': kullanici_adi, 'pk': pk})
 
+@login_required(login_url='/giris/')
 def kasasil(request, pk):
     kasa_instance = get_object_or_404(Kasa, pk=pk)
     kasa_instance.delete()
     messages.success(request, "Kayıt başarıyla silindi.")
     return redirect('kasalisteurl')
 
+@login_required(login_url='/giris/')
 def aracekle(request):
     kullanici_adi = request.user.username
     
@@ -236,6 +242,7 @@ def aracekle(request):
 
     return render(request, 'malihes/aracekle.html', {'kullanici_adi': kullanici_adi, 'form': form})
 
+@login_required(login_url='/giris/')
 def aracliste(request):
     kullanici_adi = request.user.username
     aracliste = Araclar.objects.all()
@@ -245,6 +252,7 @@ def aracliste(request):
     
     return render(request, 'malihes/aracliste.html', {'aracliste': aracliste, 'kullanici_adi': kullanici_adi, 'ts': toplam_sigorta, 'tk': toplam_kasko, 'toplam': toplam})
 
+@login_required(login_url='/giris/')
 def aracdetay(request, pk):
     kullanici_adi = request.user.username
     arac_instance = get_object_or_404(Araclar, pk=pk)
@@ -285,13 +293,14 @@ def aracdetay(request, pk):
 
     return render(request, 'malihes/aracdetay.html', {'arac_form': arac_form, 'kullanici_adi': kullanici_adi, 'pk': pk})
 
+@login_required(login_url='/giris/')
 def aracsil(request, pk):
     arac_instance = get_object_or_404(Araclar, pk=pk)
     arac_instance.delete()
     messages.success(request, "Kayıt başarıyla silindi.")
     return redirect('araclisteurl')
 
-
+@login_required(login_url='/giris/')
 def aracexceli(request):
     kullanici_adi = request.user.username
     if request.method == "POST":
@@ -339,6 +348,7 @@ def aracexceli(request):
 
     return render(request, 'malihes/aracexceli.html', {'kullanici_adi': kullanici_adi})
 
+@login_required(login_url='/giris/')
 def aracexceliindir(request):
     # Araclar modelinden tüm verileri al
     araclar = Araclar.objects.all()
@@ -379,6 +389,7 @@ def aracexceliindir(request):
 
     return response
 
+@login_required(login_url='/giris/')
 def kasaexceliindir(request):
     # Kasa modelinden tüm verileri al
     kasalar = Kasa.objects.all()

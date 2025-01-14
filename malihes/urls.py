@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+from django.contrib.auth import views as auth_views  #kullanicinin cikis yapabilmesi icin eklenmistir
+
 
 urlpatterns = [
     path('', views.base, name='baseurl'),
@@ -21,5 +23,7 @@ urlpatterns = [
     path('arac-detay/<int:pk>/', views.aracdetay, name='aracdetayurl'),
     path('arac-sil/<int:pk>/', views.aracsil, name='aracsilurl'),
     path('arac-exceli-yukle/', views.aracexceli, name='aracexceliurl'),
-    path('arac-exceli-indir/', views.aracexceliindir, name='aracexceliindirurl')
+    path('arac-exceli-indir/', views.aracexceliindir, name='aracexceliindirurl'),
+
+    path('logout/', auth_views.LogoutView.as_view(next_page='girisurl'), name='logout'),
 ]
