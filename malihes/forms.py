@@ -43,16 +43,15 @@ class SeferForm(forms.ModelForm):
     class Meta:
         model = Sefer
         fields = [
-            'Cikisyeri',
-            'Cikistarihi',
-            'Cikiskm',
-            'Varisyeri',
-            'Varistarihi',
-            'Variskm',
             'Plakacekici',
             'Plakadorse',
             'Sofor',
-            'Not',
+            'Cikistarihi',
+            'Cikisyeri',
+            'Cikiskm',
+            'Varistarihi',
+            'Varisyeri',
+            'Variskm',
             'Musteri',
             'Yuk',
             'Yol',
@@ -63,23 +62,24 @@ class SeferForm(forms.ModelForm):
             'Litre',
             'Litrefiyati',
             'Toplamyakit',
+            'Not',
             'Digergiderler',
             'Kalan'
         ]
         widgets = {
             'Cikisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Samsun-Mersin', 'id': 'cikisyeri'}),
             'Cikistarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17/03/2025', 'id': 'cikistarihi'}),
-            'Cikiskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'cikiskm'}),
+            'Cikiskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Cikiskm'}),
             'Varisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mersin-Samsun', 'id': 'varisyeri'}),
             'Varistarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '21/03/2025', 'id': 'varistarihi'}),
-            'Variskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'variskm'}),
+            'Variskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Variskm'}),
             'Plakacekici': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919', 'id': 'plaka'}),
             'Plakadorse': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '12 DRS 345', 'id': 'plaka'}),
             'Sofor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ali YILMAZ', 'id': 'sofor'}),
             'Not': forms.Textarea(attrs={'class': 'form-control', 'id': 'not', 'rows': '4'}),
             'Musteri': forms.TextInput(attrs={'class': 'form-control', 'id': 'musteri'}),
             'Yuk': forms.TextInput(attrs={'class': 'form-control', 'id': 'yuk'}),
-            'Yol': forms.NumberInput(attrs={'class': 'form-control', 'id': 'yol'}),
+            'Yol': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Yol'}),
             'Tasimabedeli': forms.NumberInput(attrs={'class': 'form-control', 'id': 'tasimabedeli'}),
             'Dovizkuru': forms.NumberInput(attrs={'class': 'form-control', 'id': 'dovizkuru'}),
             'Toplamfiyat': forms.NumberInput(attrs={'class': 'form-control', 'id': 'toplamfiyat'}),
@@ -100,6 +100,12 @@ class SeferForm(forms.ModelForm):
     Varistarihi = forms.DateField(
         input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '19.03.2025', 'id': 'cikistarihi'}),
+        required=False,
+    )
+
+    Tasimabedeli = forms.DecimalField(
+        required=False,  # Bu satır 'Tasimabedeli' alanının zorunlu olmasını engeller
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'id': 'tasimabedeli'})
     )
 
     def __init__(self, *args, **kwargs):
@@ -140,7 +146,7 @@ class AraclarForm(forms.ModelForm):
             'Plaka': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 ABC 1919', 'id': 'plaka'}),
             'Marka': forms.TextInput(attrs={'class': 'form-control', 'id': 'marka'}),
             'Model': forms.TextInput(attrs={'class': 'form-control', 'id': 'model'}),
-            'Sigtutari': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '0,00', 'id': 'sigtutari'}),
+            'Sigtutari': forms.NumberInput(attrs={'class': 'form-control', 'id': 'sigtutari'}),
             'Kastutari': forms.NumberInput(attrs={'class': 'form-control', 'id': 'kastutari'}),
             'Toplamtutar': forms.NumberInput(attrs={'class': 'form-control', 'id': 'toplamtutar'}),
             'Ayliktutar': forms.NumberInput(attrs={'class': 'form-control', 'id': 'ayliktutar'}),

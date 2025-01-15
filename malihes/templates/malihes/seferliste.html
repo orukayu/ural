@@ -1,7 +1,7 @@
 {% extends 'malihes/base.html' %}
 
 {% block style %}
-<style>
+    <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -78,6 +78,22 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+
+      .bi {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+      }
+      .text-primary {
+        --bs-text-opacity: 1;
+        color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+      }
+      main {
+        max-width: none !important;
+      }
+      td {
+        font-size: small;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -86,9 +102,36 @@
 {% endblock %}
 
 {% block sayfa %}
-      <div class="container text-center">
-        <div class="py-3 text-center mt-4">
-          <h2>Sefer Listesi</h2>
+      <div class="text-center">
+        <div class="row mt-4">
+          <div class="col-lg-4">
+            <h6 class="fw-normal">Toplam Giriş</h6>
+            <p><strong>{{ tg|floatformat:"2g" }}</strong></p>
+          </div>
+          <div class="col-lg-4">
+            <h6 class="fw-normal">Toplam Çıkış</h6>
+            <p><strong>{{ tc|floatformat:"2g" }}</strong></p>
+          </div>
+          <div class="col-lg-4">
+            <h6 class="fw-normal">Kalan</h6>
+            <p><strong>{{ kalan|floatformat:"2g" }}</strong></p>
+          </div>
+        </div>
+        
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
+          <div class="py-3 text-center">
+            <h2>Sefer Listesi</h2>
+          </div>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <form method="get" class="d-flex">
+              {{ form.start_date }}
+              {{ form.end_date }}
+              <button type="submit" class="btn btn-primary ms-2">Filtrele</button>
+            </form>
+          </div>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-success" onclick="window.location.href = '{% url 'kasaexceliindirurl' %}';">Excel İndir</button>
+          </div>
         </div>
 
         <div class="row" style="justify-content: space-around;">
@@ -97,22 +140,23 @@
               <table class="table table-striped table-sm">
                 <thead class="table-light">
                   <tr>
-                    <th scope="col">Sıra No</th>
-                    <th scope="col">Plaka</th>
+                    <th scope="col">Çekici Plaka</th>
+                    <th scope="col">Dorse Plaka</th>
                     <th scope="col">Şoför</th>
                     <th scope="col">Çıkış Tarihi</th>
-                    <th scope="col">Çıkış Yeri</th>
-                    <th scope="col">Çıkış KM</th>
-                    <th scope="col">Varış Tarihi</th>
-                    <th scope="col">Varış Yeri</th>
-                    <th scope="col">Varış KM</th>
+                    <th scope="col">Çıkış Rotası</th>
+                    <th scope="col">Çıkış (KM)</th>
+                    <th scope="col">Dönüş Tarihi</th>
+                    <th scope="col">Dönüş Rotası</th>
+                    <th scope="col">Dönüş (KM)</th>
                     <th scope="col">Müşteri</th>
                     <th scope="col">Yük</th>
+                    <th scope="col">Mesafe (KM)</th>
                     <th scope="col">Taşıma Bedeli</th>
                     <th scope="col">Döviz Kuru</th>
                     <th scope="col">Toplam Fiyat</th>
                     <th scope="col">İstasyon</th>
-                    <th scope="col">Litre</th>
+                    <th scope="col">Yakıt (Litre)</th>
                     <th scope="col">Litre Fiyatı</th>
                     <th scope="col">Toplam Yakıt</th>
                     <th scope="col">Not</th>
@@ -123,27 +167,28 @@
                 <tbody class="table-group-divider">
                 {% for seferliste in seferliste %}
                   <tr>
-                    <th scope="row">{{ seferliste.id }}</th>
-                    <td>{{ seferliste.Plaka }}</td>
-                    <td>{{ seferliste.Sofor }}</td>
-                    <td>{{ seferliste.Cikistarihi }}</td>
-                    <td>{{ seferliste.Cikisyeri }}</td>
-                    <td>{{ seferliste.Cikiskm }}</td>
-                    <td>{{ seferliste.Varistarihi }}</td>
-                    <td>{{ seferliste.Varisyeri }}</td>
-                    <td>{{ seferliste.Variskm }}</td>
-                    <td>{{ seferliste.Musteri }}</td>
-                    <td>{{ seferliste.Yuk }}</td>
-                    <td>{{ seferliste.Tasimabedeli }}</td>
-                    <td>{{ seferliste.Dovizkuru }}</td>
-                    <td>{{ seferliste.Toplamfiyat }}</td>
-                    <td>{{ seferliste.Istasyon }}</td>
-                    <td>{{ seferliste.Litre }}</td>
-                    <td>{{ seferliste.Litrefiyati }}</td>
-                    <td>{{ seferliste.Toplamyakit }}</td>
-                    <td>{{ seferliste.Not }}</td>
-                    <td>{{ seferliste.Digergiderler }}</td>
-                    <td>{{ seferliste.Kalan }}</td>
+                    <td>{{ seferliste.Plakacekici }}</td>
+                    <td>{{ seferliste.Plakadorse|default:"" }}</td>
+                    <td>{{ seferliste.Sofor|default:"" }}</td>
+                    <td>{{ seferliste.Cikistarihi|default:""|date:"d.m.Y" }}</td>
+                    <td>{{ seferliste.Cikisyeri|default:"" }}</td>
+                    <td>{{ seferliste.Cikiskm|default:"" }}</td>
+                    <td>{{ seferliste.Varistarihi|default:""|date:"d.m.Y" }}</td>
+                    <td>{{ seferliste.Varisyeri|default:"" }}</td>
+                    <td>{{ seferliste.Variskm|default:"" }}</td>
+                    <td>{{ seferliste.Musteri|default:"" }}</td>
+                    <td>{{ seferliste.Yuk|default:"" }}</td>
+                    <td>{{ seferliste.Yol|default:"" }}</td>
+                    <td>{{ seferliste.Tasimabedeli|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Dovizkuru|default:"" }}</td>
+                    <td>{{ seferliste.Toplamfiyat|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Istasyon|default:"" }}</td>
+                    <td>{{ seferliste.Litre|default:"" }}</td>
+                    <td>{{ seferliste.Litrefiyati|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Toplamyakit|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Not|default:"" }}</td>
+                    <td>{{ seferliste.Digergiderler|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Kalan|floatformat:"2g" }}</td>
                   </tr>
                 {% endfor %}
                 </tbody>
