@@ -105,15 +105,15 @@
       <div class="text-center">
         <div class="row mt-4">
           <div class="col-lg-4">
-            <h6 class="fw-normal">Toplam Giriş</h6>
+            <h6 class="fw-normal">Toplam KM</h6>
             <p><strong>{{ tg|floatformat:"2g" }}</strong></p>
           </div>
           <div class="col-lg-4">
-            <h6 class="fw-normal">Toplam Çıkış</h6>
+            <h6 class="fw-normal">Toplam Yakıt</h6>
             <p><strong>{{ tc|floatformat:"2g" }}</strong></p>
           </div>
           <div class="col-lg-4">
-            <h6 class="fw-normal">Kalan</h6>
+            <h6 class="fw-normal">Toplam Kazanç</h6>
             <p><strong>{{ kalan|floatformat:"2g" }}</strong></p>
           </div>
         </div>
@@ -126,11 +126,11 @@
             <form method="get" class="d-flex">
               {{ form.start_date }}
               {{ form.end_date }}
-              <button type="submit" class="btn btn-primary ms-2">Filtrele</button>
+              <button type="submit" class="btn btn-primary ms-2 invisible">Filtrele</button>
             </form>
           </div>
           <div class="btn-toolbar mb-2 mb-md-0">
-            <button type="button" class="btn btn-success" onclick="window.location.href = '{% url 'kasaexceliindirurl' %}';">Excel İndir</button>
+            <button type="button" class="btn btn-success invisible" onclick="window.location.href = '{% url 'kasaexceliindirurl' %}';">Excel İndir</button>
           </div>
         </div>
 
@@ -167,7 +167,7 @@
                 <tbody class="table-group-divider">
                 {% for seferliste in seferliste %}
                   <tr>
-                    <td>{{ seferliste.Plakacekici }}</td>
+                    <td class="plaka"><a href="{% url 'seferdetayurl' pk=seferliste.id %}">{{ seferliste.Plakacekici }}</a></td>
                     <td>{{ seferliste.Plakadorse|default:"" }}</td>
                     <td>{{ seferliste.Sofor|default:"" }}</td>
                     <td>{{ seferliste.Cikistarihi|default:""|date:"d.m.Y" }}</td>
@@ -179,13 +179,13 @@
                     <td>{{ seferliste.Musteri|default:"" }}</td>
                     <td>{{ seferliste.Yuk|default:"" }}</td>
                     <td>{{ seferliste.Yol|default:"" }}</td>
-                    <td>{{ seferliste.Tasimabedeli|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Tasimabedeli|default:""|floatformat:"2g" }}</td>
                     <td>{{ seferliste.Dovizkuru|default:"" }}</td>
-                    <td>{{ seferliste.Toplamfiyat|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Toplamfiyat|default:""|floatformat:"2g" }}</td>
                     <td>{{ seferliste.Istasyon|default:"" }}</td>
                     <td>{{ seferliste.Litre|default:"" }}</td>
-                    <td>{{ seferliste.Litrefiyati|floatformat:"2g" }}</td>
-                    <td>{{ seferliste.Toplamyakit|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Litrefiyati|default:""|floatformat:"2g" }}</td>
+                    <td>{{ seferliste.Toplamyakit|default:""|floatformat:"2g" }}</td>
                     <td>{{ seferliste.Not|default:"" }}</td>
                     <td>{{ seferliste.Digergiderler|floatformat:"2g" }}</td>
                     <td>{{ seferliste.Kalan|floatformat:"2g" }}</td>

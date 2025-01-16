@@ -112,6 +112,14 @@ class SeferForm(forms.ModelForm):
         super(SeferForm, self).__init__(*args, **kwargs)
         self.fields['Cikiskm'].initial = 0  # Varsayılan değer
         self.fields['Variskm'].initial = 0  # Varsayılan değer
+        self.fields['Yol'].initial = 0  # Varsayılan değer
+        self.fields['Tasimabedeli'].initial = 0.0  # Varsayılan değer
+        self.fields['Dovizkuru'].initial = 0.0  # Varsayılan değer
+        self.fields['Toplamfiyat'].initial = 0.0  # Varsayılan değer
+        self.fields['Litre'].initial = 0.0  # Varsayılan değer
+        self.fields['Litrefiyati'].initial = 0.0  # Varsayılan değer
+        self.fields['Toplamyakit'].initial = 0.0  # Varsayılan değer
+
 
 
 class TarihFiltreForm(forms.Form):

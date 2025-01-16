@@ -78,6 +78,9 @@
     .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
     }
+    input#toplamtutar, input#ayliktutar, input#sigtutari, input#kastutari {
+      text-align: end;
+    }
 </style>
 
 <!-- Custom styles for this template -->
@@ -87,8 +90,8 @@
 
 {% block sayfa %}
         <div class="py-3 text-center mt-4">
-          <h2>Sefer Kayıt Formu</h2>
-          <p class="lead">Aşağıda ki formu kullanarak sefer kaydı oluşturabilirsiniz. Eksik bilgilerini daha sonra sefer listesinden tamamlayabilirsiniz.</p>
+          <h2>Sefer Detay Formu</h2>
+          <p class="lead">Eksik bilgileri güncelleyebilir yada sefer kaydını silebilirsiniz.</p>
         </div>
 
         <div class="row g-5">
@@ -99,123 +102,135 @@
                 <h4 class="mb-1">Araç Bilgileri</h4>
                 <div class="col-md-4">
                   <label for="firstName" class="form-label">Çekici Plakası</label>
-                  {{ form.Plakacekici }}
+                  {{ sefer_form.Plakacekici }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="firstName" class="form-label">Dorse Plakası</label>
-                  {{ form.Plakadorse }}
+                  {{ sefer_form.Plakadorse }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Şoför</label>
-                  {{ form.Sofor }}
+                  {{ sefer_form.Sofor }}
                 </div>
 
                 <h4 class="mb-1 mt-4">Rota Bilgileri</h4>
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Çıkış Tarihi</label>
-                  {{ form.Cikistarihi }}
+                  {{ sefer_form.Cikistarihi }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Çıkış Rotası</label>
-                  {{ form.Cikisyeri }}
+                  {{ sefer_form.Cikisyeri }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Çıkış KM</label>
-                  {{ form.Cikiskm }}
+                  {{ sefer_form.Cikiskm }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Dönüş Tarihi</label>
-                  {{ form.Varistarihi }}
+                  {{ sefer_form.Varistarihi }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Dönüş Rotası</label>
-                  {{ form.Varisyeri }}
+                  {{ sefer_form.Varisyeri }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Dönüş KM</label>
-                  {{ form.Variskm }}
+                  {{ sefer_form.Variskm }}
                 </div>
 
                 <h4 class="mb-1 mt-4">Müşteri Bilgileri</h4>
                 <div class="col-md-4">
                   <label for="firstName" class="form-label">Müşteri</label>
-                  {{ form.Musteri }}
+                  {{ sefer_form.Musteri }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Yük</label>
-                  {{ form.Yuk }}
+                  {{ sefer_form.Yuk }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Mesafe (KM)</label>
-                  {{ form.Yol }}
+                  {{ sefer_form.Yol }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Taşıma Bedeli</label>
-                  {{ form.Tasimabedeli }}
+                  {{ sefer_form.Tasimabedeli }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Döviz Kuru</label>
-                  {{ form.Dovizkuru }}
+                  {{ sefer_form.Dovizkuru }}
                 </div>
 
                 <div class="col-md-4">
                   <label for="lastName" class="form-label">Toplam Fiyat</label>
-                  {{ form.Toplamfiyat }}
+                  {{ sefer_form.Toplamfiyat }}
                 </div>
 
                 <h4 class="mb-1 mt-4">Yakıt Bilgileri</h4>
                 <div class="col-md-3">
                   <label for="firstName" class="form-label">İstasyon</label>
-                  {{ form.Istasyon }}
+                  {{ sefer_form.Istasyon }}
                 </div>
 
                 <div class="col-md-3">
                   <label for="lastName" class="form-label">Yakıt (Litre)</label>
-                  {{ form.Litre }}
+                  {{ sefer_form.Litre }}
                 </div>
 
                 <div class="col-md-3">
                   <label for="lastName" class="form-label">Litre Fiyatı</label>
-                  {{ form.Litrefiyati }}
+                  {{ sefer_form.Litrefiyati }}
                 </div>
 
                 <div class="col-md-3">
                   <label for="lastName" class="form-label">Toplam Yakıt</label>
-                  {{ form.Toplamyakit }}
+                  {{ sefer_form.Toplamyakit }}
                 </div>
 
                 <h4 class="mb-1 mt-4">Diğer Bilgiler</h4>
                 <div class="col-sm-6">
                   <label for="exampleFormControlTextarea1" class="form-label">Not</label>
-                  {{ form.Not }}
+                  {{ sefer_form.Not }}
                 </div>
                 <div class="col-sm-6">
                   <div class="col">
                     <label for="lastName" class="form-label">Diğer Giderler</label>
-                    {{ form.Digergiderler }}
+                    {{ sefer_form.Digergiderler }}
                   </div>
                   <div class="col">
                     <label for="lastName" class="form-label">Genel Toplam</label>
-                    {{ form.Kalan }}
+                    {{ sefer_form.Kalan }}
                   </div>
                 </div>
               </div>
               <hr class="my-4">
-              <button class="w-100 btn btn-primary btn-lg" type="submit">Sefer Ekle</button>
+
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
+                <div class="btn-toolbar mb-2 mb-md-0">
+                  <button type="button" class="btn btn-danger btn-lg" onclick="window.location.href = '{% url 'sefersilurl' pk=pk %}';">Kayıt Sil</button>
+                </div>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                  <button class="w-100 btn btn-primary btn-lg" type="submit">Kayıt Güncelle</button>
+                </div>
+              </div>
+
             </form>
           </div>
-          <script type="text/javascript">
+        </div>
+        <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.js"></script>
+                  <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function () {
               // İlgili inputları seç
               const cikiskmInput = document.getElementById('id_Cikiskm');
@@ -275,6 +290,6 @@
               litreInput.addEventListener('input', calculateDistance);
             });
           </script>
-        </div>
+
     
 {% endblock %}

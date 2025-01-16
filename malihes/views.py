@@ -84,6 +84,61 @@ def seferliste(request):
     return render(request, 'malihes/seferliste.html', context)
 
 @login_required(login_url='/giris/')
+def seferdetay(request, pk):
+    kullanici_adi = request.user.username
+    sefer_instance = get_object_or_404(Sefer, pk=pk)
+
+    if request.method == 'POST':
+        sefer_form = SeferForm(request.POST, instance=sefer_instance)
+        if sefer_form.is_valid():
+            # Formdan gelen verileri kaydet
+            post = sefer_form.save()
+            post.save()
+            messages.success(request, "Kayıt başarıyla güncellendi.")
+            return redirect('seferlisteurl')  # Liste sayfasına yönlendirin
+        else:
+            messages.error(request, "Formda hatalar var. Lütfen kontrol edin.")
+
+    else:
+        # Tarihi biçimlendirmek için strftime kullanıyoruz
+        formatted_date1 = sefer_instance.Cikistarihi.strftime('%d.%m.%Y') if sefer_instance.Cikistarihi else ''
+        formatted_date2 = sefer_instance.Varistarihi.strftime('%d.%m.%Y') if sefer_instance.Varistarihi else ''
+        # GET isteğinde formları mevcut kayıtla doldur
+        sefer_form = SeferForm(initial={
+            'Plakacekici': sefer_instance.Plakacekici,
+            'Plakadorse': sefer_instance.Plakadorse,
+            'Sofor': sefer_instance.Sofor,
+            'Cikistarihi': formatted_date1,
+            'Cikisyeri': sefer_instance.Cikisyeri,
+            'Cikiskm': sefer_instance.Cikiskm,
+            'Varistarihi': formatted_date2,
+            'Varisyeri': sefer_instance.Varisyeri,
+            'Variskm': sefer_instance.Variskm,
+            'Musteri': sefer_instance.Musteri,
+            'Yuk': sefer_instance.Yuk,
+            'Yol': sefer_instance.Yol,
+            'Tasimabedeli': sefer_instance.Tasimabedeli,
+            'Dovizkuru': sefer_instance.Dovizkuru,
+            'Toplamfiyat': sefer_instance.Toplamfiyat,
+            'Istasyon': sefer_instance.Istasyon,
+            'Litre': sefer_instance.Litre,
+            'Litrefiyati': sefer_instance.Litrefiyati,
+            'Toplamyakit': sefer_instance.Toplamyakit,
+            'Not': sefer_instance.Not,
+            'Digergiderler': sefer_instance.Digergiderler,
+            'Kalan': sefer_instance.Kalan
+        })
+
+    return render(request, 'malihes/seferdetay.html', {'sefer_form': sefer_form, 'kullanici_adi': kullanici_adi, 'pk': pk})
+
+@login_required(login_url='/giris/')
+def sefersil(request, pk):
+    sefer_instance = get_object_or_404(Sefer, pk=pk)
+    sefer_instance.delete()
+    messages.success(request, "Kayıt başarıyla silindi.")
+    return redirect('seferlisteurl')
+
+@login_required(login_url='/giris/')
 def kasaliste(request):
     kullanici_adi = request.user.username
     form = TarihFiltreForm(request.GET or None)
