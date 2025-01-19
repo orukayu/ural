@@ -2,6 +2,33 @@ from django import forms
 from .models import Kasa
 from .models import Sefer
 from .models import Araclar
+from .models import Personel
+
+
+class PersonelForm(forms.ModelForm):
+    class Meta:
+        model = Personel
+        fields = ['Adsoyad', 'Bolum', 'Telefon', 'Maas']
+        widgets = {
+            'Adsoyad': forms.TextInput(attrs={'class': 'form-control', 'id': 'adsoyad', 'placeholder': 'Ali YILMAZ'}),
+            'Telefon': forms.TextInput(attrs={'class': 'form-control', 'id': 'telefon', 'placeholder': 'Telefon Numarası (+90 formatında giriniz)'}),
+            'Maas': forms.NumberInput(attrs={'class': 'form-control', 'id': 'maas'}),
+        }
+
+    BOLUMLER = [
+    ('Ofis', 'Ofis'),
+    ('Depo', 'Depo'),
+    ('Garaj', 'Garaj'),
+    ('Şoför', 'Şoför'),
+    ('Muhasebe', 'Muhasebe'),
+    ('Diğer', 'Diğer'),
+    ]
+
+    Bolum = forms.ChoiceField(
+        choices=BOLUMLER,
+        widget=forms.Select(attrs={'class': 'form-select', 'id': 'bolum'}),
+        initial='Ofis'
+    )
 
 
 class KasaForm(forms.ModelForm):

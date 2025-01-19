@@ -23,11 +23,15 @@ from .forms import KasaForm, TahsilatForm
 from .forms import SeferForm
 from .forms import TarihFiltreForm
 from .forms import AraclarForm
+from .forms import PersonelForm
 
+from .models import Soforler
 from .models import Kasa
 from .models import Sefer
 from .models import Araclar
 from .models import Kur
+from .models import Personel
+
 
 def base(request):
     return redirect('girisurl')
@@ -95,14 +99,90 @@ def anasayfa(request):
     acs = Araclar.objects.filter(Firma='Asya Fresh', Tür='Çekici').count()
     ads = Araclar.objects.filter(Firma='Asya Fresh', Tür='Dorse').count()
 
+    personeller = Personel.objects.all()
+    personelsayisi = personeller.count()
+    toplammaas = personeller.aggregate(Toplamtutar_sum=Sum('Maas'))['Toplamtutar_sum'] or 0
+
+    # Ortalama maaş hesaplama (personel varsa, yoksa 0 döner)
+    ortalamamaas = toplammaas / personelsayisi if personelsayisi > 0 else 0
+
     context = {
         'kullanici_adi': kullanici_adi,
         'ucs': ucs,
         'uds': uds,
         'acs': acs,
-        'ads': ads
+        'ads': ads,
+        'personelsayisi': personelsayisi,
+        'ortalamamaas': round(ortalamamaas, 0),
+        'toplammaas': toplammaas
     }
     return render(request, 'malihes/anasayfa.html', context)
+
+@login_required(login_url='/giris/')
+def personeldetay(request, pk):
+    kullanici_adi = request.user.username
+    personel_instance = get_object_or_404(Personel, pk=pk)
+
+    if request.method == 'POST':
+        form = PersonelForm(request.POST, instance=personel_instance)
+        if form.is_valid():
+            # Formdan gelen verileri kaydet
+            post = form.save()
+            post.save()
+            messages.success(request, "Kayıt başarıyla güncellendi.")
+            return redirect('personellisteurl')  # Liste sayfasına yönlendirin
+        else:
+            messages.error(request, "Formda hatalar var. Lütfen kontrol edin.")
+
+    else:
+        # GET isteğinde formları mevcut kayıtla doldur
+        form = PersonelForm(instance=personel_instance)
+
+    return render(request, 'malihes/personeldetay.html', {'form': form, 'kullanici_adi': kullanici_adi, 'pk': pk})
+
+@login_required(login_url='/giris/')
+def personelsil(request, pk):
+    personel_instance = get_object_or_404(Personel, pk=pk)
+    personel_instance.delete()
+    messages.success(request, "Kayıt başarıyla silindi.")
+    return redirect('personellisteurl')
+
+@login_required(login_url='/giris/')
+def personelliste(request):
+    kullanici_adi = request.user.username
+    personelliste = Personel.objects.all()
+    ps = personelliste.count()
+    maas = personelliste.aggregate(Toplamtutar_sum=Sum('Maas'))['Toplamtutar_sum'] or 0
+
+    # Ortalama maaş hesaplama (personel varsa, yoksa 0 döner)
+    om = maas / ps if ps > 0 else 0
+
+    context = {
+        'personelliste': personelliste,
+        'kullanici_adi': kullanici_adi,
+        'ps': ps,
+        'om': round(om, 2),
+        'maas': maas
+    }
+    return render(request, 'malihes/personelliste.html', context)
+
+@login_required(login_url='/giris/')
+def personelekle(request):
+    kullanici_adi = request.user.username
+
+    if request.method == 'POST':
+        form = PersonelForm(request.POST)
+        if form.is_valid():
+            form.save()  # Verileri doğrudan modelle ilişkilendir ve kaydet
+            return redirect('personellisteurl')  # Başka bir sayfaya yönlendirme yapabilirsiniz
+    else:
+        form = PersonelForm()
+
+    context = {
+        'kullanici_adi': kullanici_adi,
+        'form': form
+    }
+    return render(request, 'malihes/personel.html', context)
 
 @login_required(login_url='/giris/')
 def sefer(request):
@@ -520,6 +600,18 @@ def kur(request):
     }
     
     return render(request, 'malihes/kurliste.html', context)
+
+@login_required(login_url='/giris/')
+def deneme(request):
+    # Tüm kur listesine ulaş
+    denemeliste = Soforler.objects.all()
+
+    # Kontekste verileri ekleyerek render işlemi yap
+    context = {
+        'denemeliste': denemeliste
+    }
+    
+    return render(request, 'malihes/deneme.html', context)
 
 def get_doviz_kuru(request):
     tarih = request.GET.get('tarih')  # Tarih bilgisi query parametresi olarak alınır

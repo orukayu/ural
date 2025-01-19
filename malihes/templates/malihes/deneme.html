@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Döviz Kurları</title>
+</head>
+<body>
+    <h1>Döviz Kurları</h1>
+    <a href="{% url 'anasayfaurl' %}">Anasayfa'ya dön.</a>
+
+    <table border="1"  style="margin-top: 25px;">
+        <thead>
+            <tr>
+                <th>Ad Soyad</th>
+                <th>Telefon</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for deneme in denemeliste %}
+            <tr>
+                <td>{{ deneme.Isim }}</td>
+                <td><a href="tel:{{ deneme.Telefon }}">{{ deneme.Telefon }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
