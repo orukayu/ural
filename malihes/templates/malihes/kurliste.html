@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Döviz Kurları</title>
+</head>
+<body>
+    <h1>Döviz Kurları</h1>
+    <a href="{% url 'anasayfaurl' %}">Anasayfa'ya dön.</a>
+
+    <table border="1"  style="margin-top: 25px;">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>USD Alış Kuru</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for kur in kurliste %}
+            <tr>
+                <td>{{ kur.tarih }}</td>
+                <td>{{ kur.dovizalis }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

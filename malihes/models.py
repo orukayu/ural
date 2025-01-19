@@ -86,3 +86,13 @@ class Araclar(models.Model):
 
     def __str__(self):
         return self.Plaka
+
+class Kur(models.Model):
+    tarih = models.DateField(unique=True)
+    dovizalis = models.DecimalField(max_digits=10, decimal_places=4)
+
+    class Meta:
+        ordering = ['-tarih',]
+
+    def __str__(self):
+        return str(self.tarih)

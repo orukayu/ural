@@ -28,5 +28,8 @@ urlpatterns = [
     path('arac-exceli-yukle/', views.aracexceli, name='aracexceliurl'),
     path('arac-exceli-indir/', views.aracexceliindir, name='aracexceliindirurl'),
 
+    path('kur/', views.kur, name='kururl'),
+    path('get-doviz-kuru/', views.get_doviz_kuru, name='get_doviz_kuru'),
+
     path('logout/', auth_views.LogoutView.as_view(next_page='girisurl'), name='logout'),
 ]

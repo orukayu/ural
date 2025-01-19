@@ -68,10 +68,8 @@ class SeferForm(forms.ModelForm):
         ]
         widgets = {
             'Cikisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Samsun-Mersin', 'id': 'cikisyeri'}),
-            'Cikistarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17/03/2025', 'id': 'cikistarihi'}),
             'Cikiskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Cikiskm'}),
             'Varisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mersin-Samsun', 'id': 'varisyeri'}),
-            'Varistarihi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '21/03/2025', 'id': 'varistarihi'}),
             'Variskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Variskm'}),
             'Plakacekici': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919', 'id': 'plaka'}),
             'Plakadorse': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '12 DRS 345', 'id': 'plaka'}),
@@ -81,7 +79,7 @@ class SeferForm(forms.ModelForm):
             'Yuk': forms.TextInput(attrs={'class': 'form-control', 'id': 'yuk'}),
             'Yol': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Yol'}),
             'Tasimabedeli': forms.NumberInput(attrs={'class': 'form-control', 'id': 'tasimabedeli'}),
-            'Dovizkuru': forms.NumberInput(attrs={'class': 'form-control', 'id': 'dovizkuru'}),
+            'Dovizkuru': forms.NumberInput(attrs={'class': 'form-control', 'id': 'Dovizkuru', 'name': 'Dovizkuru'}),
             'Toplamfiyat': forms.NumberInput(attrs={'class': 'form-control', 'id': 'toplamfiyat'}),
             'Istasyon': forms.TextInput(attrs={'class': 'form-control', 'id': 'istasyon'}),
             'Litre': forms.NumberInput(attrs={'class': 'form-control', 'id': 'litre'}),
@@ -93,13 +91,11 @@ class SeferForm(forms.ModelForm):
 
     # Tarih için birden fazla format belirtiyoruz
     Cikistarihi = forms.DateField(
-        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'cikistarihi'}),
+        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'cikistarihi', 'name': 'Cikistarihi'}),
     )
 
     Varistarihi = forms.DateField(
-        input_formats=['%d/%m/%Y', '%d.%m.%Y'],  # Kabul edilen formatlar
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '19.03.2025', 'id': 'cikistarihi'}),
+        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': '21.03.2025', 'id': 'Varistarihi', 'name': 'Varistarihi'}),
         required=False,
     )
 

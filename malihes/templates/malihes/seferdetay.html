@@ -228,68 +228,97 @@
             </form>
           </div>
         </div>
-        <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <script src="https://getbootstrap.com/docs/5.3/examples/checkout/checkout.js"></script>
-                  <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function () {
-              // İlgili inputları seç
-              const cikiskmInput = document.getElementById('id_Cikiskm');
-              const variskmInput = document.getElementById('id_Variskm');
-              const yolInput = document.getElementById('id_Yol');
+        <script type="text/javascript">
+          document.addEventListener('DOMContentLoaded', function () {
+            // İlgili inputları seç
+            const cikiskmInput = document.getElementById('id_Cikiskm');
+            const variskmInput = document.getElementById('id_Variskm');
+            const yolInput = document.getElementById('id_Yol');
 
-              // Bir inputun değeri değiştiğinde mesafe hesapla
-              function calculateDistance() {
-                const cikiskm = parseFloat(cikiskmInput.value) || 0;
-                const variskm = parseFloat(variskmInput.value) || 0;
-                const distance = variskm - cikiskm;
-                yolInput.value = distance.toFixed(2); // Mesafeyi (KM) olarak yaz
-              }
+            // Bir inputun değeri değiştiğinde mesafe hesapla
+            function calculateDistance() {
+              const cikiskm = parseFloat(cikiskmInput.value) || 0;
+              const variskm = parseFloat(variskmInput.value) || 0;
+              const distance = variskm - cikiskm;
+              yolInput.value = distance.toFixed(2); // Mesafeyi (KM) olarak yaz
+            }
 
-              // Inputlara event listener ekle
-              cikiskmInput.addEventListener('input', calculateDistance);
-              variskmInput.addEventListener('input', calculateDistance);
-            });
-          </script>
-          <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function () {
-              // İlgili inputları seç
-              const tasimabedeliInput = document.getElementById('tasimabedeli');
-              const dovizkuruInput = document.getElementById('dovizkuru');
-              const toplamfiyatInput = document.getElementById('toplamfiyat');
+            // Inputlara event listener ekle
+            cikiskmInput.addEventListener('input', calculateDistance);
+            variskmInput.addEventListener('input', calculateDistance);
+          });
+        </script>
+        <script>
+          document.getElementById('Varistarihi').addEventListener('change', function() {
+            const tarih = this.value;
+            if (tarih) {
+              // AJAX isteği ile döviz kuru bilgisini al
+              fetch(`/get-doviz-kuru/?tarih=${tarih}`)
+                .then(response => response.json())
+                .then(data => {
+                  if (data.doviz_kuru) {
+                    // Döviz kuru bilgisini formdaki Dovizkuru alanına yerleştir
+                    document.getElementById('Dovizkuru').value = data.doviz_kuru;
+                    hesaplaToplamFiyat();
+                  } else {
+                    document.getElementById('Dovizkuru').value = 'Veri bulunamadı';
+                  }
+                })
+                .catch(error => {
+                  console.error('Hata:', error);
+                  document.getElementById('Dovizkuru').value = 'Hata oluştu';
+                });
+            }
+          });
+          function hesaplaToplamFiyat() {
+            const tb = parseFloat(document.getElementById("tasimabedeli").value || 0);
+            const dk = parseFloat(document.getElementById("Dovizkuru").value || 0);
+            const tf = tb * dk;
 
-              // Bir inputun değeri değiştiğinde mesafe hesapla
-              function calculateDistance() {
-                const tb = parseFloat(tasimabedeliInput.value) || 0;
-                const dk = parseFloat(dovizkuruInput.value) || 0;
-                const tf = tb * dk;
-                toplamfiyatInput.value = tf.toFixed(2); // Mesafeyi (KM) olarak yaz
-              }
+            document.getElementById("toplamfiyat").value = tf.toFixed(2);
+          }
+        </script>
+        <script type="text/javascript">
+          document.addEventListener('DOMContentLoaded', function () {
+            // İlgili inputları seç
+            const tasimabedeliInput = document.getElementById('tasimabedeli');
+            const dovizkuruInput = document.getElementById('Dovizkuru');
+            const toplamfiyatInput = document.getElementById('toplamfiyat');
 
-              // Inputlara event listener ekle
-              tasimabedeliInput.addEventListener('input', calculateDistance);
-              dovizkuruInput.addEventListener('input', calculateDistance);
-            });
-          </script>
-          <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function () {
-              // İlgili inputları seç
-              const yakitInput = document.getElementById('litre');
-              const litreInput = document.getElementById('litrefiyati');
-              const toplamyakitInput = document.getElementById('toplamyakit');
+            // Bir inputun değeri değiştiğinde mesafe hesapla
+            function calculateDistance() {
+              const tb = parseFloat(tasimabedeliInput.value) || 0;
+              const dk = parseFloat(dovizkuruInput.value) || 0;
+              const tf = tb * dk;
+              toplamfiyatInput.value = tf.toFixed(2); // Mesafeyi (KM) olarak yaz
+            }
 
-              // Bir inputun değeri değiştiğinde mesafe hesapla
-              function calculateDistance() {
-                const yakit = parseFloat(yakitInput.value) || 0;
-                const litre = parseFloat(litreInput.value) || 0;
-                const topyakit = yakit * litre;
-                toplamyakitInput.value = topyakit.toFixed(2); // Mesafeyi (KM) olarak yaz
-              }
+            // Inputlara event listener ekle
+            tasimabedeliInput.addEventListener('input', calculateDistance);
+            dovizkuruInput.addEventListener('input', calculateDistance);
+          });
+        </script>
+        <script type="text/javascript">
+          document.addEventListener('DOMContentLoaded', function () {
+            // İlgili inputları seç
+            const yakitInput = document.getElementById('litre');
+            const litreInput = document.getElementById('litrefiyati');
+            const toplamyakitInput = document.getElementById('toplamyakit');
 
-              // Inputlara event listener ekle
-              yakitInput.addEventListener('input', calculateDistance);
-              litreInput.addEventListener('input', calculateDistance);
-            });
-          </script>
+            // Bir inputun değeri değiştiğinde mesafe hesapla
+            function calculateDistance() {
+              const yakit = parseFloat(yakitInput.value) || 0;
+              const litre = parseFloat(litreInput.value) || 0;
+              const topyakit = yakit * litre;
+              toplamyakitInput.value = topyakit.toFixed(2); // Mesafeyi (KM) olarak yaz
+            }
+
+            // Inputlara event listener ekle
+            yakitInput.addEventListener('input', calculateDistance);
+            litreInput.addEventListener('input', calculateDistance);
+          });
+        </script>
+          
 
     
 {% endblock %}

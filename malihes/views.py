@@ -4,13 +4,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 
+from django.http import JsonResponse
+
 from django.db.models import Sum
 
 from django.contrib.auth.models import User
 
+from evds import evdsAPI    # pip install evds --upgrade   ile kurulum yapilmistir
+from datetime import datetime, timedelta
+
 import pandas as pd
 from io import BytesIO
 from django.http import HttpResponse
+from decimal import Decimal
 from datetime import datetime
 
 from .forms import KasaForm, TahsilatForm
@@ -21,6 +27,7 @@ from .forms import AraclarForm
 from .models import Kasa
 from .models import Sefer
 from .models import Araclar
+from .models import Kur
 
 def base(request):
     return redirect('girisurl')
@@ -31,6 +38,49 @@ def giris(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
+
+            # Bugünün tarihini al
+            enddate = datetime.today().strftime('%d-%m-%Y')
+
+            # 30 gün önceki tarihi hesapla
+            startdate = (datetime.today() - timedelta(days=30)).strftime('%d-%m-%Y')
+
+            # API'den verileri çekiyoruz
+            evds = evdsAPI('sRqOBrO0Sz')
+            raw_data = evds.get_data(['TP.DK.USD.A.YTL'], startdate=startdate, enddate=enddate, raw=True)
+
+            # Pandas DataFrame'e dönüştür
+            df = pd.DataFrame(raw_data)
+
+            # NaN (None) olan verileri bir önceki geçerli değerle doldur
+            df['TP_DK_USD_A_YTL'] = df['TP_DK_USD_A_YTL'].fillna(method='ffill')
+
+            # Doldurulmuş veriyi tekrar ham veri formatına dönüştür
+            filled_raw_data = df.to_dict(orient='records')
+
+            # Veriyi işliyoruz ve her bir döviz kuru bilgisini veritabanına kaydediyoruz
+            if filled_raw_data:
+                for item in filled_raw_data:
+                    try:
+                        # Tarih bilgisi
+                        tarih_str = item['Tarih']  # 'Tarih' alanının doğru olduğundan emin olun
+                        tarih = datetime.strptime(tarih_str, "%d-%m-%Y").date()  # Tarih formatı
+
+                        # USD'nin alış kuru
+                        usd_alis_str = item['TP_DK_USD_A_YTL']
+                        
+                        # Eğer USD alış kuru None değilse, veritabanına kaydet
+                        if usd_alis_str is not None:
+                            usd_alis = Decimal(usd_alis_str)
+                            
+                            # Veritabanında o tarihte veri var mı kontrol et
+                            if not Kur.objects.filter(tarih=tarih).exists():
+                                # Kur verisini kaydet
+                                Kur.objects.create(tarih=tarih, dovizalis=usd_alis)
+                    
+                    except Exception as e:
+                        print(f"Veri işlenirken hata oluştu: {e}")
+
             login(request, user)
             return redirect('seferurl')  # Ana sayfa URL'inizi buraya yazın
         else:
@@ -100,34 +150,8 @@ def seferdetay(request, pk):
             messages.error(request, "Formda hatalar var. Lütfen kontrol edin.")
 
     else:
-        # Tarihi biçimlendirmek için strftime kullanıyoruz
-        formatted_date1 = sefer_instance.Cikistarihi.strftime('%d.%m.%Y') if sefer_instance.Cikistarihi else ''
-        formatted_date2 = sefer_instance.Varistarihi.strftime('%d.%m.%Y') if sefer_instance.Varistarihi else ''
         # GET isteğinde formları mevcut kayıtla doldur
-        sefer_form = SeferForm(initial={
-            'Plakacekici': sefer_instance.Plakacekici,
-            'Plakadorse': sefer_instance.Plakadorse,
-            'Sofor': sefer_instance.Sofor,
-            'Cikistarihi': formatted_date1,
-            'Cikisyeri': sefer_instance.Cikisyeri,
-            'Cikiskm': sefer_instance.Cikiskm,
-            'Varistarihi': formatted_date2,
-            'Varisyeri': sefer_instance.Varisyeri,
-            'Variskm': sefer_instance.Variskm,
-            'Musteri': sefer_instance.Musteri,
-            'Yuk': sefer_instance.Yuk,
-            'Yol': sefer_instance.Yol,
-            'Tasimabedeli': sefer_instance.Tasimabedeli,
-            'Dovizkuru': sefer_instance.Dovizkuru,
-            'Toplamfiyat': sefer_instance.Toplamfiyat,
-            'Istasyon': sefer_instance.Istasyon,
-            'Litre': sefer_instance.Litre,
-            'Litrefiyati': sefer_instance.Litrefiyati,
-            'Toplamyakit': sefer_instance.Toplamyakit,
-            'Not': sefer_instance.Not,
-            'Digergiderler': sefer_instance.Digergiderler,
-            'Kalan': sefer_instance.Kalan
-        })
+        sefer_form = SeferForm(instance=sefer_instance)
 
     return render(request, 'malihes/seferdetay.html', {'sefer_form': sefer_form, 'kullanici_adi': kullanici_adi, 'pk': pk})
 
@@ -483,3 +507,25 @@ def kasaexceliindir(request):
     response['Content-Disposition'] = f'attachment; filename="ural_kasa_exceli.xlsx"'
 
     return response
+
+
+@login_required(login_url='/giris/')
+def kur(request):
+    # Tüm kur listesine ulaş
+    kurliste = Kur.objects.all()
+
+    # Kontekste verileri ekleyerek render işlemi yap
+    context = {
+        'kurliste': kurliste
+    }
+    
+    return render(request, 'malihes/kurliste.html', context)
+
+def get_doviz_kuru(request):
+    tarih = request.GET.get('tarih')  # Tarih bilgisi query parametresi olarak alınır
+    try:
+        # Verilen tarihe ait döviz kuru bilgisini al
+        doviz_kuru = Kur.objects.get(tarih=tarih).dovizalis
+        return JsonResponse({'doviz_kuru': str(doviz_kuru)})  # Döviz kuru verisini JSON formatında döndür
+    except Kur.DoesNotExist:
+        return JsonResponse({'error': 'Döviz kuru bulunamadı'}, status=404)

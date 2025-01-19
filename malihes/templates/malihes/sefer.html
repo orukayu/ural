@@ -160,7 +160,7 @@
                 </div>
 
                 <div class="col-md-4">
-                  <label for="lastName" class="form-label">Taşıma Bedeli</label>
+                  <label for="lastName" class="form-label">Taşıma Bedeli ($)</label>
                   {{ form.Tasimabedeli }}
                 </div>
 
@@ -238,21 +238,21 @@
           <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function () {
               // İlgili inputları seç
+              const dovizkuruInput = document.getElementById('Dovizkuru');
               const tasimabedeliInput = document.getElementById('tasimabedeli');
-              const dovizkuruInput = document.getElementById('dovizkuru');
               const toplamfiyatInput = document.getElementById('toplamfiyat');
 
               // Bir inputun değeri değiştiğinde mesafe hesapla
               function calculateDistance() {
-                const tb = parseFloat(tasimabedeliInput.value) || 0;
                 const dk = parseFloat(dovizkuruInput.value) || 0;
+                const tb = parseFloat(tasimabedeliInput.value) || 0;
                 const tf = tb * dk;
-                toplamfiyatInput.value = tf.toFixed(2); // Mesafeyi (KM) olarak yaz
+                toplamfiyatInput.value = tf.toFixed(2); // Toplam fiyatı hesapla
               }
 
               // Inputlara event listener ekle
-              tasimabedeliInput.addEventListener('input', calculateDistance);
               dovizkuruInput.addEventListener('input', calculateDistance);
+              tasimabedeliInput.addEventListener('input', calculateDistance);              
             });
           </script>
           <script type="text/javascript">
@@ -267,13 +267,43 @@
                 const yakit = parseFloat(yakitInput.value) || 0;
                 const litre = parseFloat(litreInput.value) || 0;
                 const topyakit = yakit * litre;
-                toplamyakitInput.value = topyakit.toFixed(2); // Mesafeyi (KM) olarak yaz
+                toplamyakitInput.value = topyakit.toFixed(2); // Toplam yakıtı hesapla
               }
 
               // Inputlara event listener ekle
               yakitInput.addEventListener('input', calculateDistance);
               litreInput.addEventListener('input', calculateDistance);
             });
+          </script>
+          <script>
+            document.getElementById('Varistarihi').addEventListener('change', function() {
+              const tarih = this.value;
+              if (tarih) {
+                // AJAX isteği ile döviz kuru bilgisini al
+                fetch(`/get-doviz-kuru/?tarih=${tarih}`)
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.doviz_kuru) {
+                      // Döviz kuru bilgisini formdaki Dovizkuru alanına yerleştir
+                      document.getElementById('Dovizkuru').value = data.doviz_kuru;
+                      hesaplaToplamFiyat();
+                    } else {
+                      document.getElementById('Dovizkuru').value = 'Veri bulunamadı';
+                    }
+                  })
+                  .catch(error => {
+                    console.error('Hata:', error);
+                    document.getElementById('Dovizkuru').value = 'Hata oluştu';
+                  });
+              }
+            });
+            function hesaplaToplamFiyat() {
+              const tb = parseFloat(document.getElementById("tasimabedeli").value || 0);
+              const dk = parseFloat(document.getElementById("Dovizkuru").value || 0);
+              const tf = tb * dk;
+
+              document.getElementById("toplamfiyat").value = tf.toFixed(2);
+            }
           </script>
         </div>
     
