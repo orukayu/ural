@@ -43,7 +43,7 @@ def giris(request):
             enddate = datetime.today().strftime('%d-%m-%Y')
 
             # 30 gün önceki tarihi hesapla
-            startdate = (datetime.today() - timedelta(days=30)).strftime('%d-%m-%Y')
+            startdate = (datetime.today() - timedelta(days=384)).strftime('%d-%m-%Y')
 
             # API'den verileri çekiyoruz
             evds = evdsAPI('sRqOBrO0Sz')
