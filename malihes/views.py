@@ -86,7 +86,7 @@ def giris(request):
                         print(f"Veri işlenirken hata oluştu: {e}")
 
             login(request, user)
-            return redirect('seferurl')  # Ana sayfa URL'inizi buraya yazın
+            return redirect('anasayfaurl')  # Ana sayfa URL'inizi buraya yazın
         else:
             messages.error(request, 'Kullanıcı adı veya şifre yanlış.')
     return render(request, 'malihes/giris.html')
@@ -621,3 +621,8 @@ def get_doviz_kuru(request):
         return JsonResponse({'doviz_kuru': str(doviz_kuru)})  # Döviz kuru verisini JSON formatında döndür
     except Kur.DoesNotExist:
         return JsonResponse({'error': 'Döviz kuru bulunamadı'}, status=404)
+
+def cekici_plaka_listesi(request):
+    query = request.GET.get('q', '')  # Kullanıcının yazdığı harfleri al
+    plakalar = Araclar.objects.filter(Tür="Çekici", Plaka__icontains=query).values('id', 'Plaka').order_by('Plaka')
+    return JsonResponse(list(plakalar), safe=False)

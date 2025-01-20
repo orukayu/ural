@@ -11,7 +11,7 @@ class PersonelForm(forms.ModelForm):
         fields = ['Adsoyad', 'Bolum', 'Telefon', 'Maas']
         widgets = {
             'Adsoyad': forms.TextInput(attrs={'class': 'form-control', 'id': 'adsoyad', 'placeholder': 'Ali YILMAZ'}),
-            'Telefon': forms.TextInput(attrs={'class': 'form-control', 'id': 'telefon', 'placeholder': 'Telefon Numarası (+90 formatında giriniz)'}),
+            'Telefon': forms.TextInput(attrs={'class': 'form-control', 'id': 'telefon', 'placeholder': '+905001112233 formatında giriniz'}),
             'Maas': forms.NumberInput(attrs={'class': 'form-control', 'id': 'maas'}),
         }
 
@@ -98,8 +98,8 @@ class SeferForm(forms.ModelForm):
             'Cikiskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Cikiskm'}),
             'Varisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mersin-Samsun', 'id': 'varisyeri'}),
             'Variskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Variskm'}),
-            'Plakacekici': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919', 'id': 'plaka'}),
-            'Plakadorse': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '12 DRS 345', 'id': 'plaka'}),
+            'Plakacekici': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919', 'id': 'cekiciplaka', 'name': 'cekiciplaka', 'autocomplete': 'off', 'list': 'plaka-cekici'}),
+            'Plakadorse': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '12 DRS 345', 'id': 'dorseplaka'}),
             'Sofor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ali YILMAZ', 'id': 'sofor'}),
             'Not': forms.Textarea(attrs={'class': 'form-control', 'id': 'not', 'rows': '4'}),
             'Musteri': forms.TextInput(attrs={'class': 'form-control', 'id': 'musteri'}),

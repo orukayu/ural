@@ -78,6 +78,17 @@
     .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
     }
+
+    .plaka-item {
+        margin-left: 0.8rem;
+        margin-right: 0.8rem;
+    }
+    .plaka-item:hover {
+        background-color: lightgray;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
 </style>
 
 <!-- Custom styles for this template -->
@@ -100,6 +111,7 @@
                 <div class="col-md-4">
                   <label for="firstName" class="form-label">Çekici Plakası</label>
                   {{ form.Plakacekici }}
+                  <datalist id="plaka-listesi" style="border: 1px solid #ccc; display: none; position: absolute; background: white; max-height: 200px; overflow-y: auto;"></datalist>
                 </div>
 
                 <div class="col-md-4">
@@ -304,6 +316,46 @@
 
               document.getElementById("toplamfiyat").value = tf.toFixed(2);
             }
+          </script>
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          <script>
+              $(document).ready(function() {
+                  $("#cekiciplaka").on("keyup", function() {
+                      let query = $(this).val();
+                      if (query.length > 1) {
+                          $.ajax({
+                              url: '/api/cekici-plaka-listesi/',
+                              data: { q: query },
+                              success: function(data) {
+                                  let listDiv = $("#plaka-listesi");
+                                  listDiv.empty().show();
+                                  if (data.length > 0) {
+                                      data.forEach(function(item) {
+                                          listDiv.append('<div class="plaka-item" data-id="' + item.id + '">' + item.Plaka + '</div>');
+                                      });
+                                  } else {
+                                      listDiv.append('<div class="plaka-item">Sonuç Bulunamadı.</div>');
+                                  }
+                              }
+                          });
+                      } else {
+                          $("#plaka-listesi").hide();
+                      }
+                  });
+
+                  // Plaka listesinde bir elemana tıklandığında input'a yaz
+                  $(document).on("click", ".plaka-item", function() {
+                      $("#cekiciplaka").val($(this).text());
+                      $("#plaka-listesi").hide();
+                  });
+
+                  // Liste dışına tıklanınca listeyi gizle
+                  $(document).on("click", function(e) {
+                      if (!$(e.target).closest("#cekiciplaka, #plaka-listesi").length) {
+                          $("#plaka-listesi").hide();
+                      }
+                  });
+              });
           </script>
         </div>
     

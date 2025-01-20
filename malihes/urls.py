@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import cekici_plaka_listesi
 
 from django.contrib.auth import views as auth_views  #kullanicinin cikis yapabilmesi icin eklenmistir
 
@@ -38,4 +39,5 @@ urlpatterns = [
     path('get-doviz-kuru/', views.get_doviz_kuru, name='get_doviz_kuru'),
 
     path('logout/', auth_views.LogoutView.as_view(next_page='girisurl'), name='logout'),
+    path('api/cekici-plaka-listesi/', cekici_plaka_listesi, name='cekici_plaka_list'),
 ]
