@@ -21,7 +21,7 @@ class PersonelForm(forms.ModelForm):
     ('Garaj', 'Garaj'),
     ('Şoför', 'Şoför'),
     ('Muhasebe', 'Muhasebe'),
-    ('Diğer', 'Diğer'),
+    ('Diğer...', 'Diğer...'),
     ]
 
     Bolum = forms.ChoiceField(
@@ -37,9 +37,9 @@ class KasaForm(forms.ModelForm):
         fields = ['Tarih', 'Plaka', 'Fisno', 'Sofor']
         widgets = {
             'Tarih': forms.TextInput(attrs={'class': 'form-control', 'id': 'tarih'}),
-            'Plaka': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919 - 34 DRS 567', 'id': 'plaka'}),
+            'Plaka': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919 - 34 DRS 567', 'id': 'kasaplaka'}),
             'Fisno': forms.TextInput(attrs={'class': 'form-control', 'id': 'fisno', 'placeholder': '0019'}),
-            'Sofor': forms.TextInput(attrs={'class': 'form-control', 'id': 'sofor', 'placeholder': 'Ali YILMAZ'}),
+            'Sofor': forms.TextInput(attrs={'class': 'form-control', 'id': 'sofor', 'name': 'sofor', 'autocomplete': 'off', 'placeholder': 'Ali YILMAZ'}),
         }
 
     # Tarih için birden fazla format belirtiyoruz
@@ -70,42 +70,22 @@ class SeferForm(forms.ModelForm):
     class Meta:
         model = Sefer
         fields = [
-            'Plakacekici',
-            'Plakadorse',
-            'Sofor',
-            'Cikistarihi',
-            'Cikisyeri',
-            'Cikiskm',
-            'Varistarihi',
-            'Varisyeri',
-            'Variskm',
-            'Musteri',
-            'Yuk',
-            'Yol',
-            'Tasimabedeli',
-            'Dovizkuru',
-            'Toplamfiyat',
-            'Istasyon',
-            'Litre',
-            'Litrefiyati',
-            'Toplamyakit',
-            'Not',
-            'Digergiderler',
-            'Kalan'
+            'Plakacekici', 'Plakadorse', 'Sofor', 'Cikistarihi', 'Cikisyeri', 'Cikiskm',
+            'Varistarihi', 'Varisyeri', 'Variskm', 'Musteri', 'Yuk', 'Yol', 'Tasimabedeli',
+            'Dovizkuru', 'Toplamfiyat', 'Istasyon', 'Litre', 'Litrefiyati', 'Toplamyakit',
+            'Not', 'Digergiderler', 'Kalan'
         ]
         widgets = {
             'Cikisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Samsun-Mersin', 'id': 'cikisyeri'}),
             'Cikiskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Cikiskm'}),
             'Varisyeri': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mersin-Samsun', 'id': 'varisyeri'}),
             'Variskm': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Variskm'}),
-            'Plakacekici': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919', 'id': 'cekiciplaka', 'name': 'cekiciplaka', 'autocomplete': 'off', 'list': 'plaka-cekici'}),
+            'Plakacekici': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '55 CKC 1919', 'id': 'cekiciplaka'}),
             'Plakadorse': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '12 DRS 345', 'id': 'dorseplaka'}),
-            'Sofor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ali YILMAZ', 'id': 'sofor'}),
             'Not': forms.Textarea(attrs={'class': 'form-control', 'id': 'not', 'rows': '4'}),
             'Musteri': forms.TextInput(attrs={'class': 'form-control', 'id': 'musteri'}),
             'Yuk': forms.TextInput(attrs={'class': 'form-control', 'id': 'yuk'}),
             'Yol': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_Yol'}),
-            'Tasimabedeli': forms.NumberInput(attrs={'class': 'form-control', 'id': 'tasimabedeli'}),
             'Dovizkuru': forms.NumberInput(attrs={'class': 'form-control', 'id': 'Dovizkuru', 'name': 'Dovizkuru'}),
             'Toplamfiyat': forms.NumberInput(attrs={'class': 'form-control', 'id': 'toplamfiyat'}),
             'Istasyon': forms.TextInput(attrs={'class': 'form-control', 'id': 'istasyon'}),
@@ -113,35 +93,50 @@ class SeferForm(forms.ModelForm):
             'Litrefiyati': forms.NumberInput(attrs={'class': 'form-control', 'id': 'litrefiyati'}),
             'Toplamyakit': forms.NumberInput(attrs={'class': 'form-control', 'id': 'toplamyakit'}),
             'Digergiderler': forms.NumberInput(attrs={'class': 'form-control', 'id': 'digergiderler'}),
-            'Kalan': forms.NumberInput(attrs={'class': 'form-control', 'id': 'kalan'}),
+            'Kalan': forms.NumberInput(attrs={'class': 'form-control', 'id': 'kalan'})
         }
 
-    # Tarih için birden fazla format belirtiyoruz
     Cikistarihi = forms.DateField(
-        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': '17.03.2025', 'id': 'cikistarihi', 'name': 'Cikistarihi'}),
+        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'id': 'cikistarihi'}),
     )
 
     Varistarihi = forms.DateField(
-        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': '21.03.2025', 'id': 'Varistarihi', 'name': 'Varistarihi'}),
+        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control', 'id': 'Varistarihi'}),
         required=False,
     )
 
     Tasimabedeli = forms.DecimalField(
-        required=False,  # Bu satır 'Tasimabedeli' alanının zorunlu olmasını engeller
+        required=False,
         widget=forms.NumberInput(attrs={'class': 'form-control', 'id': 'tasimabedeli'})
     )
 
+    Sofor = forms.ChoiceField(
+        choices=[],
+        widget=forms.Select(attrs={'class': 'form-select', 'id': 'sofor'})
+    )
+
     def __init__(self, *args, **kwargs):
-        super(SeferForm, self).__init__(*args, **kwargs)
-        self.fields['Cikiskm'].initial = 0  # Varsayılan değer
-        self.fields['Variskm'].initial = 0  # Varsayılan değer
-        self.fields['Yol'].initial = 0  # Varsayılan değer
-        self.fields['Tasimabedeli'].initial = 0.0  # Varsayılan değer
-        self.fields['Dovizkuru'].initial = 0.0  # Varsayılan değer
-        self.fields['Toplamfiyat'].initial = 0.0  # Varsayılan değer
-        self.fields['Litre'].initial = 0.0  # Varsayılan değer
-        self.fields['Litrefiyati'].initial = 0.0  # Varsayılan değer
-        self.fields['Toplamyakit'].initial = 0.0  # Varsayılan değer
+        super().__init__(*args, **kwargs)
+
+        # Varsayılan değerleri atama
+        default_values = {
+            'Cikiskm': 0, 'Variskm': 0, 'Yol': 0, 'Tasimabedeli': 0.0,
+            'Dovizkuru': 0.0, 'Toplamfiyat': 0.0, 'Litre': 0.0, 'Litrefiyati': 0.0, 'Toplamyakit': 0.0
+        }
+        for field, value in default_values.items():
+            self.fields[field].initial = value
+
+        # Kasa modelinde 'Açıklama1' sütunu 'Harcırah' olan şoförleri al
+        harcırah_soforler = Kasa.objects.filter(Aciklama1='Harcırah').values_list('Sofor', flat=True)
+
+        # Sefer modelinde kullanılan şoförleri al
+        kullanılan_soforler = Sefer.objects.values_list('Sofor', flat=True)
+
+        # Kullanılabilir şoförleri filtrele
+        mevcut_soforler = set(harcırah_soforler) - set(kullanılan_soforler)
+
+        # Dropdown için seçenekleri belirle
+        self.fields['Sofor'].choices = [(sofor, sofor) for sofor in mevcut_soforler]
 
 
 

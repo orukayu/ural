@@ -84,6 +84,17 @@
       .tahsilat-form {
         margin-bottom: 15px;
       }
+      .sofor-item {
+          margin-left: 0.8rem;
+          margin-right: 0.8rem;
+      }
+      .sofor-item:hover {
+          background-color: lightgray;
+          margin-left: auto;
+          margin-right: auto;
+          padding-left: 0.8rem;
+          padding-right: 0.8rem;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -116,6 +127,7 @@
                 <div class="col-12">
                   <label for="sofor" class="form-label">Şoför</label>
                   {{ kasa_form.Sofor }}
+                  <div id="sofor-isim-listesi" style="border: 1px solid #ccc; display: none; position: absolute; background: white; max-height: 200px; overflow-y: auto;"></div>
                 </div>
                 <div class="col-12">
                   <label for="plaka" class="form-label">Plaka</label>
@@ -137,7 +149,18 @@
                   {% for form in tahsilat_forms %}
                   <div class="row g-3 tahsilat-form">
                     <div class="col-sm-5">
-                      <input type="text" name="{{ forloop.counter0 }}-Aciklama1" id="id_{{ forloop.counter0 }}-Aciklama1" class="form-control dynamic-input">
+                      <select name="{{ forloop.counter0 }}-Aciklama1" id="id_{{ forloop.counter0 }}-Aciklama1" class="form-select">
+                        <option value="">Seçiniz</option>
+                        <option value="Araç Yıkama">Araç Yıkama</option>
+                        <option value="Bakım Onarım">Bakım Onarım</option>
+                        <option value="Hal Çıkış">Hal Çıkış</option>
+                        <option value="Harcırah">Harcırah</option>
+                        <option value="Jet">Jet</option>
+                        <option value="Kantar">Kantar</option>
+                        <option value="Kasa Nakliye">Kasa Nakliye</option>
+                        <option value="Muayene">Muayene</option>
+                        <option value="Diğer...">Diğer...</option>
+                      </select>
                     </div>
                     <div class="col-sm-3">
                       <input type="text" name="{{ forloop.counter0 }}-Aciklama2" id="id_{{ forloop.counter0 }}-Aciklama2" class="form-control dynamic-input">
@@ -162,46 +185,6 @@
                 </div>
               </div>
             </form>
-            <script>
-              document.addEventListener('DOMContentLoaded', function () {
-                const formContainer = document.getElementById('tahsilat-forms');
-                const formCount = document.getElementById('form-count');
-
-                function addNewForm() {
-                  const newFormIndex = parseInt(formCount.value);
-
-                  const newFormHtml = `
-                    <div class="row g-3 tahsilat-form">
-                      <div class="col-sm-5">
-                        <input type="text" name="${newFormIndex}-Aciklama1" id="id_${newFormIndex}-Aciklama1" class="form-control dynamic-input">
-                      </div>
-                      <div class="col-sm-3">
-                        <input type="text" name="${newFormIndex}-Aciklama2" id="id_${newFormIndex}-Aciklama2" class="form-control dynamic-input">
-                      </div>
-                      <div class="col-sm-2">
-                        <input type="number" name="${newFormIndex}-Giris" id="id_${newFormIndex}-Giris" class="form-control giris" value="0.00">
-                      </div>
-                      <div class="col-sm-2">
-                        <input type="number" name="${newFormIndex}-Cikis" id="id_${newFormIndex}-Cikis" class="form-control cikis" value="0.00">
-                      </div>
-                    </div>
-                  `;
-
-                  formContainer.insertAdjacentHTML('beforeend', newFormHtml);
-                  formCount.value = newFormIndex + 1;
-                }
-
-                // İlk satıra veri girildiğinde otomatik olarak yeni bir satır ekle
-                formContainer.addEventListener('input', function (e) {
-                  const inputs = [...formContainer.lastElementChild.querySelectorAll('input')];
-                  const isLastRow = inputs.includes(e.target);
-
-                  if (isLastRow && e.target.value.trim() !== '') {
-                    addNewForm();
-                  }
-                });
-              });
-            </script>
             <div class="table-responsive small">
               <div class="py-3 text-center mt-4">
                 <h4>Son Kayıt</h4>
@@ -235,6 +218,57 @@
             </div>
           </div>
         </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const formContainer = document.getElementById('tahsilat-forms');
+            const formCount = document.getElementById('form-count');
+
+            function addNewForm() {
+              const newFormIndex = parseInt(formCount.value);
+
+              const newFormHtml = `
+                <div class="row g-3 tahsilat-form">
+                  <div class="col-sm-5">
+                    <select name="${newFormIndex}-Aciklama1" id="id_${newFormIndex}-Aciklama1" class="form-select">
+                      <option value="">Seçiniz</option>
+                      <option value="Araç Yıkama">Araç Yıkama</option>
+                      <option value="Bakım Onarım">Bakım Onarım</option>
+                      <option value="Hal Çıkış">Hal Çıkış</option>
+                      <option value="Harcırah">Harcırah</option>
+                      <option value="Jet">Jet</option>
+                      <option value="Kantar">Kantar</option>
+                      <option value="Kasa Nakliye">Kasa Nakliye</option>
+                      <option value="Muayene">Muayene</option>
+                      <option value="Diğer...">Diğer...</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-3">
+                    <input type="text" name="${newFormIndex}-Aciklama2" id="id_${newFormIndex}-Aciklama2" class="form-control dynamic-input">
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="number" name="${newFormIndex}-Giris" id="id_${newFormIndex}-Giris" class="form-control giris" value="0.00">
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="number" name="${newFormIndex}-Cikis" id="id_${newFormIndex}-Cikis" class="form-control cikis" value="0.00">
+                  </div>
+                </div>
+              `;
+
+              formContainer.insertAdjacentHTML('beforeend', newFormHtml);
+              formCount.value = newFormIndex + 1;
+            }
+
+            // İlk satıra veri girildiğinde otomatik olarak yeni bir satır ekle
+            formContainer.addEventListener('input', function (e) {
+              const inputs = [...formContainer.lastElementChild.querySelectorAll('input')];
+              const isLastRow = inputs.includes(e.target);
+
+              if (isLastRow && e.target.value.trim() !== '') {
+                addNewForm();
+              }
+            });
+          });
+        </script>
 
         <script>
           // Giriş ve Çıkış alanlarındaki değişiklikleri dinler
@@ -280,10 +314,21 @@
               const newFormHtml = `
                 <div class="row g-3 tahsilat-form">
                   <div class="col-sm-5">
-                    <input type="text" name="${newFormIndex}-Aciklama1" id="id_${newFormIndex}-Aciklama1" class="form-control">
+                    <select name="${newFormIndex}-Aciklama1" id="id_${newFormIndex}-Aciklama1" class="form-select">
+                      <option value="">Seçiniz</option>
+                      <option value="Araç Yıkama">Araç Yıkama</option>
+                      <option value="Bakım Onarım">Bakım Onarım</option>
+                      <option value="Hal Çıkış">Hal Çıkış</option>
+                      <option value="Harcırah">Harcırah</option>
+                      <option value="Jet">Jet</option>
+                      <option value="Kantar">Kantar</option>
+                      <option value="Kasa Nakliye">Kasa Nakliye</option>
+                      <option value="Muayene">Muayene</option>
+                      <option value="Diğer...">Diğer...</option>
+                    </select>
                   </div>
                   <div class="col-sm-3">
-                    <input type="text" name="${newFormIndex}-Aciklama2" id="id_${newFormIndex}-Aciklama2" class="form-control">
+                    <input type="text" name="${newFormIndex}-Aciklama2" id="id_${newFormIndex}-Aciklama2" class="form-control dynamic-input">
                   </div>
                   <div class="col-sm-2">
                     <input type="number" name="${newFormIndex}-Giris" id="id_${newFormIndex}-Giris" class="form-control giris" value="0.00">
@@ -304,6 +349,46 @@
 
             // Sayfa yüklendiğinde toplamı hesapla
             calculateTotal();
+          });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+          $(document).ready(function() {
+            $("#sofor").on("keyup", function() {
+              let query = $(this).val();
+              if (query.length > 1) {
+                $.ajax({
+                  url: '/api/sofor-isim-listesi/',
+                  data: { q: query },
+                  success: function(data) {
+                    let listDiv = $("#sofor-isim-listesi");
+                    listDiv.empty().show();
+                    if (data.length > 0) {
+                      data.forEach(function(item) {
+                        listDiv.append('<div class="sofor-item" data-id="' + item.id + '">' + item.Adsoyad + '</div>');
+                      });
+                    } else {
+                      listDiv.append('<div class="sofor-item">Sonuç Bulunamadı.</div>');
+                    }
+                  }
+                });
+              } else {
+                $("#sofor-isim-listesi").hide();
+              }
+            });
+
+            // Plaka listesinde bir elemana tıklandığında input'a yaz
+            $(document).on("click", ".sofor-item", function() {
+                $("#sofor").val($(this).text());
+                $("#sofor-isim-listesi").hide();
+            });
+
+            // Liste dışına tıklanınca listeyi gizle
+            $(document).on("click", function(e) {
+                if (!$(e.target).closest("#sofor, #sofor-isim-listesi").length) {
+                    $("#sofor-isim-listesi").hide();
+                }
+            });
           });
         </script>
 

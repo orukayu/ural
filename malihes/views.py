@@ -626,3 +626,13 @@ def cekici_plaka_listesi(request):
     query = request.GET.get('q', '')  # Kullanıcının yazdığı harfleri al
     plakalar = Araclar.objects.filter(Tür="Çekici", Plaka__icontains=query).values('id', 'Plaka').order_by('Plaka')
     return JsonResponse(list(plakalar), safe=False)
+
+def dorse_plaka_listesi(request):
+    query = request.GET.get('q', '')  # Kullanıcının yazdığı harfleri al
+    plakalar = Araclar.objects.filter(Tür="Dorse", Plaka__icontains=query).values('id', 'Plaka').order_by('Plaka')
+    return JsonResponse(list(plakalar), safe=False)
+
+def sofor_isim_listesi(request):
+    query = request.GET.get('q', '')  # Kullanıcının yazdığı harfleri al
+    soforisimleri = Personel.objects.filter(Bolum="Şoför", Adsoyad__icontains=query).values('id', 'Adsoyad').order_by('Adsoyad')
+    return JsonResponse(list(soforisimleri), safe=False)

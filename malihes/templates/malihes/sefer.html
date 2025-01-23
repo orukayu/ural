@@ -79,15 +79,16 @@
         display: block !important;
     }
 
-    .plaka-item {
+    .cekici-item, .dorse-item {
         margin-left: 0.8rem;
         margin-right: 0.8rem;
     }
-    .plaka-item:hover {
+    .cekici-item:hover, .dorse-item:hover {
         background-color: lightgray;
         margin-left: auto;
         margin-right: auto;
-        text-align: center;
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
     }
 </style>
 
@@ -99,7 +100,7 @@
 {% block sayfa %}
         <div class="py-3 text-center mt-4">
           <h2>Sefer Kayıt Formu</h2>
-          <p class="lead">Aşağıda ki formu kullanarak sefer kaydı oluşturabilirsiniz. Eksik bilgilerini daha sonra sefer listesinden tamamlayabilirsiniz.</p>
+          <p class="lead">Çekici ve Dorse plakasını otomatik tamamlayıcıdan seçebilirsiniz. Dönüş Tarihi seçildiğinde döviz kuru otomatik gelecektir.</p>
         </div>
 
         <div class="row g-5">
@@ -111,12 +112,13 @@
                 <div class="col-md-4">
                   <label for="firstName" class="form-label">Çekici Plakası</label>
                   {{ form.Plakacekici }}
-                  <datalist id="plaka-listesi" style="border: 1px solid #ccc; display: none; position: absolute; background: white; max-height: 200px; overflow-y: auto;"></datalist>
+                  <div id="cekici-listesi" style="border: 1px solid #ccc; display: none; position: absolute; background: white; max-height: 200px; overflow-y: auto;"></div>
                 </div>
 
                 <div class="col-md-4">
                   <label for="firstName" class="form-label">Dorse Plakası</label>
                   {{ form.Plakadorse }}
+                  <div id="dorse-listesi" style="border: 1px solid #ccc; display: none; position: absolute; background: white; max-height: 200px; overflow-y: auto;"></div>
                 </div>
 
                 <div class="col-md-4">
@@ -327,32 +329,71 @@
                               url: '/api/cekici-plaka-listesi/',
                               data: { q: query },
                               success: function(data) {
-                                  let listDiv = $("#plaka-listesi");
+                                  let listDiv = $("#cekici-listesi");
                                   listDiv.empty().show();
                                   if (data.length > 0) {
                                       data.forEach(function(item) {
-                                          listDiv.append('<div class="plaka-item" data-id="' + item.id + '">' + item.Plaka + '</div>');
+                                          listDiv.append('<div class="cekici-item" data-id="' + item.id + '">' + item.Plaka + '</div>');
                                       });
                                   } else {
-                                      listDiv.append('<div class="plaka-item">Sonuç Bulunamadı.</div>');
+                                      listDiv.append('<div class="cekici-item">Sonuç Bulunamadı.</div>');
                                   }
                               }
                           });
                       } else {
-                          $("#plaka-listesi").hide();
+                          $("#cekici-listesi").hide();
                       }
                   });
 
                   // Plaka listesinde bir elemana tıklandığında input'a yaz
-                  $(document).on("click", ".plaka-item", function() {
+                  $(document).on("click", ".cekici-item", function() {
                       $("#cekiciplaka").val($(this).text());
-                      $("#plaka-listesi").hide();
+                      $("#cekici-listesi").hide();
                   });
 
                   // Liste dışına tıklanınca listeyi gizle
                   $(document).on("click", function(e) {
-                      if (!$(e.target).closest("#cekiciplaka, #plaka-listesi").length) {
-                          $("#plaka-listesi").hide();
+                      if (!$(e.target).closest("#cekiciplaka, #cekici-listesi").length) {
+                          $("#cekici-listesi").hide();
+                      }
+                  });
+              });
+          </script>
+          <script>
+              $(document).ready(function() {
+                  $("#dorseplaka").on("keyup", function() {
+                      let query = $(this).val();
+                      if (query.length > 1) {
+                          $.ajax({
+                              url: '/api/dorse-plaka-listesi/',
+                              data: { q: query },
+                              success: function(data) {
+                                  let listDiv = $("#dorse-listesi");
+                                  listDiv.empty().show();
+                                  if (data.length > 0) {
+                                      data.forEach(function(item) {
+                                          listDiv.append('<div class="dorse-item" data-id="' + item.id + '">' + item.Plaka + '</div>');
+                                      });
+                                  } else {
+                                      listDiv.append('<div class="dorse-item">Sonuç Bulunamadı.</div>');
+                                  }
+                              }
+                          });
+                      } else {
+                          $("#dorse-listesi").hide();
+                      }
+                  });
+
+                  // Plaka listesinde bir elemana tıklandığında input'a yaz
+                  $(document).on("click", ".dorse-item", function() {
+                      $("#dorseplaka").val($(this).text());
+                      $("#dorse-listesi").hide();
+                  });
+
+                  // Liste dışına tıklanınca listeyi gizle
+                  $(document).on("click", function(e) {
+                      if (!$(e.target).closest("#dorseplaka, #dorse-listesi").length) {
+                          $("#dorse-listesi").hide();
                       }
                   });
               });

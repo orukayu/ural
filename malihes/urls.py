@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from .views import cekici_plaka_listesi
+from .views import dorse_plaka_listesi
+from .views import sofor_isim_listesi
 
 from django.contrib.auth import views as auth_views  #kullanicinin cikis yapabilmesi icin eklenmistir
 
@@ -40,4 +42,6 @@ urlpatterns = [
 
     path('logout/', auth_views.LogoutView.as_view(next_page='girisurl'), name='logout'),
     path('api/cekici-plaka-listesi/', cekici_plaka_listesi, name='cekici_plaka_list'),
+    path('api/dorse-plaka-listesi/', dorse_plaka_listesi, name='dorse_plaka_list'),
+    path('api/sofor-isim-listesi/', sofor_isim_listesi, name='sofor_isim_list'),
 ]
