@@ -6,18 +6,18 @@ from django.shortcuts import get_object_or_404
 
 from django.http import JsonResponse
 
-from django.db.models import Sum
+from django.db.models import Sum, F
 
 from django.contrib.auth.models import User
 
 from evds import evdsAPI    # pip install evds --upgrade   ile kurulum yapilmistir
 from datetime import datetime, timedelta
+from django.utils.timezone import now
 
 import pandas as pd
 from io import BytesIO
 from django.http import HttpResponse
 from decimal import Decimal
-from datetime import datetime
 
 from .forms import KasaForm, TahsilatForm
 from .forms import SeferForm
@@ -106,8 +106,50 @@ def anasayfa(request):
     # Ortalama maaş hesaplama (personel varsa, yoksa 0 döner)
     ortalamamaas = toplammaas / personelsayisi if personelsayisi > 0 else 0
 
+    # Son 1 haftalık verileri filtrele
+    one_week_ago = now().date() - timedelta(days=7)
+    kasa_data = Kasa.objects.filter(Tarih__gte=one_week_ago)
+
+    # Giris, Cikis ve fark hesaplama
+    birhaftalik = kasa_data.aggregate(
+        toplam_giris=Sum('Giris'),
+        toplam_cikis=Sum('Cikis'),
+        fark=Sum(F('Giris') - F('Cikis'))
+    )
+
+    # Son 2 haftalık verileri filtrele
+    two_week_ago = now().date() - timedelta(days=14)
+    kasa_data = Kasa.objects.filter(Tarih__gte=two_week_ago)
+
+    # Giris, Cikis ve fark hesaplama
+    ikihaftalik = kasa_data.aggregate(
+        toplam_giris=Sum('Giris'),
+        toplam_cikis=Sum('Cikis'),
+        fark=Sum(F('Giris') - F('Cikis'))
+    )
+
+    # Son 4 haftalık verileri filtrele
+    four_week_ago = now().date() - timedelta(days=28)
+    kasa_data = Kasa.objects.filter(Tarih__gte=four_week_ago)
+
+    # Giris, Cikis ve fark hesaplama
+    dorthaftalik = kasa_data.aggregate(
+        toplam_giris=Sum('Giris'),
+        toplam_cikis=Sum('Cikis'),
+        fark=Sum(F('Giris') - F('Cikis'))
+    )
+
     context = {
         'kullanici_adi': kullanici_adi,
+        'birhaftalikgiris': birhaftalik['toplam_giris'],
+        'birhaftalikcikis': birhaftalik['toplam_cikis'],
+        'birhaftaliktoplam': birhaftalik['fark'],
+        'ikihaftalikgiris': ikihaftalik['toplam_giris'],
+        'ikihaftalikcikis': ikihaftalik['toplam_cikis'],
+        'ikihaftaliktoplam': ikihaftalik['fark'],
+        'dorthaftalikgiris': dorthaftalik['toplam_giris'],
+        'dorthaftalikcikis': dorthaftalik['toplam_cikis'],
+        'dorthaftaliktoplam': dorthaftalik['fark'],
         'ucs': ucs,
         'uds': uds,
         'acs': acs,

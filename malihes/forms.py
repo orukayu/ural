@@ -16,18 +16,20 @@ class PersonelForm(forms.ModelForm):
         }
 
     BOLUMLER = [
-    ('Ofis', 'Ofis'),
-    ('Depo', 'Depo'),
-    ('Garaj', 'Garaj'),
+    ('Dış Ticaret', 'Dış Ticaret'),
+    ('Oto Bakım Onarımcısı', 'Oto Bakım Onarımcısı'),
+    ('Oto Yıkama Elemanı', 'Oto Yıkama Elemanı'),
+    ('Sevkiyat Görevlisi', 'Sevkiyat Görevlisi'),
     ('Şoför', 'Şoför'),
-    ('Muhasebe', 'Muhasebe'),
+    ('Tır Çekici Şoförü', 'Tır Çekici Şoförü'),
+    ('Tır Şoförü', 'Tır Şoförü'),
     ('Diğer...', 'Diğer...'),
     ]
 
     Bolum = forms.ChoiceField(
         choices=BOLUMLER,
         widget=forms.Select(attrs={'class': 'form-select', 'id': 'bolum'}),
-        initial='Ofis'
+        initial='Diğer...'
     )
 
 

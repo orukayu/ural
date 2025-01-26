@@ -258,12 +258,6 @@
                 </a>
                 <hr>
                 <li>
-                  <a href="{% url 'anasayfaurl' %}" class="nav-link text-white">
-                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                    Anasayfa
-                  </a>
-                </li>
-                <li>
                   <a href="{% url 'seferurl' %}" class="nav-link text-white">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#pusula"></use></svg>
                     Sefer Ekle
@@ -275,6 +269,7 @@
                     Sefer Listesi
                   </a>
                 </li>
+                <br>
                 <li>
                   <a href="{% url 'kasaurl' %}" class="nav-link text-white">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#kasa"></use></svg>
@@ -287,6 +282,7 @@
                     Kasa Listesi
                   </a>
                 </li>
+                <br>
                 <li>
                   <a href="{% url 'aracurl' %}" class="nav-link text-white">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#sefer"></use></svg>
@@ -299,6 +295,7 @@
                     Araç Listesi
                   </a>
                 </li>
+                <br>
                 <li>
                   <a href="{% url 'personelurl' %}" class="nav-link text-white">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#personel"></use></svg>
@@ -314,18 +311,26 @@
               </ul>
               <hr>
               <div class="dropdown">
-                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  <svg class="bi pe-none me-2" width="32" height="32"><use xlink:href="#person"></use></svg>
-                  <strong>{{ kullanici_adi }}</strong>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                  {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'logout' %}">
-                      {% csrf_token %}
-                      <button type="submit" class="dropdown-item">Çıkış Yap</button>
-                    </form>
-                  {% endif %}
-                </ul>
+                <li>
+                  <a href="{% url 'anasayfaurl' %}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                    Anasayfa
+                  </a>
+                </li>
+                <li>
+                  <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg class="bi pe-none me-2" width="32" height="32"><use xlink:href="#person"></use></svg>
+                    <strong>{{ kullanici_adi }}</strong>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    {% if user.is_authenticated %}
+                      <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item">Çıkış Yap</button>
+                      </form>
+                    {% endif %}
+                  </ul>
+                </li>
               </div>
             </div>
           </div>

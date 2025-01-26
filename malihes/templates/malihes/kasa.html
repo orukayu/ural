@@ -133,10 +133,10 @@
                   <label for="plaka" class="form-label">Plaka</label>
                   {{ kasa_form.Plaka }}
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                   <label for="plaka" class="form-label">Açıklama 1</label>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-5">
                   <label for="plaka" class="form-label">Açıklama 2</label>
                 </div>
                 <div class="col-sm-2">
@@ -148,7 +148,7 @@
                 <div id="tahsilat-forms">
                   {% for form in tahsilat_forms %}
                   <div class="row g-3 tahsilat-form">
-                    <div class="col-sm-5">
+                    <div class="col-sm-3">
                       <select name="{{ forloop.counter0 }}-Aciklama1" id="id_{{ forloop.counter0 }}-Aciklama1" class="form-select">
                         <option value="">Seçiniz</option>
                         <option value="Araç Yıkama">Araç Yıkama</option>
@@ -162,7 +162,7 @@
                         <option value="Diğer...">Diğer...</option>
                       </select>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-5">
                       <input type="text" name="{{ forloop.counter0 }}-Aciklama2" id="id_{{ forloop.counter0 }}-Aciklama2" class="form-control dynamic-input">
                     </div>
                     <div class="col-sm-2">
@@ -228,7 +228,7 @@
 
               const newFormHtml = `
                 <div class="row g-3 tahsilat-form">
-                  <div class="col-sm-5">
+                  <div class="col-sm-3">
                     <select name="${newFormIndex}-Aciklama1" id="id_${newFormIndex}-Aciklama1" class="form-select">
                       <option value="">Seçiniz</option>
                       <option value="Araç Yıkama">Araç Yıkama</option>
@@ -242,7 +242,7 @@
                       <option value="Diğer...">Diğer...</option>
                     </select>
                   </div>
-                  <div class="col-sm-3">
+                  <div class="col-sm-5">
                     <input type="text" name="${newFormIndex}-Aciklama2" id="id_${newFormIndex}-Aciklama2" class="form-control dynamic-input">
                   </div>
                   <div class="col-sm-2">

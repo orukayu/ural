@@ -88,7 +88,7 @@
 {% block sayfa %}
         <div class="py-3 text-center mt-4">
           <h2>Anasayfa</h2>
-          <p class="lead">Bu sayfada genel raporlar yer almaktadır.</p>
+          <p class="lead">Bu sayfada istenilen genel raporlar yer alacaktır.</p>
         </div>
         <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
             <div class="col">
@@ -116,6 +116,38 @@
                     Toplam Maaş : {{ toplammaas|floatformat:"2g" }}
                 </p>
             </div>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Kasa Dönem Raporları</th>
+                        <th scope="col">Giriş</th>
+                        <th scope="col">Çıkış</th>
+                        <th scope="col">Kalan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1 Haftalık</th>
+                        <td>{{ birhaftalikgiris|floatformat:"2g" }}</td>
+                        <td>{{ birhaftalikcikis|floatformat:"2g" }}</td>
+                        <td>{{ birhaftaliktoplam|floatformat:"2g" }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2 Haftalık</th>
+                        <td>{{ ikihaftalikgiris|floatformat:"2g" }}</td>
+                        <td>{{ ikihaftalikcikis|floatformat:"2g" }}</td>
+                        <td>{{ ikihaftaliktoplam|floatformat:"2g" }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4 Haftalık</th>
+                        <td>{{ dorthaftalikgiris|floatformat:"2g" }}</td>
+                        <td>{{ dorthaftalikcikis|floatformat:"2g" }}</td>
+                        <td>{{ dorthaftaliktoplam|floatformat:"2g" }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     
 {% endblock %}
