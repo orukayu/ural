@@ -676,5 +676,5 @@ def dorse_plaka_listesi(request):
 
 def sofor_isim_listesi(request):
     query = request.GET.get('q', '')  # Kullanıcının yazdığı harfleri al
-    soforisimleri = Personel.objects.filter(Bolum="Şoför", Adsoyad__icontains=query).values('id', 'Adsoyad').order_by('Adsoyad')
+    soforisimleri = Personel.objects.filter(Adsoyad__icontains=query).values('id', 'Adsoyad').order_by('Adsoyad')
     return JsonResponse(list(soforisimleri), safe=False)
